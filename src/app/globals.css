@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #102A43;
+  --teal: #0F8B8D;
+  --aqua: #35C2BD;
+  --off-white: #F7FAFC;
+  --white: #FFFFFF;
+  --neutral-grey: #627D98;
+}
+
+body {
+  background-color: #F7FAFC;
+  color: #102A43;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Nirmala UI', 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Gurmukhi', 'Noto Sans Gujarati', 'Noto Sans Oriya', 'Noto Sans Tamil', 'Noto Sans Telugu', 'Noto Sans Kannada', 'Noto Sans Malayalam', 'Noto Nastaliq Urdu', 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* RTL layout support for Urdu, Sindhi, Kashmiri */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .rtl-mirror {
+  transform: scaleX(-1);
+}
+
+/* Maintain LTR for numbers, phone inputs, vitals and dates */
+.numeric-ltr,
+[dir="rtl"] input[type="number"],
+[dir="rtl"] input[type="tel"],
+[dir="rtl"] .ltr-keep {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Natural word wrap for long Indian language compound words */
+.break-words-indic {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Custom scrollbar for healthcare workspaces */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* =====================================================================
+   DARK MODE PALETTE
+   Main bg: #0B1220 | Secondary bg: #111827 | Cards: #172033 | Borders: #2A3548
+   Primary text: #F8FAFC | Secondary text: #CBD5E1
+   ===================================================================== */
+
+.dark body {
+  background-color: #0B1220 !important;
+  color: #F8FAFC !important;
+}
+
+.dark .bg-white {
+  background-color: #172033 !important;
+  color: #F8FAFC;
+}
+
+.dark .bg-\[\#F7FAFC\] {
+  background-color: #0B1220 !important;
+}
+
+.dark .bg-slate-50 {
+  background-color: #111827 !important;
+  color: #CBD5E1;
+}
+
+.dark .bg-slate-100 {
+  background-color: #1E293B !important;
+  color: #CBD5E1;
+}
+
+.dark .border-slate-200,
+.dark .border-slate-200\/80,
+.dark .border-slate-200\/90,
+.dark .border-slate-100 {
+  border-color: #2A3548 !important;
+}
+
+.dark .border-slate-300 {
+  border-color: #334155 !important;
+}
+
+.dark .text-\[\#102A43\] {
+  color: #F8FAFC !important;
+}
+
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-slate-700 {
+  color: #F1F5F9 !important;
+}
+
+.dark .text-slate-600,
+.dark .text-slate-500 {
+  color: #94A3B8 !important;
+}
+
+.dark .text-slate-400 {
+  color: #64748B !important;
+}
+
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark textarea,
+.dark select {
+  background-color: #111827 !important;
+  color: #F8FAFC !important;
+  border-color: #2A3548 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748B !important;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0B1220;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #2A3548;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
