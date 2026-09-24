@@ -11,6 +11,7 @@ import {
   AmbulanceRequest,
   AmbulanceRequestStatus,
   LocationAccessAudit,
+  TriageDraft,
 } from './types';
 import {
   INITIAL_TRIAGE_CASES,
@@ -34,6 +35,7 @@ const STORAGE_KEYS = {
   AUDIT_LOGS: 'tb_audit_logs_v1',
   LOCATIONS: 'tb_locations_v1',
   AMBULANCES: 'tb_ambulances_v1',
+  DRAFTS: 'tb_triage_drafts_v1',
 };
 
 function safeGet<T>(key: string, fallback: T): T {
@@ -122,6 +124,24 @@ export const dataStore = {
     cases[index] = updatedCase;
     safeSet(STORAGE_KEYS.CASES, cases);
     return updatedCase;
+  },
+
+  // --- TRIAGE DRAFTS ---
+  saveDraft(draft: TriageDraft): void {
+    const drafts = safeGet<Record<string, TriageDraft>>(STORAGE_KEYS.DRAFTS, {});
+    drafts[draft.patientId] = draft;
+    safeSet(STORAGE_KEYS.DRAFTS, drafts);
+  },
+
+  getDraft(patientId: string): TriageDraft | undefined {
+    const drafts = safeGet<Record<string, TriageDraft>>(STORAGE_KEYS.DRAFTS, {});
+    return drafts[patientId];
+  },
+
+  deleteDraft(patientId: string): void {
+    const drafts = safeGet<Record<string, TriageDraft>>(STORAGE_KEYS.DRAFTS, {});
+    delete drafts[patientId];
+    safeSet(STORAGE_KEYS.DRAFTS, drafts);
   },
 
   reviewCase(

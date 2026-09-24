@@ -388,7 +388,7 @@ export const INITIAL_TRIAGE_CASES: TriageCase[] = [
     updatedAt: '2026-09-22T16:00:00Z',
   },
 
-  // 4. GREY CASE (Sparse info - More Info Required)
+  // 4. NEEDS_CLINICIAN_REVIEW CASE (Sparse info - Insufficient information / Low confidence)
   {
     id: 'case-004',
     caseNumber: 'TB-2026-0104',
@@ -404,7 +404,7 @@ export const INITIAL_TRIAGE_CASES: TriageCase[] = [
     translatedEnglishStatement: 'Not feeling well, general malaise.',
     voiceTranscript: 'କିଛି ଭଲ ଲାଗୁନି...',
     status: 'MORE_INFO_REQUIRED',
-    provisionalUrgency: 'GREY',
+    provisionalUrgency: 'NEEDS_CLINICIAN_REVIEW',
     facilityName: 'District Headquarters Hospital, Angul',
     department: 'General Triage',
     uploadedReports: [],
@@ -420,14 +420,15 @@ export const INITIAL_TRIAGE_CASES: TriageCase[] = [
       },
     ],
     urgencyAssessment: {
-      suggestedUrgency: 'GREY',
+      suggestedUrgency: 'NEEDS_CLINICIAN_REVIEW',
       confidenceScore: 0.35,
-      rationaleEn: 'Extremely sparse symptom input without duration, anatomical location, or vital signs. Safe triage requires secondary questioning before clinician routing.',
-      rationaleHi: 'अत्यधिक संक्षिप्त विवरण। सुरक्षित वर्गीकरण के लिए अधिक जानकारी आवश्यक है।',
-      rationaleOr: 'ଅତ୍ୟଧିକ ସଂକ୍ଷିପ୍ତ ସୂଚନା। ସୁରକ୍ଷିତ ବର୍ଗୀକରଣ ପାଇଁ ଅଧିକ ତଥ୍ୟ ଆବଶ୍ୟକ।',
+      rationaleEn: 'Provisional urgency deferred to qualified clinician review due to insufficient baseline information. Essential vital signs, symptom duration, and clinical parameters are unmeasured. Never assume a missing value is normal.',
+      rationaleHi: 'अधूरी जानकारी के कारण स्वचालित वर्गीकरण को डॉक्टर की समीक्षा के लिए सुरक्षित रखा गया है। बुनियादी शारीरिक संकेत अनुपलब्ध हैं।',
+      rationaleOr: 'ଅସମ୍ପୂର୍ଣ୍ଣ ତଥ୍ୟ କାରଣରୁ ସ୍ୱତଃ ବର୍ଗୀକରଣ ବଦଳରେ ଡାକ୍ତରୀ ସମୀକ୍ଷା ପାଇଁ ପଠାଗଲା। କୌଣସି ଅନୁପସ୍ଥିତ ମୂଲ୍ୟକୁ ସ୍ୱାଭାବିକ ଧରାଯାଇନାହିଁ।',
       triggeredRedFlags: [],
-      missingInformation: ['Specific complaints', 'Duration', 'Vital signs', 'Severity'],
+      missingInformation: ['Specific complaints', 'Symptom duration', 'All vital signs (BP, SpO2, HR, RR, Temp, Glucose)', 'Consciousness level'],
       isDiagnostic: false,
+      clinicalDisclaimer: 'AI-generated triage support — the final urgency and care decision must be made by a qualified healthcare professional.',
     },
     submittedAt: '2026-09-23T08:00:00Z',
     updatedAt: '2026-09-23T08:00:00Z',

@@ -1,6 +1,6 @@
 export type UserRole = 'PATIENT' | 'DOCTOR' | 'NURSE' | 'MEDICAL_OFFICER' | 'HEALTH_WORKER' | 'ADMIN';
 
-export type UrgencyCategory = 'RED' | 'YELLOW' | 'GREEN' | 'GREY';
+export type UrgencyCategory = 'RED' | 'YELLOW' | 'GREEN' | 'NEEDS_CLINICIAN_REVIEW' | 'GREY';
 
 export type CaseStatus =
   | 'DRAFT'
@@ -83,14 +83,93 @@ export interface HealthcareWorkerProfile extends BaseUser {
 
 export type CurrentUser = PatientProfile | HealthcareWorkerProfile;
 
+export type ConsciousnessLevel = 'ALERT' | 'VOICE_RESPONSIVE' | 'PAIN_RESPONSIVE' | 'UNRESPONSIVE';
+
+export type AgeGroup = 'INFANT' | 'TODDLER' | 'CHILD' | 'ADOLESCENT' | 'ADULT';
+
 export interface VitalSigns {
-  systolicBp?: number;
-  diastolicBp?: number;
-  heartRate?: number;
-  oxygenSaturation?: number; // SpO2 in %
-  temperatureCelsius?: number;
-  respiratoryRate?: number;
+  systolicBp?: number | null;
+  diastolicBp?: number | null;
+  heartRate?: number | null;
+  oxygenSaturation?: number | null; // SpO2 in %
+  temperatureCelsius?: number | null;
+  respiratoryRate?: number | null;
+  bloodGlucoseMgDl?: number | null;
+  painScore?: number | null; // 0 to 10 scale
+  consciousness?: ConsciousnessLevel | string | null;
   recordedAt?: string;
+  isUnknown?: Record<string, boolean>;
+}
+
+export interface ExtractedSymptom {
+  name: string;
+  duration: string;
+  severity: string;
+  source: 'text' | 'voice' | 'report' | 'image';
+}
+
+export interface ExtractedTriageData {
+  originalLanguage: string;
+  chiefComplaint: string;
+  symptoms: ExtractedSymptom[];
+  vitals: {
+    temperature: number | null;
+    bloodPressureSystolic: number | null;
+    bloodPressureDiastolic: number | null;
+    heartRate: number | null;
+    respiratoryRate: number | null;
+    spo2: number | null;
+    bloodGlucose: number | null;
+    painScore: number | null;
+    consciousness: ConsciousnessLevel | string;
+  };
+  conditions: string[];
+  medicines: string[];
+  allergies: string[];
+  pregnancyStatus: string;
+  pregnancyWeeks?: number | null;
+  pregnancyWarningSigns?: string[];
+  reportFindings: string[];
+  possibleRedFlags: string[];
+  missingInformation: string[];
+}
+
+export interface TriageDraft {
+  id: string;
+  patientId: string;
+  lastSavedStep: number;
+  patientName: string;
+  age: number;
+  gender: 'MALE' | 'FEMALE' | 'OTHER';
+  location: string;
+  phone: string;
+  chiefComplaint: string;
+  typedSymptoms: string;
+  symptomDuration: string;
+  symptomSeverity: string;
+  voiceTranscript: string;
+  audioUrl?: string;
+  clinicalImageUri?: string;
+  uploadedReports: UploadedReport[];
+  vitals: VitalSigns;
+  vitalsUnknown: Record<string, boolean>;
+  existingConditions: string[];
+  currentMedicines: string[];
+  allergies: string[];
+  pregnancyStatus: string;
+  pregnancyWeeks?: number | null;
+  pregnancyWarningSigns: string[];
+  updatedAt: string;
+}
+
+export interface ClinicalRuleTrigger {
+  id: string;
+  ruleName: string;
+  category: 'RED' | 'YELLOW' | 'GREEN' | 'NEEDS_CLINICIAN_REVIEW';
+  reason: string;
+  ageGroup: 'PAEDIATRIC' | 'ADULT';
+  medicalReference: string;
+  sourceCriterion: 'VITAL_SIGN' | 'SYMPTOM' | 'RED_FLAG' | 'PREGNANCY' | 'MISSING_DATA';
 }
 
 export interface ExtractedReportData {
@@ -171,8 +250,11 @@ export interface UrgencyAssessment {
   rationaleOr: string;
   rationaleTranslations?: Partial<Record<SupportedLocale, string>>;
   triggeredRedFlags: string[];
+  triggeredRules?: ClinicalRuleTrigger[];
   missingInformation: string[];
   isDiagnostic: false; // Must always be false
+  clinicalDisclaimer?: string;
+  evaluatedAt?: string;
 }
 
 export interface ClinicalReview {
@@ -208,6 +290,7 @@ export interface TriageCase {
   detectedLanguage?: SupportedLocale;
   translationConfidence?: number;
   structuredTriageNote?: StructuredTriageNote;
+  extractedTriageData?: ExtractedTriageData;
   status: CaseStatus;
   provisionalUrgency: UrgencyCategory;
   finalUrgency?: UrgencyCategory;
@@ -216,6 +299,15 @@ export interface TriageCase {
   vitals?: VitalSigns;
   uploadedReports: UploadedReport[];
   visibleConditionImageUrl?: string;
+  clinicalImageUri?: string;
+  pregnancyStatus?: string;
+  pregnancyWeeks?: number | null;
+  pregnancyWarningSigns?: string[];
+  symptomsList?: ExtractedSymptom[];
+  existingConditionsList?: string[];
+  currentMedicinesList?: string[];
+  allergiesList?: string[];
+  draftId?: string;
   redFlags: RedFlagAlert[];
   followUpQuestions: FollowUpQuestion[];
   urgencyAssessment: UrgencyAssessment;

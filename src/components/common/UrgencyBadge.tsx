@@ -38,8 +38,15 @@ export function UrgencyBadge({ urgency, size = 'md', showLabel = true }: Urgency
       bg: 'bg-slate-100 text-slate-700 border-slate-300 ring-slate-200',
       dot: 'bg-slate-500',
       icon: HelpCircle,
-      label: t.urgency.greyShort,
-      fullLabel: t.urgency.grey,
+      label: t.urgency.greyShort || 'Needs Review',
+      fullLabel: t.urgency.grey || 'NEEDS CLINICIAN REVIEW',
+    },
+    NEEDS_CLINICIAN_REVIEW: {
+      bg: 'bg-indigo-50 text-indigo-900 border-indigo-300 ring-indigo-200',
+      dot: 'bg-indigo-500',
+      icon: HelpCircle,
+      label: 'Needs Clinician Review',
+      fullLabel: 'NEEDS CLINICIAN REVIEW — Insufficient Information or Low Confidence',
     },
   }[urgency] || {
     bg: 'bg-slate-100 text-slate-700 border-slate-300 ring-slate-200',
