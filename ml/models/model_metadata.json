@@ -1,0 +1,111 @@
+{
+  "model_name": "TriageBridge Experimental Urgency Classifier",
+  "model_version": "1.0.0-synthetic-prototype",
+  "model_type": "Class-Weighted Multinomial Logistic Regression",
+  "training_timestamp": "2026-09-25T17:47:44.285780",
+  "dataset_name": "triage_cases_v2.csv",
+  "dataset_sha256": "bc08362530d3eb7e12647df889fe17b44614c6f5bda0bf0e3bd23509c4df033f",
+  "dataset_size_total": 500,
+  "target_classes": [
+    "RED",
+    "YELLOW",
+    "GREEN"
+  ],
+  "class_counts_eligible": {
+    "RED": 150,
+    "YELLOW": 150,
+    "GREEN": 150
+  },
+  "random_seed": 42,
+  "split_counts": {
+    "train": 308,
+    "validation": 69,
+    "test": 73
+  },
+  "selected_hyperparameters": {
+    "C": 0.5,
+    "max_features": 250,
+    "ngrams": [
+      1,
+      1
+    ]
+  },
+  "input_features": {
+    "text": [
+      "chief_complaint",
+      "symptoms"
+    ],
+    "numeric": [
+      "age",
+      "duration_hours",
+      "pain_score",
+      "vitals_heart_rate_bpm",
+      "vitals_systolic_bp",
+      "vitals_diastolic_bp",
+      "vitals_spo2_percent",
+      "vitals_temperature_c",
+      "vitals_respiratory_rate_bpm"
+    ],
+    "categorical": [
+      "gender",
+      "patient_language",
+      "medical_history",
+      "allergies",
+      "pregnancy_status"
+    ]
+  },
+  "excluded_leakage_features": [
+    "case_id",
+    "patient_synthetic_id",
+    "rule_based_red_flags",
+    "rule_based_urgency",
+    "ml_suggested_urgency",
+    "ml_confidence_score",
+    "missing_information",
+    "requires_healthcare_worker_review",
+    "healthcare_review_status",
+    "is_synthetic",
+    "is_validated",
+    "clinical_disclaimer",
+    "disease",
+    "cures",
+    "doctor",
+    "risk level",
+    "reviewer_notes",
+    "final_decision"
+  ],
+  "test_metrics": {
+    "balanced_accuracy": 0.9866666666666667,
+    "macro_f1": 0.9841882699025556,
+    "dummy_baseline_balanced_acc": 0.3333333333333333,
+    "dummy_baseline_macro_f1": 0.13186813186813187,
+    "red_false_negatives": 0,
+    "red_total_test_cases": 18,
+    "per_class": {
+      "RED": {
+        "precision": 0.9473684210526315,
+        "recall": 1.0,
+        "f1": 0.972972972972973
+      },
+      "YELLOW": {
+        "precision": 1.0,
+        "recall": 0.96,
+        "f1": 0.9795918367346939
+      },
+      "GREEN": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    }
+  },
+  "known_limitations": [
+    "Trained exclusively on synthetic patient encounters.",
+    "Synthetic template bias: limited lexical variability compared to unconstrained clinical speech.",
+    "Probabilities represent raw uncalibrated model scores and must NOT be interpreted as clinical confidence.",
+    "Must never override deterministic clinical red flags.",
+    "Deterministic GREY gating for critical missing data operates upstream of this model."
+  ],
+  "clinical_validation_status": "NOT_CLINICALLY_VALIDATED",
+  "mandatory_disclaimer": "Experimental prototype trained on synthetic data. Not clinically validated. Requires healthcare-worker review for every patient."
+}

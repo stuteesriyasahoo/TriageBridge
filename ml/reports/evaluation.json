@@ -1,0 +1,25 @@
+{
+  "balanced_accuracy": 0.9866666666666667,
+  "macro_f1": 0.9841882699025556,
+  "dummy_baseline_balanced_acc": 0.3333333333333333,
+  "dummy_baseline_macro_f1": 0.13186813186813187,
+  "red_false_negatives": 0,
+  "red_total_test_cases": 18,
+  "per_class": {
+    "RED": {
+      "precision": 0.9473684210526315,
+      "recall": 1.0,
+      "f1": 0.972972972972973
+    },
+    "YELLOW": {
+      "precision": 1.0,
+      "recall": 0.96,
+      "f1": 0.9795918367346939
+    },
+    "GREEN": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  }
+}

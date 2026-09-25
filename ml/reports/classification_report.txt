@@ -1,0 +1,15 @@
+TRIAGEBRIDGE CLASSIFICATION REPORT (HELD-OUT TEST SET)
+============================================================
+Model: Class-Weighted Multinomial Logistic Regression
+Dataset SHA-256: bc08362530d3eb7e12647df889fe17b44614c6f5bda0bf0e3bd23509c4df033f
+Disclaimer: Experimental prototype trained on synthetic data. Not clinically validated. Requires healthcare-worker review for every patient.
+
+              precision    recall  f1-score   support
+
+         RED     0.9474    1.0000    0.9730        18
+      YELLOW     1.0000    0.9600    0.9796        25
+       GREEN     1.0000    1.0000    1.0000        30
+
+    accuracy                         0.9863        73
+   macro avg     0.9825    0.9867    0.9842        73
+weighted avg     0.9870    0.9863    0.9863        73

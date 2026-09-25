@@ -1,0 +1,25 @@
+{
+  "random_seed": 42,
+  "dataset_hash": "bc08362530d3eb7e12647df889fe17b44614c6f5bda0bf0e3bd23509c4df033f",
+  "total_target_records": 450,
+  "total_grey_records": 50,
+  "narrative_groups_count": 45,
+  "train_count": 308,
+  "val_count": 69,
+  "test_count": 73,
+  "train_class_distribution": {
+    "RED": 108,
+    "YELLOW": 100,
+    "GREEN": 100
+  },
+  "val_class_distribution": {
+    "YELLOW": 25,
+    "RED": 24,
+    "GREEN": 20
+  },
+  "test_class_distribution": {
+    "GREEN": 30,
+    "YELLOW": 25,
+    "RED": 18
+  }
+}
