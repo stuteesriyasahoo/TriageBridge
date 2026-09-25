@@ -1,15 +1,41 @@
-import { ExtractedReportData, FollowUpQuestion } from './types';
+import { ExtractedReportData, FollowUpQuestion, DocumentCategory } from './types';
 
 export function simulateOcrExtraction(fileName: string, _fileSize: number): ExtractedReportData {
   const lowerName = fileName.toLowerCase();
 
   let rawOcrText = '';
   const extractedLabValues: Record<string, string> = {};
-  let suggestedPatientName = 'Ramesh Nayak';
+  const suggestedPatientName = 'Ramesh Nayak';
   let suggestedDoctorName = 'Dr. P. K. Dash, MD (Med)';
   let suggestedHospitalName = 'District Headquarters Hospital, Angul';
-  let suggestedDate = new Date().toISOString().split('T')[0];
+  const today = new Date();
+  const suggestedDate = today.toISOString().split('T')[0];
   let suggestedDepartment = 'General Medicine';
+
+  // Calculate suggested next appointment date (3 days ahead for review)
+  const apptDateObj = new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000);
+  const suggestedAppointmentDate = apptDateObj.toISOString().split('T')[0];
+  const suggestedAppointmentTime = '10:30 AM';
+
+  // Determine suggested document category from filename & simulated contents
+  let suggestedDocumentType: DocumentCategory = 'MEDICAL_REPORT';
+  if (lowerName.includes('blood') || lowerName.includes('cbc') || lowerName.includes('lab') || lowerName.includes('path')) {
+    suggestedDocumentType = 'LABORATORY_REPORT';
+  } else if (lowerName.includes('xray') || lowerName.includes('chest') || lowerName.includes('scan') || lowerName.includes('mri') || lowerName.includes('ct')) {
+    suggestedDocumentType = 'IMAGING_SCAN';
+  } else if (lowerName.includes('discharge')) {
+    suggestedDocumentType = 'DISCHARGE_SUMMARY';
+  } else if (lowerName.includes('rx') || lowerName.includes('prescription')) {
+    suggestedDocumentType = 'PRESCRIPTION';
+  } else if (lowerName.includes('referral')) {
+    suggestedDocumentType = 'REFERRAL_LETTER';
+  } else if (lowerName.includes('appointment') || lowerName.includes('slip') || lowerName.includes('token')) {
+    suggestedDocumentType = 'APPOINTMENT_LETTER';
+  } else if (lowerName.includes('vaccin') || lowerName.includes('immuniz')) {
+    suggestedDocumentType = 'VACCINATION_RECORD';
+  } else if (lowerName.includes('certificate')) {
+    suggestedDocumentType = 'MEDICAL_CERTIFICATE';
+  }
 
   if (lowerName.includes('blood') || lowerName.includes('cbc') || lowerName.includes('lab')) {
     rawOcrText = `
@@ -57,6 +83,24 @@ Reporting Radiologist: Dr. Ananya Mishra, MD (Radio)
     suggestedHospitalName = 'SCB Medical College & Hospital, Cuttack';
     suggestedDoctorName = 'Dr. Ananya Mishra';
     suggestedDepartment = 'Radiodiagnosis';
+  } else if (lowerName.includes('appointment') || lowerName.includes('slip') || lowerName.includes('opd')) {
+    rawOcrText = `
+COMMUNITY HEALTH CENTRE (CHC) - ATHAMALLIK
+OPD SLIP & APPOINTMENT ADVICE
+Date: ${suggestedDate} | Appointment Token: #42
+Patient: Ramesh Nayak | Age: 48 | Sex: Male
+Department: Outpatient Clinical Review
+Follow-up Consult: ${suggestedAppointmentDate} at ${suggestedAppointmentTime}
+Doctor: Dr. Alok Mohanty (Medical Officer, CHC)
+Room: Room 3, OPD Wing
+    `.trim();
+
+    extractedLabValues['Token'] = '#42';
+    extractedLabValues['Appointment Date'] = suggestedAppointmentDate;
+    extractedLabValues['Appointment Time'] = suggestedAppointmentTime;
+    suggestedHospitalName = 'Community Health Centre, Athamallik';
+    suggestedDoctorName = 'Dr. Alok Mohanty';
+    suggestedDepartment = 'General Outpatient';
   } else {
     // General OPD slip or prescription
     rawOcrText = `
@@ -88,6 +132,9 @@ Doctor: Dr. Alok Mohanty (Medical Officer, CHC)
     suggestedHospitalName,
     suggestedDate,
     suggestedDepartment,
+    suggestedAppointmentDate,
+    suggestedAppointmentTime,
+    suggestedDocumentType,
     extractedLabValues,
     ocrConfidence: 0.94,
     isConfirmedByPatient: false,

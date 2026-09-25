@@ -179,8 +179,11 @@ export interface ExtractedReportData {
   suggestedPatientName?: string;
   suggestedDoctorName?: string;
   suggestedHospitalName?: string;
-  suggestedDate?: string;
   suggestedDepartment?: string;
+  suggestedDate?: string;
+  suggestedAppointmentDate?: string;
+  suggestedAppointmentTime?: string;
+  suggestedDocumentType?: DocumentCategory;
   extractedLabValues: Record<string, string>;
   ocrConfidence: number;
   isConfirmedByPatient: boolean;
@@ -272,6 +275,14 @@ export interface ClinicalReview {
   reviewedAt: string;
 }
 
+export type OfflineSyncStatus =
+  | 'SAVED_OFFLINE'
+  | 'WAITING_TO_SYNC'
+  | 'SYNCHRONIZING'
+  | 'SUCCESSFULLY_SYNCHRONIZED'
+  | 'SYNCHRONIZATION_FAILED'
+  | 'REQUIRES_USER_ATTENTION';
+
 export interface TriageCase {
   id: string;
   caseNumber: string; // e.g. TB-2026-1049
@@ -308,6 +319,8 @@ export interface TriageCase {
   currentMedicinesList?: string[];
   allergiesList?: string[];
   draftId?: string;
+  syncStatus?: OfflineSyncStatus;
+  idempotencyKey?: string;
   redFlags: RedFlagAlert[];
   followUpQuestions: FollowUpQuestion[];
   urgencyAssessment: UrgencyAssessment;
@@ -346,7 +359,15 @@ export interface Appointment {
   status: AppointmentStatus;
   notes?: string;
   appointmentLetterUrl?: string;
+  appointmentLetterName?: string;
+  referralLetterUrl?: string;
+  referralLetterName?: string;
+  reminderScheduled?: boolean;
+  reminderScheduledAt?: string;
+  syncStatus?: OfflineSyncStatus;
+  idempotencyKey?: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface HealthDocument {
@@ -363,8 +384,12 @@ export interface HealthDocument {
   fileSizeBytes: number;
   mimeType: string;
   filePreviewUrl?: string;
+  secureFilePath?: string;
+  signedUrlExpiresAt?: string;
   ocrExtractedMetadata?: Record<string, string>;
   isVerifiedByPatient: boolean;
+  syncStatus?: OfflineSyncStatus;
+  idempotencyKey?: string;
 }
 
 export interface DocumentShare {
@@ -375,6 +400,9 @@ export interface DocumentShare {
   sharedWithWorkerId: string;
   sharedWithWorkerName: string;
   sharedWithWorkerRole: string;
+  sharingType?: 'SINGLE' | 'BATCH' | 'CASE_ATTACHED';
+  documentIds?: string[];
+  documentTitles?: string[];
   caseId?: string;
   caseNumber?: string;
   grantedAt: string;
@@ -433,6 +461,14 @@ export interface AuditLog {
     | 'REFERRAL_CREATED'
     | 'DOCUMENT_SHARED'
     | 'SHARE_ACCESS_REVOKED'
+    | 'DOCUMENT_RENAMED'
+    | 'DOCUMENT_DELETED'
+    | 'DOCUMENT_DOWNLOADED'
+    | 'APPOINTMENT_CREATED'
+    | 'APPOINTMENT_UPDATED'
+    | 'APPOINTMENT_CANCELLED'
+    | 'APPOINTMENT_RESCHEDULED'
+    | 'APPOINTMENT_REMINDER_SET'
     | 'LOCATION_CONSENT_GRANTED'
     | 'LOCATION_ACCESSED'
     | 'LOCATION_SHARE_REVOKED'
@@ -514,3 +550,12 @@ export interface AmbulanceRequest {
   initiatedBy: 'PATIENT' | 'DOCTOR';
   cancellationReason?: string;
 }
+
+export type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[]
+    ? DeepPartial<U>[]
+    : T[P] extends object
+    ? DeepPartial<T[P]>
+    : T[P];
+};
+

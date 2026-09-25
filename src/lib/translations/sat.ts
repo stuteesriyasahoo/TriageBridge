@@ -1,6 +1,7 @@
 import { en } from './en';
+import { DeepPartial } from '../types';
 
-export const sat: typeof en = {
+export const sat: DeepPartial<typeof en> = {
   brand: {
     name: 'TriageBridge (ᱴᱨᱟᱭᱮᱡᱽ ᱵᱨᱤᱡᱽ)',
     tagline: 'ᱥᱢᱟᱨᱴ ᱴᱨᱟᱭᱮᱡᱽ᱾ ᱞᱚᱜᱚᱱ ᱡᱚᱛᱚᱱ᱾ ᱛᱟᱞᱟ ᱨᱮ ᱢᱟᱹᱱᱢᱤ᱾',

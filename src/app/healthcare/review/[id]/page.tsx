@@ -57,12 +57,9 @@ export default function CaseReviewWorkspacePage() {
   const router = useRouter();
 
   const worker = currentUser as HealthcareWorkerProfile | null;
-  const initialCase = id ? dataStore.getCaseById(id) : undefined;
-  const [triageCase, setTriageCase] = useState<TriageCase | null>(initialCase || null);
+  const [triageCase, setTriageCase] = useState<TriageCase | null>(null);
   const [sharedDocuments, setSharedDocuments] = useState<DocumentShare[]>([]);
-  const [patientLocation, setPatientLocation] = useState<PatientLocationData | null>(
-    initialCase ? dataStore.getPatientLocation(initialCase.patientId) || null : null
-  );
+  const [patientLocation, setPatientLocation] = useState<PatientLocationData | null>(null);
   const [showAmbulanceModal, setShowAmbulanceModal] = useState(false);
 
   // Clinician Editable State
@@ -144,7 +141,14 @@ export default function CaseReviewWorkspacePage() {
       }
     }
     if (currentUser) {
-      setSharedDocuments(dataStore.getSharesForWorker(currentUser.id));
+      const allShares = dataStore.getSharesForWorker(currentUser.id);
+      const filtered = id
+        ? allShares.filter(s => {
+            const currentC = dataStore.getCaseById(id);
+            return !currentC || s.ownerId === currentC.patientId || s.caseId === id;
+          })
+        : allShares;
+      setSharedDocuments(filtered);
     }
   }, [id, currentUser, worker]);
 
@@ -663,33 +667,75 @@ export default function CaseReviewWorkspacePage() {
               )}
             </div>
 
-            {/* 4. Patient-Shared Documents (Vault Access Granted) */}
+            {/* 4. Patient-Shared Documents (Vault Access Granted - Zero Trust Gated) */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-3 text-xs">
-              <span className="font-bold text-[#102A43] flex items-center gap-1.5">
-                <Lock className="w-4 h-4 text-[#0F8B8D]" />
-                <span>{t.reviewer.sharedDocs}</span>
-              </span>
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-[#102A43] flex items-center gap-1.5">
+                  <Lock className="w-4 h-4 text-[#0F8B8D]" />
+                  <span>{t.reviewer.sharedDocs}</span>
+                </span>
+                <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <ShieldCheck className="w-3 h-3" />
+                  <span>Zero-Trust Scoped</span>
+                </span>
+              </div>
 
               {sharedDocuments.length > 0 ? (
-                <div className="space-y-2">
+                <div className="space-y-2.5">
+                  <p className="text-[11px] text-slate-500">
+                    Patient granted explicit time-limited access to the following vault document(s). Full vault remains private.
+                  </p>
                   {sharedDocuments.map(share => (
-                    <div key={share.id} className="p-2.5 bg-teal-50/50 rounded-xl border border-teal-200 flex items-center justify-between">
-                      <div>
-                        <div className="font-bold text-[#102A43]">{share.documentTitle}</div>
-                        <div className="text-[10px] text-slate-500">
-                          Access valid until: {new Date(share.expiresAt).toLocaleDateString()}
+                    <div key={share.id} className="p-3 bg-teal-50/50 rounded-xl border border-teal-200 space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <div className="font-bold text-[#102A43]">{share.documentTitle}</div>
+                          {share.documentTitles && share.documentTitles.length > 1 && (
+                            <div className="text-[11px] text-slate-600 mt-1 pl-2 border-l-2 border-teal-400 space-y-0.5">
+                              {share.documentTitles.map((title, idx) => (
+                                <div key={idx}>• {title}</div>
+                              ))}
+                            </div>
+                          )}
+                          <div className="text-[10px] text-slate-500 mt-1 flex items-center gap-2">
+                            <span>Shared on: {new Date(share.grantedAt).toLocaleDateString()}</span>
+                            <span>•</span>
+                            <span>Expires: {new Date(share.expiresAt).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className="text-[10px] font-bold text-teal-800 bg-white px-2 py-0.5 rounded border border-teal-300">
+                            {share.sharingType === 'CASE_ATTACHED' ? 'Case-Linked' : share.sharingType === 'BATCH' ? 'Batch Share' : 'Single Document'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (currentUser) {
+                                dataStore.logDocumentDownload(
+                                  share.documentId,
+                                  share.documentTitle,
+                                  currentUser.id,
+                                  currentUser.fullName
+                                );
+                              }
+                              alert(`Authorized access verified. Audit event logged for document: "${share.documentTitle}".`);
+                            }}
+                            className="text-[10px] font-semibold text-teal-700 hover:text-teal-900 underline mt-1"
+                          >
+                            Access &amp; Audit Log
+                          </button>
                         </div>
                       </div>
-                      <span className="text-[10px] font-bold text-teal-700 bg-white px-2 py-0.5 rounded border border-teal-300">
-                        Granted
-                      </span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-slate-400 italic">
-                  No additional vault documents shared. Patient records remain private.
-                </p>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-500 text-xs flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-slate-400 shrink-0" />
+                  <span>
+                    No additional vault documents shared. Patient records remain private under zero-trust authorization.
+                  </span>
+                </div>
               )}
             </div>
 

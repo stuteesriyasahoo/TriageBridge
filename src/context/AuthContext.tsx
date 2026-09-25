@@ -180,6 +180,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
+    if (currentUser) {
+      dataStore.clearTemporarySensitiveData(currentUser.id);
+    }
     saveUser(null);
     router.push('/role-select');
   };

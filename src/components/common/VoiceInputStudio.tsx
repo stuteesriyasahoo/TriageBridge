@@ -62,13 +62,6 @@ export function VoiceInputStudio({
     }
   }, [initialText]);
 
-  // Clean up on unmount
-  useEffect(() => {
-    return () => {
-      stopAllMedia();
-    };
-  }, []);
-
   const stopAllMedia = () => {
     if (recognitionRef.current) {
       try {
@@ -91,6 +84,13 @@ export function VoiceInputStudio({
       } catch {}
     }
   };
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      stopAllMedia();
+    };
+  }, []);
 
   const startRecording = async () => {
     setPermissionError(null);

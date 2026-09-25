@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="bgGrad192" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F8B8D"/>
+      <stop offset="100%" stop-color="#102A43"/>
+    </linearGradient>
+    <linearGradient id="pulseGrad192" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#35C2BD"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="192" height="192" rx="42" fill="url(#bgGrad192)"/>
+  <rect x="6" y="6" width="180" height="180" rx="36" fill="none" stroke="#35C2BD" stroke-width="2" opacity="0.4"/>
+
+  <!-- Bridge Arch -->
+  <path d="M30 142 C52 82 140 82 162 142" fill="none" stroke="#35C2BD" stroke-width="11" stroke-linecap="round"/>
+
+  <!-- Heartbeat ECG Pulse -->
+  <path d="M36 112 L68 112 L81 75 L96 150 L111 86 L122 112 L156 112" 
+        fill="none" stroke="url(#pulseGrad192)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Central Beacon -->
+  <circle cx="96" cy="64" r="8" fill="#E12D39"/>
+</svg>

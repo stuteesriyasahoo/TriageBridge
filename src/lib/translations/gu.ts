@@ -1,6 +1,7 @@
 import { en } from './en';
+import { DeepPartial } from '../types';
 
-export const gu: typeof en = {
+export const gu: DeepPartial<typeof en> = {
   brand: {
     name: 'TriageBridge (ટ્રાયજ બ્રિજ)',
     tagline: 'સ્માર્ટ ટ્રાયજ. ઝડપી સંભાળ. કેન્દ્રમાં માનવતા.',

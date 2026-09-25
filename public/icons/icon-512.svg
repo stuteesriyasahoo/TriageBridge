@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F8B8D"/>
+      <stop offset="100%" stop-color="#102A43"/>
+    </linearGradient>
+    <linearGradient id="pulseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#35C2BD"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background rounded squircle -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+
+  <!-- Subtle glow inner ring -->
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="none" stroke="#35C2BD" stroke-width="4" opacity="0.4"/>
+
+  <!-- Bridge Arch Motif -->
+  <path d="M80 380 C140 220 372 220 432 380" fill="none" stroke="#35C2BD" stroke-width="28" stroke-linecap="round" filter="url(#shadow)"/>
+
+  <!-- Support pillars -->
+  <line x1="160" y1="310" x2="160" y2="380" stroke="#35C2BD" stroke-width="12" stroke-linecap="round" opacity="0.6"/>
+  <line x1="256" y1="260" x2="256" y2="380" stroke="#35C2BD" stroke-width="14" stroke-linecap="round" opacity="0.8"/>
+  <line x1="352" y1="310" x2="352" y2="380" stroke="#35C2BD" stroke-width="12" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Heartbeat ECG Pulse Line -->
+  <path d="M96 300 L180 300 L216 200 L256 400 L296 230 L324 300 L416 300" 
+        fill="none" stroke="url(#pulseGrad)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)"/>
+
+  <!-- Central Emergency Beacon Pulse -->
+  <circle cx="256" cy="170" r="22" fill="#E12D39"/>
+  <circle cx="256" cy="170" r="34" fill="none" stroke="#E12D39" stroke-width="4" opacity="0.6"/>
+</svg>

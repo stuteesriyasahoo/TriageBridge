@@ -99,6 +99,28 @@ export default function PatientCaseDetailPage() {
               {triageCase.chiefComplaint}
             </p>
           </div>
+
+          {triageCase.syncStatus && (
+            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-slate-700">Storage &amp; Sync:</span>
+                <span
+                  className={`px-2.5 py-0.5 rounded-full font-bold text-[11px] ${
+                    triageCase.syncStatus === 'SUCCESSFULLY_SYNCHRONIZED'
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-300'
+                      : 'bg-amber-50 text-amber-800 border border-amber-300'
+                  }`}
+                >
+                  {triageCase.syncStatus.replace(/_/g, ' ')}
+                </span>
+              </div>
+              {triageCase.idempotencyKey && (
+                <div className="font-mono text-[11px] text-slate-500">
+                  Idempotency Key: <span className="font-semibold">{triageCase.idempotencyKey}</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Clinician Review Response Card (if reviewed) */}

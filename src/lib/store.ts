@@ -216,6 +216,11 @@ export const dataStore = {
     return all.filter(a => a.patientId === patientId);
   },
 
+  getAppointmentById(id: string): Appointment | undefined {
+    const all = this.getAppointments();
+    return all.find(a => a.id === id);
+  },
+
   addAppointment(appt: Appointment): void {
     const all = this.getAppointments();
     safeSet(STORAGE_KEYS.APPOINTMENTS, [appt, ...all]);
@@ -224,12 +229,173 @@ export const dataStore = {
       id: `audit-${Date.now()}`,
       actorId: appt.patientId,
       actorName: 'Patient / Staff',
-      actionType: 'FILE_UPLOAD',
+      actionType: 'APPOINTMENT_CREATED',
       resourceType: 'APPOINTMENT',
       resourceId: appt.id,
-      details: { hospital: appt.hospitalName, doctor: appt.doctorName, date: appt.appointmentDate },
+      details: {
+        hospital: appt.hospitalName,
+        department: appt.department,
+        doctor: appt.doctorName,
+        date: appt.appointmentDate,
+        time: appt.appointmentTime,
+        status: appt.status,
+      },
       timestamp: new Date().toISOString(),
     });
+
+    this.addNotification({
+      id: `notif-${Date.now()}`,
+      userId: appt.patientId,
+      caseId: appt.caseId,
+      type: 'APPOINTMENT',
+      titleEn: `Appointment Scheduled: ${appt.hospitalName}`,
+      titleHi: `अपॉइंटमेंट निर्धारित: ${appt.hospitalName}`,
+      titleOr: `ଆପଏଣ୍ଟମେଣ୍ଟ ଧାର୍ଯ୍ୟ: ${appt.hospitalName}`,
+      bodyEn: `Scheduled with ${appt.doctorName} (${appt.department}) on ${appt.appointmentDate} at ${appt.appointmentTime}.`,
+      bodyHi: `${appt.appointmentDate} को ${appt.appointmentTime} बजे ${appt.doctorName} के साथ अपॉइंटमेंट निर्धारित है।`,
+      bodyOr: `${appt.appointmentDate} ରେ ${appt.appointmentTime} ସମୟରେ ${appt.doctorName} ଙ୍କ ସହିତ ଆପଏଣ୍ଟମେଣ୍ଟ।`,
+      isRead: false,
+      createdAt: new Date().toISOString(),
+    });
+  },
+
+  updateAppointment(id: string, updates: Partial<Appointment>): Appointment | undefined {
+    const all = this.getAppointments();
+    const index = all.findIndex(a => a.id === id);
+    if (index === -1) return undefined;
+
+    const updatedAppt: Appointment = {
+      ...all[index],
+      ...updates,
+      updatedAt: new Date().toISOString(),
+    };
+    all[index] = updatedAppt;
+    safeSet(STORAGE_KEYS.APPOINTMENTS, all);
+
+    this.addAuditLog({
+      id: `audit-${Date.now()}`,
+      actorId: updatedAppt.patientId,
+      actionType: 'APPOINTMENT_UPDATED',
+      resourceType: 'APPOINTMENT',
+      resourceId: id,
+      details: { updates },
+      timestamp: new Date().toISOString(),
+    });
+
+    return updatedAppt;
+  },
+
+  cancelAppointment(id: string, reason?: string): Appointment | undefined {
+    const appt = this.getAppointmentById(id);
+    if (!appt) return undefined;
+
+    const updated = this.updateAppointment(id, {
+      status: 'CANCELLED',
+      notes: reason ? `${appt.notes || ''} [Cancelled: ${reason}]`.trim() : appt.notes,
+    });
+
+    this.addAuditLog({
+      id: `audit-${Date.now()}`,
+      actorId: appt.patientId,
+      actionType: 'APPOINTMENT_CANCELLED',
+      resourceType: 'APPOINTMENT',
+      resourceId: id,
+      details: { reason: reason || 'Cancelled by patient', hospital: appt.hospitalName },
+      timestamp: new Date().toISOString(),
+    });
+
+    this.addNotification({
+      id: `notif-${Date.now()}`,
+      userId: appt.patientId,
+      caseId: appt.caseId,
+      type: 'APPOINTMENT',
+      titleEn: `Appointment Cancelled: ${appt.hospitalName}`,
+      titleHi: `अपॉइंटमेंट रद्द: ${appt.hospitalName}`,
+      titleOr: `ଆପଏଣ୍ଟମେଣ୍ଟ ବାତିଲ୍: ${appt.hospitalName}`,
+      bodyEn: `Your appointment with ${appt.doctorName} on ${appt.appointmentDate} was cancelled (Simulated).`,
+      bodyHi: `${appt.appointmentDate} का ${appt.doctorName} के साथ अपॉइंटमेंट रद्द कर दिया गया है।`,
+      bodyOr: `${appt.appointmentDate} ର ${appt.doctorName} ଙ୍କ ସହିତ ଆପଏଣ୍ଟମେଣ୍ଟ ବାତିଲ୍ ହୋଇଛି।`,
+      isRead: false,
+      createdAt: new Date().toISOString(),
+    });
+
+    return updated;
+  },
+
+  rescheduleAppointment(id: string, newDate: string, newTime: string, reason?: string): Appointment | undefined {
+    const appt = this.getAppointmentById(id);
+    if (!appt) return undefined;
+
+    const updated = this.updateAppointment(id, {
+      status: 'RESCHEDULED',
+      appointmentDate: newDate,
+      appointmentTime: newTime,
+      notes: reason ? `${appt.notes || ''} [Rescheduled to ${newDate} ${newTime}: ${reason}]`.trim() : appt.notes,
+    });
+
+    this.addAuditLog({
+      id: `audit-${Date.now()}`,
+      actorId: appt.patientId,
+      actionType: 'APPOINTMENT_RESCHEDULED',
+      resourceType: 'APPOINTMENT',
+      resourceId: id,
+      details: { newDate, newTime, reason: reason || 'Rescheduled by patient' },
+      timestamp: new Date().toISOString(),
+    });
+
+    this.addNotification({
+      id: `notif-${Date.now()}`,
+      userId: appt.patientId,
+      caseId: appt.caseId,
+      type: 'APPOINTMENT',
+      titleEn: `Appointment Rescheduled: ${appt.hospitalName}`,
+      titleHi: `अपॉइंटमेंट पुनर्निर्धारित: ${appt.hospitalName}`,
+      titleOr: `ଆପଏଣ୍ଟମେଣ୍ଟ ପୁନଃନିର୍ଦ୍ଧାରିତ: ${appt.hospitalName}`,
+      bodyEn: `New timing: ${newDate} at ${newTime} with ${appt.doctorName} (Simulated).`,
+      bodyHi: `नया समय: ${newDate} को ${newTime} बजे ${appt.doctorName} के साथ।`,
+      bodyOr: `ନୂଆ ସମୟ: ${newDate} ରେ ${newTime} ସମୟରେ ${appt.doctorName} ଙ୍କ ସହିତ।`,
+      isRead: false,
+      createdAt: new Date().toISOString(),
+    });
+
+    return updated;
+  },
+
+  scheduleAppointmentReminder(id: string): Appointment | undefined {
+    const appt = this.getAppointmentById(id);
+    if (!appt) return undefined;
+
+    const updated = this.updateAppointment(id, {
+      reminderScheduled: true,
+      reminderScheduledAt: new Date().toISOString(),
+    });
+
+    this.addAuditLog({
+      id: `audit-${Date.now()}`,
+      actorId: appt.patientId,
+      actionType: 'APPOINTMENT_REMINDER_SET',
+      resourceType: 'APPOINTMENT',
+      resourceId: id,
+      details: { appointmentDate: appt.appointmentDate, appointmentTime: appt.appointmentTime },
+      timestamp: new Date().toISOString(),
+    });
+
+    this.addNotification({
+      id: `notif-${Date.now()}`,
+      userId: appt.patientId,
+      caseId: appt.caseId,
+      type: 'APPOINTMENT',
+      titleEn: `Reminder Set: ${appt.hospitalName}`,
+      titleHi: `स्मरणपत्र सेट: ${appt.hospitalName}`,
+      titleOr: `ମନେପକାଅ ସେଟ୍ ହେଲା: ${appt.hospitalName}`,
+      bodyEn: `Reminder active for your upcoming appointment on ${appt.appointmentDate} at ${appt.appointmentTime}.`,
+      bodyHi: `${appt.appointmentDate} को ${appt.appointmentTime} के अपॉइंटमेंट के लिए अलर्ट सक्रिय है।`,
+      bodyOr: `${appt.appointmentDate} ରେ ${appt.appointmentTime} ଆପଏଣ୍ଟମେଣ୍ଟ ପାଇଁ ରିମାଇଣ୍ଡର୍ ସକ୍ରିୟ ହେଲା।`,
+      isRead: false,
+      createdAt: new Date().toISOString(),
+    });
+
+    return updated;
   },
 
   // --- DOCUMENTS (Vault) ---
@@ -237,6 +403,11 @@ export const dataStore = {
     const all = safeGet<HealthDocument[]>(STORAGE_KEYS.DOCUMENTS, INITIAL_HEALTH_DOCUMENTS);
     if (!ownerId) return all;
     return all.filter(d => d.ownerId === ownerId);
+  },
+
+  getDocumentById(id: string): HealthDocument | undefined {
+    const all = this.getDocuments();
+    return all.find(d => d.id === id);
   },
 
   addDocument(doc: HealthDocument): void {
@@ -249,20 +420,74 @@ export const dataStore = {
       actionType: 'FILE_UPLOAD',
       resourceType: 'HEALTH_DOCUMENT',
       resourceId: doc.id,
-      details: { fileName: doc.fileName, category: doc.category, sizeBytes: doc.fileSizeBytes },
+      details: {
+        fileName: doc.fileName,
+        title: doc.title,
+        category: doc.category,
+        sizeBytes: doc.fileSizeBytes,
+        securePath: doc.secureFilePath || `vault/${doc.ownerId}/${Date.now()}_${doc.fileName}`,
+      },
       timestamp: new Date().toISOString(),
     });
   },
 
+  renameDocument(docId: string, newTitle: string): HealthDocument | undefined {
+    const all = this.getDocuments();
+    const idx = all.findIndex(d => d.id === docId);
+    if (idx === -1) return undefined;
+
+    const oldTitle = all[idx].title;
+    all[idx].title = newTitle;
+    safeSet(STORAGE_KEYS.DOCUMENTS, all);
+
+    this.addAuditLog({
+      id: `audit-${Date.now()}`,
+      actorId: all[idx].ownerId,
+      actionType: 'DOCUMENT_RENAMED',
+      resourceType: 'HEALTH_DOCUMENT',
+      resourceId: docId,
+      details: { oldTitle, newTitle },
+      timestamp: new Date().toISOString(),
+    });
+
+    return all[idx];
+  },
+
   deleteDocument(docId: string): void {
     const all = this.getDocuments();
+    const docToDelete = all.find(d => d.id === docId);
     const filtered = all.filter(d => d.id !== docId);
     safeSet(STORAGE_KEYS.DOCUMENTS, filtered);
 
+    if (docToDelete) {
+      this.addAuditLog({
+        id: `audit-${Date.now()}`,
+        actorId: docToDelete.ownerId,
+        actionType: 'DOCUMENT_DELETED',
+        resourceType: 'HEALTH_DOCUMENT',
+        resourceId: docId,
+        details: { title: docToDelete.title, fileName: docToDelete.fileName },
+        timestamp: new Date().toISOString(),
+      });
+    }
+
     // Also revoke any active shares for this document
     const shares = this.getDocumentShares();
-    const updatedShares = shares.map(s => (s.documentId === docId ? { ...s, isRevoked: true } : s));
+    const updatedShares = shares.map(s => (s.documentId === docId ? { ...s, isRevoked: true, revokedAt: new Date().toISOString() } : s));
     safeSet(STORAGE_KEYS.SHARES, updatedShares);
+  },
+
+  logDocumentDownload(docId: string, title: string, actorId?: string, actorName?: string): void {
+    this.addAuditLog({
+      id: `audit-${Date.now()}`,
+      actorId,
+      actorName,
+      actionType: 'DOCUMENT_DOWNLOADED',
+      resourceType: 'HEALTH_DOCUMENT',
+      resourceId: docId,
+      details: { title, downloadTimestamp: new Date().toISOString() },
+      timestamp: new Date().toISOString(),
+    });
   },
 
   confirmOcr(docId: string, metadata: Record<string, string>): void {
@@ -302,6 +527,8 @@ export const dataStore = {
         documentTitle: share.documentTitle,
         sharedWith: share.sharedWithWorkerName,
         expiresAt: share.expiresAt,
+        sharingType: share.sharingType || 'SINGLE',
+        caseNumber: share.caseNumber,
       },
       timestamp: new Date().toISOString(),
     });
@@ -591,6 +818,30 @@ export const dataStore = {
 
   cancelAmbulanceRequest(id: string, reason?: string): void {
     this.updateAmbulanceStatus(id, 'CANCELLED', reason || 'Cancelled by requester');
+  },
+
+  // --- SECURE DATA PURGING ON LOGOUT ---
+  clearTemporarySensitiveData(patientId?: string): void {
+    if (typeof window === 'undefined') return;
+    try {
+      if (patientId) {
+        this.deleteDraft(patientId);
+      }
+      // Scrub any temporary session drafts, preview caches, and unpersisted uploads
+      sessionStorage.clear();
+      this.addAuditLog({
+        id: `audit-${Date.now()}`,
+        actorId: patientId,
+        actorName: 'Security Session Manager',
+        actionType: 'USER_LOGIN',
+        resourceType: 'SECURITY_SESSION',
+        resourceId: patientId || 'session',
+        details: { action: 'Temporary sensitive cache and drafts wiped on secure logout' },
+        timestamp: new Date().toISOString(),
+      });
+    } catch (e) {
+      console.warn('Error clearing temporary sensitive data:', e);
+    }
   },
 
   // --- DEMO RESET ---

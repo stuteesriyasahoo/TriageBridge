@@ -1,6 +1,7 @@
 import { en } from './en';
+import { DeepPartial } from '../types';
 
-export const ks: typeof en = {
+export const ks: DeepPartial<typeof en> = {
   brand: {
     name: 'TriageBridge (ٹرائج برج)',
     tagline: 'سمارٹ ٹرائج۔ تیز تیمارداری۔ مرکزس مَنٛز اِنسان۔',

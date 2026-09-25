@@ -49,20 +49,24 @@ export const translations: Record<SupportedLocale, typeof en> = {
   ur: ur as unknown as typeof en,
 };
 
-function createFallbackProxy<T extends object>(target: any, fallback: any): T {
-  return new Proxy(target || {}, {
-    get(obj, prop) {
-      const val = obj[prop];
+function createFallbackProxy<T extends object>(
+  target: Record<string, unknown> | undefined,
+  fallback: Record<string, unknown> | undefined
+): T {
+  return new Proxy((target || {}) as object, {
+    get(obj, prop: string) {
+      const targetObj = obj as Record<string, unknown>;
+      const val = targetObj[prop];
       const fallbackVal = fallback ? fallback[prop] : undefined;
       if (val === undefined || val === null || val === '') {
         return fallbackVal;
       }
       if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
-        return createFallbackProxy(val, fallbackVal);
+        return createFallbackProxy(val as Record<string, unknown>, fallbackVal as Record<string, unknown>);
       }
       return val;
     },
-  });
+  }) as T;
 }
 
 export function getTranslations(locale: SupportedLocale): typeof en {

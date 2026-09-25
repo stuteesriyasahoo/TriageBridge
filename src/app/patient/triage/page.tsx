@@ -48,6 +48,8 @@ import {
   Volume2,
 } from 'lucide-react';
 import { detectTextLanguage, getLanguageMeta } from '../../../lib/languages';
+import { evaluateClinicalRules, MANDATORY_CLINICAL_DISCLAIMER } from '../../../lib/red-flags';
+import { offlineSyncEngine } from '../../../lib/offline-sync';
 
 const DRAFT_LOCAL_KEY = 'tb_triage_draft_v1';
 
@@ -147,16 +149,24 @@ export default function PatientTriageWizard() {
   const [urgencyAssessment, setUrgencyAssessment] = useState<UrgencyAssessment | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Check for saved draft on mount
+  // Check for saved draft or step query param on mount
   useEffect(() => {
     try {
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const stepParam = urlParams.get('step');
+        if (stepParam && Number(stepParam) >= 1 && Number(stepParam) <= 10) {
+          setCurrentStep(Number(stepParam));
+        }
+      }
+
       const patientId = patient?.id || 'pat-guest';
       const storedDraft = dataStore.getDraft(patientId) || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem(DRAFT_LOCAL_KEY) || 'null') : null);
       if (storedDraft && storedDraft.patientId === patientId) {
         setAvailableDraft(storedDraft);
       }
     } catch (e) {
-      console.warn('Failed to load draft:', e);
+      console.warn('Failed to load draft or step:', e);
     }
   }, [patient?.id]);
 
@@ -325,6 +335,51 @@ export default function PatientTriageWizard() {
   // Step 10: Trigger AI Analysis
   const runAIAnalysis = async () => {
     setIsAnalyzing(true);
+    const isDeviceOnline = typeof navigator !== 'undefined' ? navigator.onLine : true;
+
+    // Direct local clinical rule engine evaluation (runs purely client-side offline)
+    const runLocalEvaluation = () => {
+      const ruleEval = evaluateClinicalRules({
+        patientAge: age,
+        gender,
+        text: [typedSymptoms, voiceTranscript, chiefComplaint].filter(Boolean).join(' '),
+        chiefComplaint,
+        vitals,
+        vitalsUnknown,
+        pregnancyStatus,
+        pregnancyWeeks,
+        pregnancyWarningSigns,
+        reportFindings: uploadedReports.flatMap(r =>
+          r.extractedData ? Object.entries(r.extractedData.extractedLabValues).map(([k, v]) => `${k}: ${v}`) : []
+        ),
+        symptoms: [typedSymptoms, voiceTranscript].filter(Boolean),
+      });
+
+      const fallbackAssessment: UrgencyAssessment = {
+        suggestedUrgency: ruleEval.suggestedUrgency,
+        confidenceScore: ruleEval.confidenceScore,
+        rationaleEn: ruleEval.rationaleEn,
+        rationaleHi: ruleEval.rationaleHi,
+        rationaleOr: ruleEval.rationaleOr,
+        triggeredRedFlags: ruleEval.redFlags.map(rf => rf.name),
+        triggeredRules: ruleEval.triggeredRules,
+        missingInformation: ruleEval.missingInformation,
+        isDiagnostic: false,
+        clinicalDisclaimer: MANDATORY_CLINICAL_DISCLAIMER,
+        evaluatedAt: new Date().toISOString(),
+      };
+
+      setUrgencyAssessment(fallbackAssessment);
+      setAnalysisCompleted(true);
+    };
+
+    if (!isDeviceOnline) {
+      // Evaluate offline using full local deterministic rule engine
+      runLocalEvaluation();
+      setIsAnalyzing(false);
+      return;
+    }
+
     try {
       const payload = {
         patientAge: age,
@@ -365,23 +420,7 @@ export default function PatientTriageWizard() {
       setAnalysisCompleted(true);
     } catch (err) {
       console.warn('API fetch failed, falling back to local clinical rule evaluation:', err);
-      // Fallback: evaluate locally using red-flags screen
-      const detectedInfo = detectTextLanguage(typedSymptoms || chiefComplaint);
-      const safeVitals = { ...vitals };
-      const fallbackAssessment: UrgencyAssessment = {
-        suggestedUrgency: (vitals.oxygenSaturation && vitals.oxygenSaturation < 90) ? 'RED' : 'YELLOW',
-        confidenceScore: 0.94,
-        rationaleEn: 'Immediate clinical intervention flagged due to critical oxygen saturation and acute presentation.',
-        rationaleHi: 'महत्वपूर्ण ऑक्सीजन संतृप्ति और तीव्र लक्षणों के कारण तत्काल डॉक्टर समीक्षा अनिवार्य है।',
-        rationaleOr: 'ଅକ୍ସିଜେନ୍ ସ୍ତର କମିବା କାରଣରୁ ତୁରନ୍ତ ଡାକ୍ତରୀ ଚିକିତ୍ସା ଆବଶ୍ୟକ।',
-        triggeredRedFlags: ['Critical Hypoxia (SpO2 < 90%)', 'Acute Anginal Chest Pain'],
-        missingInformation: [],
-        isDiagnostic: false,
-        clinicalDisclaimer: 'AI-generated triage support — the final urgency and care decision must be made by a qualified healthcare professional.',
-        evaluatedAt: new Date().toISOString(),
-      };
-      setUrgencyAssessment(fallbackAssessment);
-      setAnalysisCompleted(true);
+      runLocalEvaluation();
     } finally {
       setIsAnalyzing(false);
     }
@@ -401,6 +440,7 @@ export default function PatientTriageWizard() {
     const detectedInfo = detectTextLanguage(typedSymptoms || chiefComplaint);
 
     const safeUrgency: UrgencyCategory = urgencyAssessment?.suggestedUrgency || 'YELLOW';
+    const isDeviceOnline = typeof navigator !== 'undefined' ? navigator.onLine : true;
 
     const structuredTriageNote: StructuredTriageNote = {
       chiefComplaint,
@@ -445,6 +485,7 @@ export default function PatientTriageWizard() {
       structuredTriageNote,
       extractedTriageData: extractedData || undefined,
       status: 'SUBMITTED',
+      syncStatus: isDeviceOnline ? 'WAITING_TO_SYNC' : 'SAVED_OFFLINE',
       provisionalUrgency: safeUrgency,
       facilityName: 'District Headquarters Hospital, Angul',
       department: safeUrgency === 'RED' ? 'Emergency Resuscitation' : 'General OPD',
@@ -478,18 +519,35 @@ export default function PatientTriageWizard() {
       updatedAt: new Date().toISOString(),
     };
 
-    dataStore.addCase(newCase);
+    // Store in offline sync engine with idempotency key
+    offlineSyncEngine
+      .saveOfflineSubmission(newCase)
+      .then((submission) => {
+        newCase.idempotencyKey = submission.idempotencyKey;
+        newCase.syncStatus = submission.status;
 
-    // Clean up draft
-    const patientId = patient?.id || 'pat-guest';
-    dataStore.deleteDraft(patientId);
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem(DRAFT_LOCAL_KEY);
-    }
+        // Clean up draft
+        const patientId = patient?.id || 'pat-guest';
+        dataStore.deleteDraft(patientId);
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem(DRAFT_LOCAL_KEY);
+        }
 
-    setTimeout(() => {
-      router.push(`/patient/triage/confirmation?caseNumber=${newCase.caseNumber}&id=${newCase.id}`);
-    }, 400);
+        if (isDeviceOnline) {
+          offlineSyncEngine.syncSubmission(submission.idempotencyKey).finally(() => {
+            router.push(`/patient/triage/confirmation?caseNumber=${newCase.caseNumber}&id=${newCase.id}`);
+          });
+        } else {
+          router.push(
+            `/patient/triage/confirmation?caseNumber=${newCase.caseNumber}&id=${newCase.id}&offline=true&idem=${submission.idempotencyKey}`
+          );
+        }
+      })
+      .catch((err) => {
+        console.warn('Fallback to local store:', err);
+        dataStore.addCase(newCase);
+        router.push(`/patient/triage/confirmation?caseNumber=${newCase.caseNumber}&id=${newCase.id}`);
+      });
   };
 
   const stepTitles = [

@@ -88,12 +88,18 @@ export default function PatientCasesPage() {
                       {item.caseNumber}
                     </span>
                     <UrgencyBadge urgency={item.provisionalUrgency} size="sm" />
-                    <span className="text-[11px] font-semibold uppercase px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                    <span className="text-[11px] font-semibold uppercase px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                       {item.status.replace(/_/g, ' ')}
                     </span>
+                    {item.syncStatus && item.syncStatus !== 'SUCCESSFULLY_SYNCHRONIZED' && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 flex items-center gap-1">
+                        <Clock className="w-2.5 h-2.5 animate-pulse" />
+                        <span>{item.syncStatus.replace(/_/g, ' ')}</span>
+                      </span>
+                    )}
                   </div>
 
-                  <p className="text-xs sm:text-sm font-semibold text-[#102A43] line-clamp-1">
+                  <p className="text-xs sm:text-sm font-semibold text-[#102A43] dark:text-white line-clamp-1">
                     {item.chiefComplaint}
                   </p>
 
@@ -105,6 +111,12 @@ export default function PatientCasesPage() {
                     </span>
                     <span>•</span>
                     <span>Facility: {item.facilityName || 'District HQ Hospital'}</span>
+                    {item.idempotencyKey && (
+                      <>
+                        <span>•</span>
+                        <span className="font-mono text-[10px]">Idem: {item.idempotencyKey.slice(0, 18)}...</span>
+                      </>
+                    )}
                   </div>
                 </div>
 
