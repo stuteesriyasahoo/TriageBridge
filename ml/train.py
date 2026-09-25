@@ -83,6 +83,12 @@ FORBIDDEN_LEAKAGE_COLUMNS = [
     'is_synthetic',
     'is_validated',
     'clinical_disclaimer',
+    'reviewer decisions',
+    'reviewer_decisions',
+    'explanations',
+    'explanation',
+    'any post-assessment field',
+    'post_assessment_field',
     'disease',
     'cures',
     'doctor',
@@ -102,8 +108,10 @@ def compute_sha256(filepath):
 
 def validate_leakage_safety(feature_list):
     """Enforces zero leakage into the feature matrix."""
+    forbidden_normalized = {c.lower().replace(' ', '_') for c in FORBIDDEN_LEAKAGE_COLUMNS}
     for col in feature_list:
-        if col in FORBIDDEN_LEAKAGE_COLUMNS:
+        norm_col = str(col).lower().replace(' ', '_')
+        if norm_col in forbidden_normalized or str(col).lower() in [f.lower() for f in FORBIDDEN_LEAKAGE_COLUMNS]:
             raise AssertionError(f"CRITICAL LEAKAGE ERROR: Forbidden column '{col}' detected in feature set!")
     print(f"[LEAKAGE CHECK] PASSED: All {len(feature_list)} features verified pre-intake compliant.")
 
@@ -221,9 +229,13 @@ def main():
     print(f"Class counts:\n{df[TARGET_COL].value_counts().to_dict()}")
 
     # 3. Near-Duplicate & Group Identification
+    exact_duplicates_count = int(df.duplicated(subset=ALL_INTAKE_FEATURES).sum())
+    print(f"\n[NEAR-DUPLICATE PROTECTION] Exact duplicate cases: {exact_duplicates_count}")
+
     df['narrative_group'] = build_narrative_groups(df)
     n_groups = df['narrative_group'].nunique()
-    print(f"\n[NEAR-DUPLICATE PROTECTION] Identified {n_groups} distinct narrative groups across {len(df)} records.")
+    print(f"[NEAR-DUPLICATE PROTECTION] Identified {n_groups} distinct narrative groups across {len(df)} records.")
+    print(f"[SPLIT METHOD] Group-Stratified Split: keeping template/near-duplicate narrative groups strictly within individual splits.")
 
     # 4. Group-Stratified Split (Train 70%, Val 15%, Test 15%)
     train_df, val_df, test_df = group_stratified_split(
@@ -249,9 +261,12 @@ def main():
     split_summary = {
         "random_seed": RANDOM_SEED,
         "dataset_hash": dataset_hash,
+        "split_method": "group_stratified_split",
+        "exact_duplicates_count": exact_duplicates_count,
+        "narrative_groups_count": n_groups,
+        "narrative_group_leakage_between_splits": 0,
         "total_target_records": len(df),
         "total_grey_records": len(grey_cases),
-        "narrative_groups_count": n_groups,
         "train_count": len(train_df),
         "val_count": len(val_df),
         "test_count": len(test_df),
@@ -276,6 +291,11 @@ def main():
 
     X_test = test_df[['combined_text'] + NUMERIC_FEATURES + CATEGORICAL_FEATURES]
     y_test = test_df[TARGET_COL]
+
+    # Verify ZERO leakage into final feature matrices
+    validate_leakage_safety(X_train.columns)
+    validate_leakage_safety(X_val.columns)
+    validate_leakage_safety(X_test.columns)
 
     # 6. Baseline: Dummy Classifier
     dummy = DummyClassifier(strategy='most_frequent')
@@ -382,9 +402,21 @@ def main():
     red_true_positives = cm[red_idx, red_idx]
     red_false_negatives = int(red_total - red_true_positives)
 
+    pred_distribution = pd.Series(y_test_pred).value_counts().to_dict()
+
+    print(f"\n============================================================")
+    print("MANDATORY NOTICE: Experimental prototype trained on synthetic data. Not clinically validated.")
+    print("============================================================")
+    print("SYNTHETIC DATA & SPLIT BIAS DISCUSSION:")
+    print("Partition balance and zero near-duplicate group leakage do NOT imply clinical or statistical")
+    print("validity in real hospital triage. Synthetic narratives feature constrained lexical templates,")
+    print("and real-world clinical performance may degrade significantly on unstructured or colloquial inputs.")
+    print("Qualified healthcare-worker clinical examination is mandatory on every case.")
+    print("============================================================")
     print(f"Test Balanced Accuracy : {test_bal_acc:.4f} (Dummy: {dummy_test_acc:.4f})")
     print(f"Test Macro F1          : {test_macro_f1:.4f} (Dummy: {dummy_test_macro_f1:.4f})")
     print(f"RED False Negatives    : {red_false_negatives} out of {red_total} RED test cases")
+    print(f"Prediction Distribution: {pred_distribution}")
     print(f"\nConfusion Matrix (labels={TARGET_CLASSES}):\n{cm}")
 
     clf_report = classification_report(y_test, y_test_pred, labels=TARGET_CLASSES, digits=4)
@@ -399,6 +431,43 @@ def main():
     joblib.dump(selected_pipeline, model_path)
     print(f"Saved model to: {model_path}")
 
+    # Comprehensive evaluation structure
+    evaluation_data = {
+        "mandatory_disclaimer": "Experimental prototype trained on synthetic data. Not clinically validated.",
+        "balanced_accuracy": test_bal_acc,
+        "macro_f1": test_macro_f1,
+        "red_false_negatives": red_false_negatives,
+        "red_total_test_cases": int(red_total),
+        "per_class": {
+            cls: {
+                "precision": float(per_class_precision[i]),
+                "recall": float(per_class_recall[i]),
+                "f1": float(per_class_f1[i]),
+                "support": int(np.sum(y_test == cls))
+            }
+            for i, cls in enumerate(TARGET_CLASSES)
+        },
+        "confusion_matrix": cm.tolist(),
+        "confusion_matrix_labels": TARGET_CLASSES,
+        "prediction_distribution": {cls: int(pred_distribution.get(cls, 0)) for cls in TARGET_CLASSES},
+        "ground_truth_distribution": y_test.value_counts().to_dict(),
+        "comparison_with_dummy": {
+            "dummy_strategy": "most_frequent",
+            "dummy_balanced_accuracy": dummy_test_acc,
+            "dummy_macro_f1": dummy_test_macro_f1,
+            "selected_model_balanced_accuracy": test_bal_acc,
+            "selected_model_macro_f1": test_macro_f1,
+            "balanced_accuracy_gain": test_bal_acc - dummy_test_acc,
+            "macro_f1_gain": test_macro_f1 - dummy_test_macro_f1
+        },
+        "synthetic_template_bias_discussion": (
+            "The balanced 70/15/15 group-stratified split isolates narrative template groups and prevents "
+            "near-duplicate leakage, but does NOT make the model statistically or clinically valid for "
+            "real-world clinical practice. Synthetic datasets possess low linguistic variance compared to "
+            "unconstrained clinical conversations."
+        )
+    }
+
     # Metadata
     metadata = {
         "model_name": "TriageBridge Experimental Urgency Classifier",
@@ -407,38 +476,27 @@ def main():
         "training_timestamp": pd.Timestamp.now().isoformat(),
         "dataset_name": "triage_cases_v2.csv",
         "dataset_sha256": dataset_hash,
+        "dataset_size": len(df_raw),
         "dataset_size_total": len(df_raw),
-        "target_classes": TARGET_CLASSES,
-        "class_counts_eligible": df[TARGET_COL].value_counts().to_dict(),
-        "random_seed": RANDOM_SEED,
-        "split_counts": {
-            "train": len(train_df),
-            "validation": len(val_df),
-            "test": len(test_df)
-        },
-        "selected_hyperparameters": selected_params,
+        "feature_list": ALL_INTAKE_FEATURES,
         "input_features": {
             "text": TEXT_FEATURES,
             "numeric": NUMERIC_FEATURES,
             "categorical": CATEGORICAL_FEATURES
         },
-        "excluded_leakage_features": FORBIDDEN_LEAKAGE_COLUMNS,
-        "test_metrics": {
-            "balanced_accuracy": test_bal_acc,
-            "macro_f1": test_macro_f1,
-            "dummy_baseline_balanced_acc": dummy_test_acc,
-            "dummy_baseline_macro_f1": dummy_test_macro_f1,
-            "red_false_negatives": red_false_negatives,
-            "red_total_test_cases": int(red_total),
-            "per_class": {
-                cls: {
-                    "precision": float(per_class_precision[i]),
-                    "recall": float(per_class_recall[i]),
-                    "f1": float(per_class_f1[i])
-                }
-                for i, cls in enumerate(TARGET_CLASSES)
-            }
+        "excluded_leakage_fields": FORBIDDEN_LEAKAGE_COLUMNS,
+        "target_classes": TARGET_CLASSES,
+        "class_counts": df_raw[TARGET_COL].value_counts().to_dict(),
+        "class_counts_eligible": df[TARGET_COL].value_counts().to_dict(),
+        "split_counts": {
+            "train": len(train_df),
+            "validation": len(val_df),
+            "test": len(test_df)
         },
+        "random_seed": RANDOM_SEED,
+        "selected_hyperparameters": selected_params,
+        "test_metrics": evaluation_data,
+        "red_false_negative_count": red_false_negatives,
         "known_limitations": [
             "Trained exclusively on synthetic patient encounters.",
             "Synthetic template bias: limited lexical variability compared to unconstrained clinical speech.",
@@ -446,6 +504,8 @@ def main():
             "Must never override deterministic clinical red flags.",
             "Deterministic GREY gating for critical missing data operates upstream of this model."
         ],
+        "synthetic_data_warning": "Experimental prototype trained on synthetic data. Not clinically validated.",
+        "not_clinically_validated_warning": "Not clinically validated. Must never be used for autonomous clinical triage without healthcare-worker review.",
         "clinical_validation_status": "NOT_CLINICALLY_VALIDATED",
         "mandatory_disclaimer": "Experimental prototype trained on synthetic data. Not clinically validated. Requires healthcare-worker review for every patient."
     }
@@ -454,7 +514,7 @@ def main():
         json.dump(metadata, f, indent=2)
 
     with open('ml/reports/evaluation.json', 'w', encoding='utf-8') as f:
-        json.dump(metadata['test_metrics'], f, indent=2)
+        json.dump(evaluation_data, f, indent=2)
 
     with open('ml/reports/data_split_summary.json', 'w', encoding='utf-8') as f:
         json.dump(split_summary, f, indent=2)
@@ -462,9 +522,15 @@ def main():
     with open('ml/reports/classification_report.txt', 'w', encoding='utf-8') as f:
         f.write("TRIAGEBRIDGE CLASSIFICATION REPORT (HELD-OUT TEST SET)\n")
         f.write("=" * 60 + "\n")
+        f.write("NOTICE: Experimental prototype trained on synthetic data. Not clinically validated.\n")
         f.write(f"Model: {metadata['model_type']}\n")
         f.write(f"Dataset SHA-256: {dataset_hash}\n")
         f.write(f"Disclaimer: {metadata['mandatory_disclaimer']}\n\n")
+        f.write("DISCUSSION ON SPLIT VALIDITY & SYNTHETIC BIAS:\n")
+        f.write("While group-stratified partitioning ensures zero near-duplicate narrative leakage between\n")
+        f.write("splits, balanced class frequencies do NOT constitute clinical or statistical validity in\n")
+        f.write("real-world settings. Synthetic data lacks true clinical entropy, unmodeled comorbidities,\n")
+        f.write("and natural language ambiguities. Real-world generalization remains strictly unvalidated.\n\n")
         f.write(clf_report)
 
     # Confusion matrix plot

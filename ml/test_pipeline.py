@@ -43,12 +43,27 @@ class TestTriagePipeline(unittest.TestCase):
 
     # 1. Forbidden Leakage Columns
     def test_forbidden_leakage_columns(self):
-        with self.assertRaises(AssertionError):
-            validate_leakage_safety(['age', 'symptoms', 'rule_based_urgency'])
-        with self.assertRaises(AssertionError):
-            validate_leakage_safety(['age', 'ml_suggested_urgency'])
-        with self.assertRaises(AssertionError):
-            validate_leakage_safety(['age', 'disease'])
+        forbidden_test_list = [
+            'case_id',
+            'patient_synthetic_id',
+            'rule_based_red_flags',
+            'rule_based_urgency',
+            'ml_suggested_urgency',
+            'ml_confidence_score',
+            'missing_information',
+            'requires_healthcare_worker_review',
+            'healthcare_review_status',
+            'is_synthetic',
+            'is_validated',
+            'clinical_disclaimer',
+            'reviewer decisions',
+            'explanations',
+            'any post-assessment field',
+        ]
+        for col in forbidden_test_list:
+            with self.subTest(column=col):
+                with self.assertRaises(AssertionError):
+                    validate_leakage_safety(['age', 'symptoms', col])
 
     # 2. Missing Numerical Values Handling
     def test_missing_numerical_values(self):

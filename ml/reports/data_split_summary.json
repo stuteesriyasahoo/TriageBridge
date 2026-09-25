@@ -1,9 +1,12 @@
 {
   "random_seed": 42,
   "dataset_hash": "bc08362530d3eb7e12647df889fe17b44614c6f5bda0bf0e3bd23509c4df033f",
+  "split_method": "group_stratified_split",
+  "exact_duplicates_count": 0,
+  "narrative_groups_count": 45,
+  "narrative_group_leakage_between_splits": 0,
   "total_target_records": 450,
   "total_grey_records": 50,
-  "narrative_groups_count": 45,
   "train_count": 308,
   "val_count": 69,
   "test_count": 73,

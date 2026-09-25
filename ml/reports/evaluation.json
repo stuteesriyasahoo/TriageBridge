@@ -1,25 +1,69 @@
 {
+  "mandatory_disclaimer": "Experimental prototype trained on synthetic data. Not clinically validated.",
   "balanced_accuracy": 0.9866666666666667,
   "macro_f1": 0.9841882699025556,
-  "dummy_baseline_balanced_acc": 0.3333333333333333,
-  "dummy_baseline_macro_f1": 0.13186813186813187,
   "red_false_negatives": 0,
   "red_total_test_cases": 18,
   "per_class": {
     "RED": {
       "precision": 0.9473684210526315,
       "recall": 1.0,
-      "f1": 0.972972972972973
+      "f1": 0.972972972972973,
+      "support": 18
     },
     "YELLOW": {
       "precision": 1.0,
       "recall": 0.96,
-      "f1": 0.9795918367346939
+      "f1": 0.9795918367346939,
+      "support": 25
     },
     "GREEN": {
       "precision": 1.0,
       "recall": 1.0,
-      "f1": 1.0
+      "f1": 1.0,
+      "support": 30
     }
-  }
+  },
+  "confusion_matrix": [
+    [
+      18,
+      0,
+      0
+    ],
+    [
+      1,
+      24,
+      0
+    ],
+    [
+      0,
+      0,
+      30
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "RED",
+    "YELLOW",
+    "GREEN"
+  ],
+  "prediction_distribution": {
+    "RED": 19,
+    "YELLOW": 24,
+    "GREEN": 30
+  },
+  "ground_truth_distribution": {
+    "GREEN": 30,
+    "YELLOW": 25,
+    "RED": 18
+  },
+  "comparison_with_dummy": {
+    "dummy_strategy": "most_frequent",
+    "dummy_balanced_accuracy": 0.3333333333333333,
+    "dummy_macro_f1": 0.13186813186813187,
+    "selected_model_balanced_accuracy": 0.9866666666666667,
+    "selected_model_macro_f1": 0.9841882699025556,
+    "balanced_accuracy_gain": 0.6533333333333333,
+    "macro_f1_gain": 0.8523201380344237
+  },
+  "synthetic_template_bias_discussion": "The balanced 70/15/15 group-stratified split isolates narrative template groups and prevents near-duplicate leakage, but does NOT make the model statistically or clinically valid for real-world clinical practice. Synthetic datasets possess low linguistic variance compared to unconstrained clinical conversations."
 }
