@@ -1,0 +1,83 @@
+TRIAGEBRIDGE MULTILINGUAL CHALLENGE EVALUATION REPORT
+=================================================================
+NOTICE: Experimental evaluation on synthetic data. Not clinically validated. Requires healthcare-worker review.
+=================================================================
+
+Shadow-Mode Integration Recommendation: RECOMMENDED
+
+SAFETY GATE & AUDIT SUMMARY:
+  * GREY Gate Success Rate : 100.0% (30/30 captured)
+  * RED False Negatives    : 0 / 90
+  * RED -> YELLOW Downgrades: 0
+  * RED -> GREEN Downgrades : 0
+  * YELLOW -> GREEN Downgrades: 13
+  * Conservative Escalations: YELLOW->RED: 9, GREEN->YELLOW: 0, GREEN->RED: 0
+
+-----------------------------------------------------------------
+SUBGROUP: OVERALL (N=300)
+Accuracy: 0.9267 | Balanced Accuracy: 0.9389 | Macro F1: 0.9364
+
+Class    Support   Predicted   Precision   Recall     F1-Score  
+RED      90        99          0.9091      1.0000     0.9524    
+YELLOW   90        68          1.0000      0.7556     0.8608    
+GREEN    90        103         0.8738      1.0000     0.9326    
+GREY     30        30          1.0000      1.0000     1.0000    
+
+Confusion Matrix (labels=['RED', 'YELLOW', 'GREEN', 'GREY']):
+             Pred RED  Pred YEL  Pred GRN  Pred GRY
+True RED           90         0         0         0
+True YELLOW         9        68        13         0
+True GREEN          0         0        90         0
+True GREY           0         0         0        30
+
+-----------------------------------------------------------------
+SUBGROUP: ENGLISH (N=100)
+Accuracy: 0.9100 | Balanced Accuracy: 0.9250 | Macro F1: 0.9210
+
+Class    Support   Predicted   Precision   Recall     F1-Score  
+RED      30        34          0.8824      1.0000     0.9375    
+YELLOW   30        21          1.0000      0.7000     0.8235    
+GREEN    30        35          0.8571      1.0000     0.9231    
+GREY     10        10          1.0000      1.0000     1.0000    
+
+Confusion Matrix (labels=['RED', 'YELLOW', 'GREEN', 'GREY']):
+             Pred RED  Pred YEL  Pred GRN  Pred GRY
+True RED           30         0         0         0
+True YELLOW         4        21         5         0
+True GREEN          0         0        30         0
+True GREY           0         0         0        10
+
+-----------------------------------------------------------------
+SUBGROUP: HINDI (N=100)
+Accuracy: 0.9400 | Balanced Accuracy: 0.9500 | Macro F1: 0.9485
+
+Class    Support   Predicted   Precision   Recall     F1-Score  
+RED      30        32          0.9375      1.0000     0.9677    
+YELLOW   30        24          1.0000      0.8000     0.8889    
+GREEN    30        34          0.8824      1.0000     0.9375    
+GREY     10        10          1.0000      1.0000     1.0000    
+
+Confusion Matrix (labels=['RED', 'YELLOW', 'GREEN', 'GREY']):
+             Pred RED  Pred YEL  Pred GRN  Pred GRY
+True RED           30         0         0         0
+True YELLOW         2        24         4         0
+True GREEN          0         0        30         0
+True GREY           0         0         0        10
+
+-----------------------------------------------------------------
+SUBGROUP: ODIA (N=100)
+Accuracy: 0.9300 | Balanced Accuracy: 0.9417 | Macro F1: 0.9395
+
+Class    Support   Predicted   Precision   Recall     F1-Score  
+RED      30        33          0.9091      1.0000     0.9524    
+YELLOW   30        23          1.0000      0.7667     0.8679    
+GREEN    30        34          0.8824      1.0000     0.9375    
+GREY     10        10          1.0000      1.0000     1.0000    
+
+Confusion Matrix (labels=['RED', 'YELLOW', 'GREEN', 'GREY']):
+             Pred RED  Pred YEL  Pred GRN  Pred GRY
+True RED           30         0         0         0
+True YELLOW         3        23         4         0
+True GREEN          0         0        30         0
+True GREY           0         0         0        10
+

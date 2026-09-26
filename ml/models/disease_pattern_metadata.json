@@ -1,0 +1,69 @@
+{
+  "model_name": "TriageBridge Experimental Symptom-Pattern Classifier",
+  "model_version": "1.0.0-experimental-research",
+  "created_at": "2026-09-25T19:04:29.051687+00:00",
+  "disclaimer": "Experimental symptom-pattern classifier \u2014 not a diagnosis.",
+  "clinical_safety_warning": "Explicit Clinical Safety Warning: These statistical performance metrics do NOT validate clinical diagnosis, medical efficacy, or emergency triage safety. The dataset covers only 24 synthetic categories and must never be used for direct patient care or diagnostic recommendations.",
+  "is_diagnostic": false,
+  "allowed_environment": "INTERNAL_RESEARCH_ONLY",
+  "dataset_provenance": {
+    "source": "Symptom2Disease.csv (Niyar R. Barman, Kaggle)",
+    "license": "CC0: Public Domain",
+    "raw_dataset_sha256": "00c14a2f38c041179d24a91de80c4b3a9d105f58982aa52e96a7226ca994dba8",
+    "clean_dataset_sha256": "373cd9c08b2abe4dd7a3f79817eeb9f45e05593e4d52e85326de2dee4be6cf21",
+    "raw_rows": 1200,
+    "clean_rows": 1153,
+    "removed_duplicate_rows": 47,
+    "train_samples": 807,
+    "val_samples": 173,
+    "test_samples": 173
+  },
+  "model_architecture": {
+    "feature_extractor": "TfidfVectorizer(ngram_range=(1,2), sublinear_tf=True, min_df=2, max_df=0.85)",
+    "classifier": "LogisticRegression(C=5.0, max_iter=1000, solver='lbfgs')",
+    "classes": [
+      "Acne",
+      "Allergy",
+      "Arthritis",
+      "Bronchial Asthma",
+      "Cervical Spondylosis",
+      "Chicken Pox",
+      "Common Cold",
+      "Dengue",
+      "Diabetes",
+      "Dimorphic Hemorrhoids",
+      "Drug Reaction",
+      "Fungal Infection",
+      "Gastroesophageal Reflux Disease",
+      "Hypertension",
+      "Impetigo",
+      "Jaundice",
+      "Malaria",
+      "Migraine",
+      "Peptic Ulcer Disease",
+      "Pneumonia",
+      "Psoriasis",
+      "Typhoid",
+      "Urinary Tract Infection",
+      "Varicose Veins"
+    ],
+    "total_classes": 24
+  },
+  "performance": {
+    "dummy_baseline_accuracy": 0.0405,
+    "cv_accuracy_mean": 0.9554,
+    "cv_accuracy_std": 0.0083,
+    "val_accuracy": 0.9711,
+    "val_macro_f1": 0.9718,
+    "test_accuracy": 0.9538,
+    "test_balanced_accuracy": 0.9576,
+    "test_macro_f1": 0.9544,
+    "test_weighted_f1": 0.9524
+  },
+  "safety_constraints": {
+    "leakage_prevention": "Exact duplicate texts removed before splitting. Zero duplicate text across train, val, and test splits.",
+    "urgency_model_isolation": "Disease prediction is NEVER fed as a feature into the RED/YELLOW/GREEN model.",
+    "patient_isolation": "Predictions are never exposed on patient dashboards, confirmation slips, or SMS.",
+    "clinical_governance": "Requires qualified healthcare-worker review. Not a diagnosis."
+  }
+}

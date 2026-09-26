@@ -8,8 +8,11 @@ import {
 } from '@/lib/types';
 import { evaluateClinicalRules, MANDATORY_CLINICAL_DISCLAIMER } from '@/lib/red-flags';
 import { detectTextLanguage } from '@/lib/languages';
+import { executeShadowEvaluation } from '@/lib/ml-shadow-service';
 
 interface AnalyzeRequestBody {
+  caseId?: string;
+  caseNumber?: string;
   patientAge?: number;
   gender?: string;
   originalLanguage?: string;
@@ -108,6 +111,8 @@ export async function POST(req: NextRequest) {
     const body: AnalyzeRequestBody = await req.json();
 
     const {
+      caseId,
+      caseNumber,
       patientAge = 35,
       gender = 'OTHER',
       chiefComplaint = '',
@@ -262,6 +267,56 @@ export async function POST(req: NextRequest) {
       evaluatedAt: new Date().toISOString(),
     };
 
+    // Processing Order Step 7 & 8: If shadow mode is enabled, execute silently and store separately
+    const idempotencyKey = req.headers.get('x-idempotency-key') || undefined;
+
+    let parsedDurationHours: number | undefined;
+    if (symptomDuration) {
+      const match = symptomDuration.match(/(\d+)/);
+      if (match) parsedDurationHours = parseInt(match[1], 10);
+    }
+
+    const deterministicGateResult =
+      ruleEvaluation.suggestedUrgency === 'GREY'
+        ? 'GREY'
+        : ruleEvaluation.suggestedUrgency === 'RED'
+        ? 'RED'
+        : 'PASSED';
+
+    // Execute shadow evaluation in strict silent mode (safely ignores if disabled, never throws)
+    try {
+      await executeShadowEvaluation(
+        {
+          caseId,
+          caseNumber,
+          age: patientAge,
+          gender,
+          patientLanguage: originalLanguage,
+          chiefComplaint,
+          symptoms: `${typedSymptoms} ${voiceTranscript}`.trim(),
+          durationHours: parsedDurationHours,
+          painScore: safeVitals.painScore ?? undefined,
+          medicalHistory: existingConditions.join(', '),
+          allergies: allergies.join(', '),
+          pregnancyStatus,
+          vitals: {
+            heartRate: safeVitals.heartRate,
+            systolicBp: safeVitals.bloodPressureSystolic,
+            diastolicBp: safeVitals.bloodPressureDiastolic,
+            oxygenSaturation: safeVitals.spo2,
+            temperatureCelsius: safeVitals.temperature,
+            respiratoryRate: safeVitals.respiratoryRate,
+          },
+          deterministicGateResult,
+        },
+        idempotencyKey
+      );
+    } catch (shadowErr) {
+      // Non-blocking failure: Log internal code only, never block triage submission
+      console.warn('Shadow evaluation non-blocking error:', shadowErr instanceof Error ? shadowErr.message : shadowErr);
+    }
+
+    // Step 9: Return only patient-safe response. NEVER apply shadow prediction to patient or clinician.
     return NextResponse.json({
       success: true,
       extractedData,

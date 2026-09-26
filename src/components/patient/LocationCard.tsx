@@ -239,6 +239,12 @@ export function LocationCard({
           </p>
         </div>
 
+        {/* Synthetic Demonstration Notice */}
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-[11px] text-amber-900 dark:text-amber-200 font-medium">
+          <MapPin className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+          <span>Synthetic Demonstration Coordinates & Address — No Real Geolocation Tracked</span>
+        </div>
+
         {/* Sharing Status Chip */}
         <div className="flex items-center gap-2">
           {isSharing ? (

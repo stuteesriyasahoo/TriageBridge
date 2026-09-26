@@ -1,0 +1,47 @@
+=================================================================
+  TRIAGEBRIDGE SYMPTOM-PATTERN MODEL CLASSIFICATION REPORT
+=================================================================
+
+Disclaimer: Experimental symptom-pattern classifier — not a diagnosis.
+Warning: Explicit Clinical Safety Warning: These statistical performance metrics do NOT validate clinical diagnosis, medical efficacy, or emergency triage safety. The dataset covers only 24 synthetic categories and must never be used for direct patient care or diagnostic recommendations.
+
+Training Set Samples:   807
+Validation Set Samples: 173
+Held-out Test Samples:  173
+
+Validation Accuracy: 0.9711 | Macro F1: 0.9718
+Test Accuracy:       0.9538 (95.38%)
+Balanced Accuracy:   0.9576 (95.76%)
+Macro F1 Score:      0.9544
+Weighted F1 Score:   0.9524
+
+                                 precision    recall  f1-score   support
+
+                           Acne       1.00      1.00      1.00         7
+                        Allergy       0.88      1.00      0.93         7
+                      Arthritis       1.00      1.00      1.00         7
+               Bronchial Asthma       1.00      1.00      1.00         7
+           Cervical Spondylosis       1.00      1.00      1.00         7
+                    Chicken Pox       0.88      1.00      0.93         7
+                    Common Cold       1.00      1.00      1.00         7
+                         Dengue       1.00      0.75      0.86         8
+                       Diabetes       1.00      0.75      0.86         8
+          Dimorphic Hemorrhoids       1.00      1.00      1.00         6
+                  Drug Reaction       1.00      0.86      0.92         7
+               Fungal Infection       1.00      1.00      1.00         8
+Gastroesophageal Reflux Disease       0.70      1.00      0.82         7
+                   Hypertension       0.88      1.00      0.93         7
+                       Impetigo       1.00      1.00      1.00         8
+                       Jaundice       1.00      1.00      1.00         6
+                        Malaria       1.00      1.00      1.00         7
+                       Migraine       1.00      1.00      1.00         7
+           Peptic Ulcer Disease       1.00      0.62      0.77         8
+                      Pneumonia       1.00      1.00      1.00         7
+                      Psoriasis       1.00      1.00      1.00         8
+                        Typhoid       0.88      1.00      0.93         7
+        Urinary Tract Infection       0.89      1.00      0.94         8
+                 Varicose Veins       1.00      1.00      1.00         7
+
+                       accuracy                           0.95       173
+                      macro avg       0.96      0.96      0.95       173
+                   weighted avg       0.96      0.95      0.95       173

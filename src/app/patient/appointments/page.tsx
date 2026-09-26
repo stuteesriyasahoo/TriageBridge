@@ -5,7 +5,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { useLanguage } from '../../../context/LanguageContext';
 import { dataStore } from '../../../lib/store';
 import { offlineSyncEngine } from '../../../lib/offline-sync';
-import { Appointment, AppointmentStatus } from '../../../lib/types';
+import { Appointment, AppointmentStatus, PatientProfile } from '../../../lib/types';
 import {
   Calendar as CalendarIcon,
   Plus,
@@ -69,13 +69,28 @@ export default function AppointmentsPage() {
     return () => unsubscribe();
   }, [currentUser]);
 
-  // Tab Filtering
+  // Helper to determine if an appointment is genuinely upcoming based on status and calendar date
+  const isAppointmentUpcoming = (appt: Appointment) => {
+    if (appt.status !== 'UPCOMING' && appt.status !== 'RESCHEDULED') return false;
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const [year, month, day] = appt.appointmentDate.split('-').map(Number);
+      const apptDate = new Date(year, month - 1, day);
+      return apptDate.getTime() >= today.getTime();
+    } catch {
+      return false;
+    }
+  };
+
+  // Tab Filtering: past appointments cannot appear under UPCOMING
   const filteredAppointments = appointments.filter((appt) => {
+    const isUpcoming = isAppointmentUpcoming(appt);
     if (activeTab === 'UPCOMING') {
-      return appt.status === 'UPCOMING' || appt.status === 'RESCHEDULED';
+      return isUpcoming;
     }
     if (activeTab === 'PREVIOUS') {
-      return appt.status === 'COMPLETED' || appt.status === 'CANCELLED';
+      return !isUpcoming || appt.status === 'COMPLETED' || appt.status === 'CANCELLED';
     }
     return true;
   });
@@ -206,8 +221,8 @@ Appointment Date: ${appt.appointmentDate}
 Appointment Time: ${appt.appointmentTime}
 Location / Counter: ${appt.locationRoom || 'Main OPD Reception Counter'}
 Patient Name: ${currentUser?.fullName}
-Patient Synthetic ID: ${(currentUser as any)?.syntheticId || 'PAT-2026-8912'}
-Masked Identifier: ${(currentUser as any)?.maskedAadhaar || 'XXXX-XXXX-8912'}
+Patient Synthetic ID: ${(currentUser as PatientProfile)?.syntheticId || 'PAT-2026-8912'}
+Masked Identifier: ${(currentUser as PatientProfile)?.maskedAadhaar || 'XXXX-XXXX-8912'}
 Status: ${appt.status}
 Appointment Letter Attached: ${appt.appointmentLetterName || 'Generated Electronic Slip'}
 Referral Document: ${appt.referralLetterName || 'Direct Triage Consultation'}
@@ -301,11 +316,7 @@ END:VCALENDAR`.trim();
             }`}
           >
             {t.appointments.tabUpcoming} (
-            {
-              appointments.filter(
-                (a) => a.status === 'UPCOMING' || a.status === 'RESCHEDULED'
-              ).length
-            }
+            {appointments.filter(isAppointmentUpcoming).length}
             )
           </button>
 
@@ -321,7 +332,7 @@ END:VCALENDAR`.trim();
             {t.appointments.tabPrevious} (
             {
               appointments.filter(
-                (a) => a.status === 'COMPLETED' || a.status === 'CANCELLED'
+                (a) => !isAppointmentUpcoming(a) || a.status === 'COMPLETED' || a.status === 'CANCELLED'
               ).length
             }
             )

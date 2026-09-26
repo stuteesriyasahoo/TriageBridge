@@ -559,3 +559,41 @@ export type DeepPartial<T> = {
     : T[P];
 };
 
+export type MLAgreementStatus =
+  | 'EXACT_AGREEMENT'
+  | 'ML_HIGHER'
+  | 'ML_LOWER'
+  | 'RED_MISSED'
+  | 'YELLOW_PREDICTED_GREEN'
+  | 'GATE_DISAGREEMENT'
+  | 'PENDING_REVIEW';
+
+export interface MLShadowPrediction {
+  id: string;
+  deidentifiedCaseId: string;
+  modelVersion: string;
+  datasetHash: string;
+  predictedClass: UrgencyCategory | null;
+  modelScoreJson: Record<string, number> | null;
+  deterministicGateResult: string;
+  clinicianFinalCategory?: UrgencyCategory | null;
+  agreementStatus: MLAgreementStatus;
+  unsafeDowngradeFlag: boolean;
+  conservativeEscalationFlag: boolean;
+  processingTimeMs?: number | null;
+  modelErrorCode?: string | null;
+  createdAt: string;
+}
+
+export interface MLShadowServiceResult {
+  success: boolean;
+  prediction: UrgencyCategory | null;
+  modelVersion: string;
+  datasetHash: string;
+  modelScores: Record<string, number> | null;
+  processingTimeMs: number;
+  warning: string;
+  errorCode?: string;
+}
+
+

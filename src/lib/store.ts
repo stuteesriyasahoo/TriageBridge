@@ -12,6 +12,8 @@ import {
   AmbulanceRequestStatus,
   LocationAccessAudit,
   TriageDraft,
+  MLShadowPrediction,
+  UrgencyCategory,
 } from './types';
 import {
   INITIAL_TRIAGE_CASES,
@@ -24,6 +26,10 @@ import {
   INITIAL_PATIENT_LOCATIONS,
   INITIAL_AMBULANCE_REQUESTS,
 } from './mock-data';
+import {
+  generateDeidentifiedCaseId,
+  calculateComparisonAudit,
+} from './ml-shadow-comparison';
 
 const STORAGE_KEYS = {
   CASES: 'tb_cases_v1',
@@ -36,6 +42,7 @@ const STORAGE_KEYS = {
   LOCATIONS: 'tb_locations_v1',
   AMBULANCES: 'tb_ambulances_v1',
   DRAFTS: 'tb_triage_drafts_v1',
+  SHADOW_PREDICTIONS: 'tb_ml_shadow_predictions_v1',
 };
 
 function safeGet<T>(key: string, fallback: T): T {
@@ -206,7 +213,65 @@ export const dataStore = {
       createdAt: new Date().toISOString(),
     });
 
+    // Silent Shadow Comparison Logic (Technical evaluation only - never retrains model)
+    try {
+      this.updateShadowPredictionComparison(caseId, review.finalUrgency);
+      if (targetCase.caseNumber) {
+        this.updateShadowPredictionComparison(targetCase.caseNumber, review.finalUrgency);
+      }
+    } catch {
+      // Non-blocking evaluation tracking
+    }
+
     return updatedCase;
+  },
+
+  // --- ML SHADOW PREDICTIONS (Protected Silent Technical Evaluation Storage) ---
+  getShadowPredictions(): MLShadowPrediction[] {
+    return safeGet<MLShadowPrediction[]>(STORAGE_KEYS.SHADOW_PREDICTIONS, []);
+  },
+
+  getShadowPredictionByCaseIdentifier(caseIdentifier: string): MLShadowPrediction | undefined {
+    const deidentifiedId = generateDeidentifiedCaseId(caseIdentifier);
+    const records = this.getShadowPredictions();
+    return records.find(p => p.deidentifiedCaseId === deidentifiedId);
+  },
+
+  addShadowPrediction(pred: MLShadowPrediction): void {
+    const records = this.getShadowPredictions();
+    const idx = records.findIndex(p => p.id === pred.id || p.deidentifiedCaseId === pred.deidentifiedCaseId);
+    if (idx >= 0) records[idx] = pred;
+    else records.push(pred);
+    safeSet(STORAGE_KEYS.SHADOW_PREDICTIONS, records);
+  },
+
+  updateShadowPredictionComparison(
+    caseIdentifier: string,
+    clinicianFinal: UrgencyCategory
+  ): MLShadowPrediction | undefined {
+    const deidentifiedId = generateDeidentifiedCaseId(caseIdentifier);
+    const records = this.getShadowPredictions();
+    const existing = records.find(p => p.deidentifiedCaseId === deidentifiedId);
+    if (!existing) return undefined;
+
+    const comparison = calculateComparisonAudit(
+      existing.predictedClass,
+      clinicianFinal,
+      existing.deterministicGateResult
+    );
+
+    const updated: MLShadowPrediction = {
+      ...existing,
+      clinicianFinalCategory: clinicianFinal,
+      agreementStatus: comparison.agreementStatus,
+      unsafeDowngradeFlag: comparison.unsafeDowngrade,
+      conservativeEscalationFlag: comparison.conservativeEscalation,
+    };
+
+    const idx = records.findIndex(p => p.id === existing.id);
+    if (idx >= 0) records[idx] = updated;
+    safeSet(STORAGE_KEYS.SHADOW_PREDICTIONS, records);
+    return updated;
   },
 
   // --- APPOINTMENTS ---

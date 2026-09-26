@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /**
  * Generator for synthetic patient triage encounters (v2)
  * Produces exactly 500 records:

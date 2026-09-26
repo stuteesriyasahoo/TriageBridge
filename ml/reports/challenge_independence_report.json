@@ -1,0 +1,11 @@
+{
+  "training_dataset_records": 500,
+  "challenge_dataset_records": 300,
+  "exact_narrative_matches": 0,
+  "case_id_collisions": 0,
+  "highest_cross_similarity": 0.6792800740262831,
+  "average_max_similarity": 0.19472952953622436,
+  "narratives_above_85pct_similarity": 0,
+  "independence_status": "CONFIRMED_INDEPENDENT",
+  "challenge_dataset_sha256": "edf51a881af027f66aad4fe957ffa54e1f2fbfe3b8ef8923526f4e93553c81d2"
+}

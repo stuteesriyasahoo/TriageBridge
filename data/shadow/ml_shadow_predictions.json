@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ml-shadow-1790362843577-86f89c28",
+    "deidentifiedCaseId": "deid_03d06ef197eec588",
+    "modelVersion": "1.0.0-synthetic-prototype",
+    "datasetHash": "bc08362530d3eb7e12647df889fe17b44614c6f5bda0bf0e3bd23509c4df033f",
+    "predictedClass": null,
+    "modelScoreJson": null,
+    "deterministicGateResult": "PASSED",
+    "clinicianFinalCategory": null,
+    "agreementStatus": "PENDING_REVIEW",
+    "unsafeDowngradeFlag": false,
+    "conservativeEscalationFlag": false,
+    "processingTimeMs": 2509,
+    "modelErrorCode": "ERR_TIMEOUT",
+    "createdAt": "2026-09-25T19:00:43.578Z"
+  }
+]

@@ -60,7 +60,7 @@ export const en = {
     getStarted: 'Get Started',
     howItWorks: 'How It Works',
     safetyFirst: 'Safety-First Clinical Guarantee',
-    safetyFirstDesc: 'TriageBridge does not confirm diagnoses or prescribe medications. Every AI output is explainable, transparent, and reviewed by a licensed clinician.',
+    safetyFirstDesc: 'TriageBridge does not confirm diagnoses or prescribe medications. Every AI output requires review and final confirmation by an authorized healthcare professional.',
     patientLoginBtn: 'Patient Portal',
     healthcareLoginBtn: 'Healthcare Worker Portal',
     emergencyNotice: 'Emergency Warning: If you are experiencing sudden severe chest pain, loss of consciousness, heavy bleeding, or severe difficulty breathing, visit the nearest emergency department or dial 108 / 112 immediately.',

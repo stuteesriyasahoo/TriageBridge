@@ -43,7 +43,23 @@ export default function PatientDashboard() {
 
   const patient = currentUser as PatientProfile | null;
   const recentCase = cases[0];
-  const upcomingAppointment = appointments.find(a => a.status === 'UPCOMING');
+
+  const isAppointmentUpcoming = (a: import('../../../lib/types').Appointment) => {
+    if (a.status !== 'UPCOMING' && a.status !== 'RESCHEDULED') return false;
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const [year, month, day] = a.appointmentDate.split('-').map(Number);
+      const apptDate = new Date(year, month - 1, day);
+      return apptDate.getTime() >= today.getTime();
+    } catch {
+      return false;
+    }
+  };
+
+  const upcomingAppointment = appointments
+    .filter(isAppointmentUpcoming)
+    .sort((a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime())[0];
 
   return (
     <div className="flex-1 bg-[#F7FAFC] py-8 px-4 sm:px-6 lg:px-8">

@@ -168,6 +168,7 @@ export default function CaseReviewWorkspacePage() {
     );
   }
 
+  const [showSignOffModal, setShowSignOffModal] = useState(false);
   const isOverridden = finalUrgency !== triageCase.provisionalUrgency;
 
   const handleFinalizeReview = (e: React.FormEvent) => {
@@ -178,6 +179,13 @@ export default function CaseReviewWorkspacePage() {
       alert('Clinical protocol requires entering an override justification when altering the AI provisional urgency.');
       return;
     }
+
+    // Requirement 12: Ensure demo mode cannot perform real clinical sign-off. Use simulated confirmation screen only.
+    setShowSignOffModal(true);
+  };
+
+  const confirmAndExecuteSignOff = () => {
+    if (!worker || !triageCase) return;
 
     dataStore.reviewCase(triageCase.id, {
       reviewerId: worker.id,
@@ -191,7 +199,8 @@ export default function CaseReviewWorkspacePage() {
       actionTaken,
     });
 
-    setSuccessToast('Clinical Triage Decision & Verification recorded successfully!');
+    setShowSignOffModal(false);
+    setSuccessToast('Simulated Clinical Triage Decision & Verification recorded successfully!');
     setTimeout(() => {
       router.push('/healthcare/queue');
     }, 1800);
@@ -1131,6 +1140,68 @@ export default function CaseReviewWorkspacePage() {
           urgencyLevel={finalUrgency}
           initiatedBy="DOCTOR"
         />
+
+        {/* Simulated Clinical Sign-off Confirmation Screen */}
+        {showSignOffModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
+            <div className="bg-white dark:bg-[#102A43] rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0">
+                  <ShieldAlert className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-base text-[#102A43] dark:text-white">
+                    Simulated Clinical Sign-off Confirmation
+                  </h3>
+                  <p className="text-xs text-amber-600 dark:text-amber-400 font-semibold">
+                    Synthetic Demonstration Sandbox — No Live EMR Transmission
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#0B1220] border border-slate-200 dark:border-slate-800 text-xs space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Case ID:</span>
+                  <span className="font-bold text-[#102A43] dark:text-white font-mono">{triageCase.caseNumber}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Reviewing Clinician:</span>
+                  <span className="font-bold text-[#102A43] dark:text-white">{worker?.fullName}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Registration Number:</span>
+                  <span className="font-mono text-slate-700 dark:text-slate-300">{worker?.registrationNumber}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-500">Verified Urgency:</span>
+                  <UrgencyBadge urgency={finalUrgency} />
+                </div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-teal-50 dark:bg-teal-950/30 text-teal-800 dark:text-teal-200 text-xs">
+                <strong>Simulated Safeguard:</strong> This action records verification in the local demonstration audit ledger. No real patient data is transmitted or committed to statutory registries.
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowSignOffModal(false)}
+                  className="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmAndExecuteSignOff}
+                  className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md flex items-center gap-1.5"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Confirm Simulated Sign-Off</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

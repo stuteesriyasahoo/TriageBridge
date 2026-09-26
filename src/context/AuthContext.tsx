@@ -34,6 +34,20 @@ const AuthContext = createContext<AuthContextType>({
 
 const AUTH_STORAGE_KEY = 'tb_auth_user_v1';
 
+function setAuthCookies(role: string | null, userId: string | null) {
+  if (typeof document === 'undefined') return;
+  if (role) {
+    document.cookie = `tb_role=${encodeURIComponent(role)}; path=/; max-age=86400; SameSite=Lax`;
+  } else {
+    document.cookie = 'tb_role=; path=/; max-age=0; SameSite=Lax';
+  }
+  if (userId) {
+    document.cookie = `tb_user_id=${encodeURIComponent(userId)}; path=/; max-age=86400; SameSite=Lax`;
+  } else {
+    document.cookie = 'tb_user_id=; path=/; max-age=0; SameSite=Lax';
+  }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,13 +58,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const saved = localStorage.getItem(AUTH_STORAGE_KEY);
       if (saved) {
-        setCurrentUser(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        setCurrentUser(parsed);
+        setAuthCookies(parsed.role, parsed.id);
       } else {
         // Default to demo patient (Ramesh Nayak) so the app is immediately navigable for reviewers
-        setCurrentUser(DEMO_PATIENTS[0]);
+        const defaultUser = DEMO_PATIENTS[0];
+        setCurrentUser(defaultUser);
+        setAuthCookies(defaultUser.role, defaultUser.id);
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(defaultUser));
       }
     } catch {
-      setCurrentUser(DEMO_PATIENTS[0]);
+      const fallbackUser = DEMO_PATIENTS[0];
+      setCurrentUser(fallbackUser);
+      setAuthCookies(fallbackUser.role, fallbackUser.id);
     } finally {
       setIsLoading(false);
     }
@@ -65,17 +86,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (isPatientPath) {
       if (!currentUser) {
-        router.push('/login/patient');
+        router.replace('/login/patient');
       } else if (currentUser.role !== 'PATIENT') {
-        // Healthcare worker trying to access patient routes
-        router.push('/access-denied');
+        // Healthcare worker trying to access patient routes -> immediate redirect to healthcare dashboard
+        router.replace('/healthcare/dashboard');
       }
     } else if (isHealthcarePath) {
       if (!currentUser) {
-        router.push('/login/healthcare');
+        router.replace('/login/healthcare');
       } else if (currentUser.role === 'PATIENT') {
-        // Patient trying to access clinical review routes
-        router.push('/access-denied');
+        // Patient trying to access clinical review routes -> immediate redirect to patient dashboard
+        router.replace('/patient/dashboard');
       }
     }
   }, [pathname, currentUser, isLoading, router]);
@@ -84,24 +105,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setCurrentUser(user);
     if (user) {
       localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+      setAuthCookies(user.role, user.id);
     } else {
       localStorage.removeItem(AUTH_STORAGE_KEY);
+      setAuthCookies(null, null);
     }
   };
 
   const loginPatient = (details: Partial<PatientProfile>) => {
-    const syntheticId = details.syntheticId || `PAT-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+    const syntheticId = details.syntheticId || `PAT-2026-${Math.floor(1000 + Math.random() * 9000)} [Synthetic]`;
     const fullPatient: PatientProfile = {
       id: details.id || `pat-${Date.now()}`,
       role: 'PATIENT',
       syntheticId,
-      maskedAadhaar: details.maskedAadhaar || 'XXXX-XXXX-1234',
-      fullName: details.fullName || 'Citizen Patient',
+      maskedAadhaar: details.maskedAadhaar || 'XXXX-XXXX-1234 [Synthetic]',
+      fullName: details.fullName || 'Citizen Patient [Synthetic]',
       phoneNumber: details.phoneNumber || '+91 94370 00000',
       preferredLanguage: details.preferredLanguage || 'en',
       age: details.age || 40,
       gender: details.gender || 'MALE',
-      location: details.location || 'Odisha, India',
+      location: details.location || 'Odisha, India [Synthetic Address]',
       emergencyContactName: details.emergencyContactName || 'Family Member',
       emergencyContactPhone: details.emergencyContactPhone || '+91 94370 11111',
     };
@@ -121,19 +144,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       timestamp: new Date().toISOString(),
     });
 
-    router.push('/patient/dashboard');
+    router.replace('/patient/dashboard');
   };
 
   const loginHealthcareWorker = (details: Partial<HealthcareWorkerProfile>) => {
     const fullWorker: HealthcareWorkerProfile = {
       id: details.id || `hcw-${Date.now()}`,
       role: (details.role as HealthcareWorkerProfile['role']) || 'DOCTOR',
-      fullName: details.fullName || 'Dr. Medical Officer',
+      fullName: details.fullName || 'Dr. Medical Officer [Synthetic]',
       phoneNumber: details.phoneNumber || '+91 94371 00000',
       preferredLanguage: details.preferredLanguage || 'en',
       medicalCouncil: details.medicalCouncil || 'Odisha Medical Council',
-      registrationNumber: details.registrationNumber || 'SMC-ODI-99999',
-      licenceNumber: details.licenceNumber || 'MED-2026-0001',
+      registrationNumber: details.registrationNumber || 'SMC-ODI-99999 [Synthetic Reg]',
+      licenceNumber: details.licenceNumber || 'MED-2026-0001 [Synthetic]',
       facilityName: details.facilityName || 'SCB Medical College & Hospital',
       department: details.department || 'Emergency Triage',
     };
@@ -153,21 +176,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       timestamp: new Date().toISOString(),
     });
 
-    router.push('/healthcare/dashboard');
+    router.replace('/healthcare/dashboard');
   };
 
   const loginAsDemoUser = (userId: string) => {
     const patient = DEMO_PATIENTS.find(p => p.id === userId);
     if (patient) {
       saveUser(patient);
-      router.push('/patient/dashboard');
+      router.replace('/patient/dashboard');
       return;
     }
 
     const worker = DEMO_HEALTHCARE_WORKERS.find(w => w.id === userId);
     if (worker) {
       saveUser(worker);
-      router.push('/healthcare/dashboard');
+      router.replace('/healthcare/dashboard');
       return;
     }
   };
@@ -184,7 +207,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       dataStore.clearTemporarySensitiveData(currentUser.id);
     }
     saveUser(null);
-    router.push('/role-select');
+    router.replace('/role-select');
   };
 
   const isPatient = currentUser?.role === 'PATIENT';

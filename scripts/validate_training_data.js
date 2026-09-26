@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /**
  * Validation Suite for TriageBridge Synthetic Training Dataset (v2)
  * Audits:

@@ -30,6 +30,7 @@ export interface OfflineSubmission {
   status: OfflineSyncStatus;
   retryCount: number;
   errorDetails?: string;
+  shadowAnalysisStatus?: 'PENDING' | 'SYNCHRONIZED' | 'NOT_APPLICABLE';
   caseData?: TriageCase;
   appointmentData?: Appointment;
   documentData?: HealthDocument;
@@ -106,6 +107,7 @@ export const offlineSyncEngine = {
       createdAt: new Date().toISOString(),
       status: 'SAVED_OFFLINE',
       retryCount: 0,
+      shadowAnalysisStatus: 'PENDING',
       caseData: {
         ...caseData,
         draftId: idempotencyKey,
@@ -346,6 +348,8 @@ export const offlineSyncEngine = {
       }
 
       const payload = {
+        caseId: item.caseData.id,
+        caseNumber: item.caseData.caseNumber,
         patientAge: item.caseData.patientAge,
         gender: item.caseData.patientGender,
         originalLanguage: item.caseData.originalLanguage,
@@ -379,6 +383,7 @@ export const offlineSyncEngine = {
       const resData = await res.json();
 
       // Successfully synced
+      item.shadowAnalysisStatus = 'SYNCHRONIZED';
       await this.updateSubmissionStatus(idempotencyKey, 'SUCCESSFULLY_SYNCHRONIZED');
       this.setLastSyncTime(new Date().toISOString());
 

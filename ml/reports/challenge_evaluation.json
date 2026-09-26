@@ -1,0 +1,358 @@
+{
+  "disclaimer": "Experimental evaluation on synthetic data. Not clinically validated. Requires healthcare-worker review.",
+  "dataset_name": "multilingual_challenge_set.csv",
+  "dataset_size": 300,
+  "shadow_mode_integration_recommended": true,
+  "pass_conditions_status": {
+    "zero_red_downgraded_after_gates": true,
+    "zero_grey_bypassed_missing_info_gate": true,
+    "every_language_has_all_classes": true,
+    "no_empty_subgroup_reported_as_100pct": true,
+    "all_failures_documented_and_clean": true,
+    "healthcare_worker_review_mandatory": true,
+    "safety_notices_prominent": true
+  },
+  "grey_gate_performance": {
+    "total_grey_cases": 30,
+    "correctly_gated_grey": 30,
+    "bypassed_grey_count": 0,
+    "grey_gate_success_rate": 1.0,
+    "bypassed_case_ids": []
+  },
+  "safety_audit": {
+    "red_total_cases": 90,
+    "red_false_negatives_count": 0,
+    "red_false_negatives_case_ids": [],
+    "unsafe_downgrades": {
+      "red_predicted_yellow": {
+        "count": 0,
+        "case_ids": []
+      },
+      "red_predicted_green": {
+        "count": 0,
+        "case_ids": []
+      },
+      "yellow_predicted_green": {
+        "count": 13,
+        "case_ids": [
+          "CHALLENGE-047",
+          "CHALLENGE-048",
+          "CHALLENGE-050",
+          "CHALLENGE-052",
+          "CHALLENGE-055",
+          "CHALLENGE-147",
+          "CHALLENGE-148",
+          "CHALLENGE-152",
+          "CHALLENGE-155",
+          "CHALLENGE-247",
+          "CHALLENGE-248",
+          "CHALLENGE-252",
+          "CHALLENGE-255"
+        ]
+      }
+    },
+    "conservative_escalations": {
+      "yellow_predicted_red": {
+        "count": 9,
+        "case_ids": [
+          "CHALLENGE-034",
+          "CHALLENGE-035",
+          "CHALLENGE-037",
+          "CHALLENGE-041",
+          "CHALLENGE-134",
+          "CHALLENGE-135",
+          "CHALLENGE-234",
+          "CHALLENGE-235",
+          "CHALLENGE-241"
+        ]
+      },
+      "green_predicted_yellow": {
+        "count": 0,
+        "case_ids": []
+      },
+      "green_predicted_red": {
+        "count": 0,
+        "case_ids": []
+      }
+    },
+    "model_execution_failures": 0
+  },
+  "overall_metrics": {
+    "name": "Overall Challenge Set (N=300)",
+    "sample_size": 300,
+    "accuracy": 0.9266666666666666,
+    "balanced_accuracy": 0.9388888888888889,
+    "macro_f1": 0.9364457332746177,
+    "per_class": {
+      "RED": {
+        "support": 90,
+        "predicted": 99,
+        "precision": 0.9090909090909091,
+        "recall": 1.0,
+        "f1": 0.9523809523809523
+      },
+      "YELLOW": {
+        "support": 90,
+        "predicted": 68,
+        "precision": 1.0,
+        "recall": 0.7555555555555555,
+        "f1": 0.8607594936708861
+      },
+      "GREEN": {
+        "support": 90,
+        "predicted": 103,
+        "precision": 0.8737864077669902,
+        "recall": 1.0,
+        "f1": 0.932642487046632
+      },
+      "GREY": {
+        "support": 30,
+        "predicted": 30,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        90,
+        0,
+        0,
+        0
+      ],
+      [
+        9,
+        68,
+        13,
+        0
+      ],
+      [
+        0,
+        0,
+        90,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        30
+      ]
+    ],
+    "confusion_matrix_labels": [
+      "RED",
+      "YELLOW",
+      "GREEN",
+      "GREY"
+    ]
+  },
+  "language_metrics": {
+    "en": {
+      "name": "English Challenge Set (N=100)",
+      "sample_size": 100,
+      "accuracy": 0.91,
+      "balanced_accuracy": 0.925,
+      "macro_f1": 0.9210265837104072,
+      "per_class": {
+        "RED": {
+          "support": 30,
+          "predicted": 34,
+          "precision": 0.8823529411764706,
+          "recall": 1.0,
+          "f1": 0.9375
+        },
+        "YELLOW": {
+          "support": 30,
+          "predicted": 21,
+          "precision": 1.0,
+          "recall": 0.7,
+          "f1": 0.8235294117647058
+        },
+        "GREEN": {
+          "support": 30,
+          "predicted": 35,
+          "precision": 0.8571428571428571,
+          "recall": 1.0,
+          "f1": 0.923076923076923
+        },
+        "GREY": {
+          "support": 10,
+          "predicted": 10,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          30,
+          0,
+          0,
+          0
+        ],
+        [
+          4,
+          21,
+          5,
+          0
+        ],
+        [
+          0,
+          0,
+          30,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          10
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "RED",
+        "YELLOW",
+        "GREEN",
+        "GREY"
+      ]
+    },
+    "hi": {
+      "name": "Hindi Challenge Set (N=100)",
+      "sample_size": 100,
+      "accuracy": 0.94,
+      "balanced_accuracy": 0.95,
+      "macro_f1": 0.94853270609319,
+      "per_class": {
+        "RED": {
+          "support": 30,
+          "predicted": 32,
+          "precision": 0.9375,
+          "recall": 1.0,
+          "f1": 0.967741935483871
+        },
+        "YELLOW": {
+          "support": 30,
+          "predicted": 24,
+          "precision": 1.0,
+          "recall": 0.8,
+          "f1": 0.888888888888889
+        },
+        "GREEN": {
+          "support": 30,
+          "predicted": 34,
+          "precision": 0.8823529411764706,
+          "recall": 1.0,
+          "f1": 0.9375
+        },
+        "GREY": {
+          "support": 10,
+          "predicted": 10,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          30,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          24,
+          4,
+          0
+        ],
+        [
+          0,
+          0,
+          30,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          10
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "RED",
+        "YELLOW",
+        "GREEN",
+        "GREY"
+      ]
+    },
+    "or": {
+      "name": "Odia Challenge Set (N=100)",
+      "sample_size": 100,
+      "accuracy": 0.93,
+      "balanced_accuracy": 0.9416666666666667,
+      "macro_f1": 0.9394513701707099,
+      "per_class": {
+        "RED": {
+          "support": 30,
+          "predicted": 33,
+          "precision": 0.9090909090909091,
+          "recall": 1.0,
+          "f1": 0.9523809523809523
+        },
+        "YELLOW": {
+          "support": 30,
+          "predicted": 23,
+          "precision": 1.0,
+          "recall": 0.7666666666666667,
+          "f1": 0.8679245283018869
+        },
+        "GREEN": {
+          "support": 30,
+          "predicted": 34,
+          "precision": 0.8823529411764706,
+          "recall": 1.0,
+          "f1": 0.9375
+        },
+        "GREY": {
+          "support": 10,
+          "predicted": 10,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          30,
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          23,
+          4,
+          0
+        ],
+        [
+          0,
+          0,
+          30,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          10
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "RED",
+        "YELLOW",
+        "GREEN",
+        "GREY"
+      ]
+    }
+  }
+}

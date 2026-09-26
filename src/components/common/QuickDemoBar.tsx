@@ -10,14 +10,25 @@ export function QuickDemoBar() {
   const { currentUser, loginAsDemoUser } = useAuth();
   const [isExpanded, setIsExpanded] = useState(false);
 
+  // Requirement 13: Hide or completely disable the demo quick switcher when DEMO_MODE=false
+  if (
+    process.env.NEXT_PUBLIC_DEMO_MODE === 'false' ||
+    process.env.DEMO_MODE === 'false'
+  ) {
+    return null;
+  }
+
   return (
     <aside aria-label="Demo credentials and account switcher" className="bg-slate-900 border-b border-slate-700 text-slate-200 text-xs py-1.5 px-3">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1 font-semibold text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded-full border border-amber-600/50">
             Hackathon Demo Quick Switcher
           </span>
-          <span className="hidden md:inline text-slate-400">
+          <span className="inline-flex items-center gap-1 font-bold text-amber-300 bg-amber-950/90 px-2.5 py-0.5 rounded-full border border-amber-500/60 text-[10px] tracking-wide">
+            Synthetic Hackathon Demo — No Real Patient Data
+          </span>
+          <span className="hidden lg:inline text-slate-400">
             Active: <strong className="text-white">{currentUser?.fullName || 'Guest'}</strong> (
             <span className="text-[#35C2BD]">{currentUser?.role || 'NONE'}</span>)
           </span>

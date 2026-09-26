@@ -1,0 +1,77 @@
+=================================================================
+  TRIAGEBRIDGE SYMPTOM-PATTERN MODEL EVALUATION REPORT
+=================================================================
+
+Disclaimer: Experimental symptom-pattern classifier — not a diagnosis.
+
+Accuracy:          0.9538 (95.38%)
+Balanced Accuracy: 0.9576 (95.76%)
+Macro F1:          0.9544
+Weighted F1:       0.9524
+
+Classification Report:
+                                 precision    recall  f1-score   support
+
+                           Acne       1.00      1.00      1.00         7
+                        Allergy       0.88      1.00      0.93         7
+                      Arthritis       1.00      1.00      1.00         7
+               Bronchial Asthma       1.00      1.00      1.00         7
+           Cervical Spondylosis       1.00      1.00      1.00         7
+                    Chicken Pox       0.88      1.00      0.93         7
+                    Common Cold       1.00      1.00      1.00         7
+                         Dengue       1.00      0.75      0.86         8
+                       Diabetes       1.00      0.75      0.86         8
+          Dimorphic Hemorrhoids       1.00      1.00      1.00         6
+                  Drug Reaction       1.00      0.86      0.92         7
+               Fungal Infection       1.00      1.00      1.00         8
+Gastroesophageal Reflux Disease       0.70      1.00      0.82         7
+                   Hypertension       0.88      1.00      0.93         7
+                       Impetigo       1.00      1.00      1.00         8
+                       Jaundice       1.00      1.00      1.00         6
+                        Malaria       1.00      1.00      1.00         7
+                       Migraine       1.00      1.00      1.00         7
+           Peptic Ulcer Disease       1.00      0.62      0.77         8
+                      Pneumonia       1.00      1.00      1.00         7
+                      Psoriasis       1.00      1.00      1.00         8
+                        Typhoid       0.88      1.00      0.93         7
+        Urinary Tract Infection       0.89      1.00      0.94         8
+                 Varicose Veins       1.00      1.00      1.00         7
+
+                       accuracy                           0.95       173
+                      macro avg       0.96      0.96      0.95       173
+                   weighted avg       0.96      0.95      0.95       173
+
+
+Misclassified Cases:
+
+Actual: Peptic Ulcer Disease | Predicted: Gastroesophageal Reflux Disease
+Text: I have trouble swallowing, and I frequently feel like food is getting stuck in my throat. I feel bloated and belch constantly. I always get a sour taste in my mouth.
+Differential: [{'class': 'Gastroesophageal Reflux Disease', 'prob': 0.3289}, {'class': 'Peptic Ulcer Disease', 'prob': 0.2755}, {'class': 'Allergy', 'prob': 0.0948}]
+
+Actual: Peptic Ulcer Disease | Predicted: Gastroesophageal Reflux Disease
+Text: I often feel like food is getting caught in my throat and have problems swallowing. I feel bloated and frequently belch. I constantly have a bitter aftertaste.
+Differential: [{'class': 'Gastroesophageal Reflux Disease', 'prob': 0.212}, {'class': 'Peptic Ulcer Disease', 'prob': 0.1667}, {'class': 'Allergy', 'prob': 0.1001}]
+
+Actual: Diabetes | Predicted: Urinary Tract Infection
+Text: I have a frequent need to urinate and often have these uncontrollable urges. I feel dizzy and often confused. I have also been loss of visuals
+Differential: [{'class': 'Urinary Tract Infection', 'prob': 0.2475}, {'class': 'Diabetes', 'prob': 0.1598}, {'class': 'Drug Reaction', 'prob': 0.0904}]
+
+Actual: Dengue | Predicted: Chicken Pox
+Text: I've been suffering from significant joint pain, which makes it difficult for me to walk and carry out my everyday tasks. I've also lost my appetite, which makes me feel weak and feel like vomitting.
+Differential: [{'class': 'Chicken Pox', 'prob': 0.1733}, {'class': 'Dengue', 'prob': 0.1085}, {'class': 'Typhoid', 'prob': 0.0838}]
+
+Actual: Dengue | Predicted: Typhoid
+Text: The vomiting I've been having has been followed by stomach pains and dizziness. I've lost my appetite and as a result feel weak. My arms, back, neck pain most of the time.
+Differential: [{'class': 'Typhoid', 'prob': 0.3431}, {'class': 'Dengue', 'prob': 0.1337}, {'class': 'Peptic Ulcer Disease', 'prob': 0.0596}]
+
+Actual: Peptic Ulcer Disease | Predicted: Gastroesophageal Reflux Disease
+Text: I regularly have trouble swallowing, and I sometimes feel like food is becoming trapped in my throat. I frequently feel bloated and belch. Every time, I have a bad aftertaste.
+Differential: [{'class': 'Gastroesophageal Reflux Disease', 'prob': 0.1494}, {'class': 'Peptic Ulcer Disease', 'prob': 0.1445}, {'class': 'Allergy', 'prob': 0.1167}]
+
+Actual: Drug Reaction | Predicted: Hypertension
+Text: I feel very nauseous and have chest pain. Recently I have been experiencing chest pain. I feel very uneasy and often sweat profusely
+Differential: [{'class': 'Hypertension', 'prob': 0.15}, {'class': 'Drug Reaction', 'prob': 0.1273}, {'class': 'Dengue', 'prob': 0.0931}]
+
+Actual: Diabetes | Predicted: Allergy
+Text: My entire body is trembling and shaky. I've lost my ability to taste and smell, and I'm worn out. I sometimes get a racing heart or palpitations.
+Differential: [{'class': 'Allergy', 'prob': 0.2413}, {'class': 'Diabetes', 'prob': 0.1817}, {'class': 'Drug Reaction', 'prob': 0.1776}]

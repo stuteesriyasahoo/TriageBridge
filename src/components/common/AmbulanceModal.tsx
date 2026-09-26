@@ -80,6 +80,7 @@ export function AmbulanceModal({
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [simulatedCallModal, setSimulatedCallModal] = useState(false);
 
   useEffect(() => {
     setEditableAddress(pickupAddress);
@@ -222,13 +223,14 @@ export function AmbulanceModal({
               </div>
             </div>
           </div>
-          <a
-            href="tel:112"
+          <button
+            type="button"
+            onClick={() => setSimulatedCallModal(true)}
             className="px-4 py-2 rounded-xl bg-white text-red-700 hover:bg-red-50 font-bold text-xs flex items-center gap-2 shadow-sm transition-transform active:scale-95 shrink-0"
           >
             <PhoneCall className="w-4 h-4 fill-current" />
             <span>{t.ambulance.call112Btn}</span>
-          </a>
+          </button>
         </div>
 
         {/* Modal Body */}
@@ -583,6 +585,33 @@ export function AmbulanceModal({
             </div>
           )}
         </div>
+
+        {/* Simulated 112 Call Confirmation Modal */}
+        {simulatedCallModal && (
+          <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-fade-in">
+            <div className="bg-white dark:bg-[#102A43] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-red-200 dark:border-red-900 text-center">
+              <div className="w-12 h-12 mx-auto rounded-full bg-red-100 dark:bg-red-950/50 text-red-600 flex items-center justify-center">
+                <PhoneCall className="w-6 h-6 animate-bounce" />
+              </div>
+              <h3 className="font-bold text-base text-[#102A43] dark:text-white">
+                Simulated 112 Emergency Hotline
+              </h3>
+              <p className="text-xs text-slate-600 dark:text-slate-300">
+                <strong>Demonstration Safety Protocol:</strong> In this hackathon demo, emergency phone dialing is simulated to prevent unintended dispatch to national telecommunication centers.
+              </p>
+              <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-[11px] text-amber-900 dark:text-amber-200">
+                In a real-life emergency, immediately dial <strong>112</strong> or <strong>108</strong> from any phone.
+              </div>
+              <button
+                type="button"
+                onClick={() => setSimulatedCallModal(false)}
+                className="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-all shadow-md"
+              >
+                Return to Triage Session
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
