@@ -53,6 +53,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="TriageBridge" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('tb_theme_v1');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}}catch(e){}})();`,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-[#F7FAFC] dark:bg-[#0B1220] text-[#102A43] dark:text-[#F7FAFC] antialiased" suppressHydrationWarning>
         <ThemeProvider>

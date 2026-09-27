@@ -29,7 +29,7 @@ import {
 
 export default function AppointmentsPage() {
   const { currentUser } = useAuth();
-  const { t } = useLanguage();
+  const { t, formatDate } = useLanguage();
 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [activeTab, setActiveTab] = useState<'UPCOMING' | 'PREVIOUS' | 'ALL'>('UPCOMING');
@@ -386,7 +386,13 @@ END:VCALENDAR`.trim();
                             : 'bg-red-50 text-red-700 border border-red-200'
                         }`}
                       >
-                        {appt.status}
+                        {appt.status === 'UPCOMING'
+                          ? t.appointments.statusUpcoming
+                          : appt.status === 'RESCHEDULED'
+                          ? t.appointments.statusRescheduled
+                          : appt.status === 'COMPLETED'
+                          ? t.appointments.statusCompleted
+                          : t.appointments.statusCancelled}
                       </span>
 
                       {isOffline && (
@@ -412,7 +418,7 @@ END:VCALENDAR`.trim();
                       <span className="flex items-center gap-1">
                         <CalendarIcon className="w-3.5 h-3.5 text-slate-400" />
                         <span>
-                          {appt.appointmentDate} at {appt.appointmentTime}
+                          {formatDate(appt.appointmentDate)} at {appt.appointmentTime}
                         </span>
                       </span>
                       <span className="flex items-center gap-1">

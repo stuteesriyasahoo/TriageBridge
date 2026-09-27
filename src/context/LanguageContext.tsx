@@ -22,6 +22,7 @@ export interface LanguageContextType {
   currentLanguageMeta: LanguageMeta;
   formatDate: (date: Date | string | number) => string;
   formatTime: (date: Date | string | number) => string;
+  formatDateTime: (date: Date | string | number) => string;
   formatNumber: (num: number) => string;
 }
 
@@ -36,6 +37,7 @@ const LanguageContext = createContext<LanguageContextType>({
   currentLanguageMeta: defaultMeta,
   formatDate: (d) => String(d),
   formatTime: (d) => String(d),
+  formatDateTime: (d) => String(d),
   formatNumber: (n) => String(n),
 });
 
@@ -49,6 +51,15 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   // Initialize on mount
   useEffect(() => {
     try {
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLang = urlParams.get('lang') as SupportedLocale | null;
+        if (urlLang && SUPPORTED_LANGUAGES.some((lang) => lang.code === urlLang)) {
+          setLocaleState(urlLang);
+          localStorage.setItem(LANGUAGE_KEY, urlLang);
+          return;
+        }
+      }
       const saved = localStorage.getItem(LANGUAGE_KEY) as SupportedLocale | null;
       if (saved && SUPPORTED_LANGUAGES.some((lang) => lang.code === saved)) {
         setLocaleState(saved);
@@ -101,14 +112,22 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const isRTL = currentLanguageMeta.direction === 'rtl';
   const t = getTranslations(locale);
 
-  // Indian Date, Time, and Number formatting
+  const getIntlLocale = (loc: SupportedLocale): string => {
+    if (loc === 'or') return 'or-IN';
+    if (loc === 'hi') return 'hi-IN';
+    if (loc === 'en') return 'en-IN';
+    return currentLanguageMeta.bcp47 || 'en-IN';
+  };
+
+  // Localized Date, Time, and Number formatting
   const formatDate = (date: Date | string | number): string => {
     try {
       const d = new Date(date);
       if (isNaN(d.getTime())) return String(date);
-      return new Intl.DateTimeFormat('en-IN', {
+      const intlLoc = getIntlLocale(locale);
+      return new Intl.DateTimeFormat(intlLoc, {
         day: '2-digit',
-        month: '2-digit',
+        month: 'short',
         year: 'numeric',
       }).format(d);
     } catch {
@@ -120,7 +139,26 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     try {
       const d = new Date(date);
       if (isNaN(d.getTime())) return String(date);
-      return new Intl.DateTimeFormat('en-IN', {
+      const intlLoc = getIntlLocale(locale);
+      return new Intl.DateTimeFormat(intlLoc, {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      }).format(d);
+    } catch {
+      return String(date);
+    }
+  };
+
+  const formatDateTime = (date: Date | string | number): string => {
+    try {
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return String(date);
+      const intlLoc = getIntlLocale(locale);
+      return new Intl.DateTimeFormat(intlLoc, {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
         hour12: true,
@@ -132,7 +170,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const formatNumber = (num: number): string => {
     try {
-      return new Intl.NumberFormat('en-IN').format(num);
+      const intlLoc = getIntlLocale(locale);
+      return new Intl.NumberFormat(intlLoc).format(num);
     } catch {
       return String(num);
     }
@@ -149,6 +188,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         currentLanguageMeta,
         formatDate,
         formatTime,
+        formatDateTime,
         formatNumber,
       }}
     >

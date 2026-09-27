@@ -4,6 +4,8 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 
+import { SridaAssistant } from '@/components/patient/SridaAssistant';
+
 export default function PatientLayout({
   children,
 }: {
@@ -34,5 +36,10 @@ export default function PatientLayout({
     );
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <SridaAssistant />
+    </>
+  );
 }

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test:roles": "node scripts/test_role_isolation.mjs"
+    "test:roles": "node scripts/test_role_isolation.mjs",
+    "test:i18n": "node scripts/test_translation_parity.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.47.0",

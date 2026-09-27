@@ -7,6 +7,7 @@ import { useLanguage } from '../../../context/LanguageContext';
 import { dataStore } from '../../../lib/store';
 import { TriageCase, HealthcareWorkerProfile } from '../../../lib/types';
 import { UrgencyBadge } from '../../../components/common/UrgencyBadge';
+import { translateCaseStatus } from '../../../lib/clinical-safety-translations';
 import {
   Activity,
   Layers,
@@ -164,11 +165,11 @@ export default function HealthcareDashboard() {
                 onChange={e => setUrgencyFilter(e.target.value)}
                 className="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-medium"
               >
-                <option value="ALL">All Urgencies</option>
-                <option value="RED">RED Only</option>
-                <option value="YELLOW">YELLOW Only</option>
-                <option value="GREEN">GREEN Only</option>
-                <option value="GREY">GREY Only</option>
+                <option value="ALL">{t.reviewer.allUrgency}</option>
+                <option value="RED">{t.urgency.redShort}</option>
+                <option value="YELLOW">{t.urgency.yellowShort}</option>
+                <option value="GREEN">{t.urgency.greenShort}</option>
+                <option value="GREY">{t.urgency.greyShort}</option>
               </select>
             </div>
           </div>
@@ -211,7 +212,7 @@ export default function HealthcareDashboard() {
                     </td>
                     <td className="px-4 py-3">
                       <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                        {item.status.replace(/_/g, ' ')}
+                        {translateCaseStatus(item.status, t)}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">

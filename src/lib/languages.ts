@@ -217,7 +217,7 @@ export const SUPPORTED_LANGUAGES: LanguageMeta[] = [
     script: 'Odia',
     direction: 'ltr',
     bcp47: 'or-IN',
-    speechRecognitionSupported: false,
+    speechRecognitionSupported: true,
     textToSpeechSupported: true,
     sampleSymptom: 'ସକାଳୁ ଛାତିରେ ପ୍ରବଳ ଯନ୍ତ୍ରଣା ହେଉଛି, ବାମ ହାତକୁ ବ୍ୟାପୁଛି ଏବଂ ନିଶ୍ୱାସ ନେବାରେ ଘୋର କଷ୍ଟ ହେଉଛି।',
     sampleComplaint: 'ଛାତିରେ ଗୁରୁତର ଯନ୍ତ୍ରଣା ଓ ଶ୍ୱାସକଷ୍ଟ',

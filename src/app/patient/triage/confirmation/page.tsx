@@ -23,12 +23,12 @@ function ConfirmationContent() {
 
       <div className="space-y-2">
         <h1 className="text-2xl font-bold text-[#102A43] dark:text-white">
-          {isOffline ? 'Triage Saved Securely Offline' : t.triage.caseSubmitted}
+          {isOffline ? t.triageConfirmation.offlineTitle : t.triage.caseSubmitted}
         </h1>
         <p className="text-xs text-slate-500 dark:text-slate-400">
           {isOffline
-            ? 'Your triage assessment is safely stored in IndexedDB. It will submit automatically when your network reconnects.'
-            : 'Your symptoms and multimodal records are now in the clinical review queue.'}
+            ? t.triageConfirmation.offlineDesc
+            : t.triageConfirmation.onlineDesc}
         </p>
       </div>
 
@@ -37,16 +37,16 @@ function ConfirmationContent() {
           <div className="flex items-center justify-between">
             <span className="font-bold flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
-              <span>Status: Saved Offline / Waiting to Synchronize</span>
+              <span>{t.triageConfirmation.offlineStatus}</span>
             </span>
           </div>
           {idempotencyKey && (
             <div className="font-mono text-[11px] text-amber-800 dark:text-amber-300">
-              Idempotency Key: <span className="font-semibold">{idempotencyKey}</span>
+              {t.triageConfirmation.idempotencyKeyLabel} <span className="font-semibold">{idempotencyKey}</span>
             </div>
           )}
           <p className="text-[11px] text-amber-800/80 dark:text-amber-300/80">
-            Duplicate prevention is active. The system will never submit multiple copies of this case.
+            {t.triageConfirmation.dedupNotice}
           </p>
         </div>
       )}
@@ -63,7 +63,7 @@ function ConfirmationContent() {
       <div className="p-3.5 rounded-xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-900/60 text-xs text-teal-900 dark:text-teal-200 flex items-start gap-2.5 text-left">
         <ShieldCheck className="w-4 h-4 text-[#0F8B8D] shrink-0 mt-0.5" />
         <p className="leading-relaxed">
-          {t.brand.medicalNotice} A doctor or authorized triage nurse at the facility will verify your case shortly.
+          {t.brand.medicalNotice} {t.triageConfirmation.nurseReviewNotice}
         </p>
       </div>
 
@@ -80,7 +80,7 @@ function ConfirmationContent() {
         <button
           type="button"
           onClick={() => router.push('/patient/dashboard')}
-          className="flex-1 py-3 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors"
+          className="flex-1 py-3 px-4 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors"
         >
           <Home className="w-4 h-4" />
           <span>{t.triage.backHomeBtn}</span>
@@ -91,9 +91,10 @@ function ConfirmationContent() {
 }
 
 export default function TriageConfirmationPage() {
+  const { t } = useLanguage();
   return (
-    <div className="flex-1 bg-[#F7FAFC] py-12 px-4 flex flex-col justify-center items-center">
-      <Suspense fallback={<div className="text-xs text-slate-500">Loading confirmation...</div>}>
+    <div className="flex-1 bg-[#F7FAFC] dark:bg-slate-900 py-12 px-4 flex flex-col justify-center items-center">
+      <Suspense fallback={<div className="text-xs text-slate-500 dark:text-slate-400">{t.common.loading}</div>}>
         <ConfirmationContent />
       </Suspense>
     </div>

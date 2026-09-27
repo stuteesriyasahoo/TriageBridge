@@ -176,6 +176,7 @@ export interface ExtractedReportData {
   id: string;
   reportId: string;
   rawOcrText: string;
+  confirmedText?: string;
   suggestedPatientName?: string;
   suggestedDoctorName?: string;
   suggestedHospitalName?: string;
@@ -186,6 +187,14 @@ export interface ExtractedReportData {
   suggestedDocumentType?: DocumentCategory;
   extractedLabValues: Record<string, string>;
   ocrConfidence: number;
+  overallConfidence?: number;
+  confidenceScore?: number;
+  lowConfidenceFields?: string[];
+  clinicalSummary?: string;
+  detectedLanguage?: 'en' | 'hi' | 'or';
+  detectedLanguageName?: string;
+  ocrStatus?: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CONFIRMED';
+  preprocessingMetrics?: any;
   isConfirmedByPatient: boolean;
 }
 
@@ -384,11 +393,21 @@ export interface HealthDocument {
   fileSizeBytes: number;
   mimeType: string;
   filePreviewUrl?: string;
+  fileUri?: string;
   secureFilePath?: string;
   signedUrlExpiresAt?: string;
   ocrExtractedMetadata?: Record<string, string>;
+  extractedData?: {
+    extractedLabValues?: Record<string, string>;
+    clinicalSummary?: string;
+  };
+  rawOcrText?: string;
+  confirmedText?: string;
+  ocrConfidence?: number;
+  ocrStatus?: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CONFIRMED' | 'EXTRACTION_COMPLETE';
+  verificationStatus?: 'VERIFIED' | 'UNVERIFIED' | 'PENDING_REVIEW' | 'FLAGGED';
   isVerifiedByPatient: boolean;
-  syncStatus?: OfflineSyncStatus;
+  syncStatus?: OfflineSyncStatus | 'PENDING_SYNC';
   idempotencyKey?: string;
 }
 

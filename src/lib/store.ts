@@ -466,13 +466,33 @@ export const dataStore = {
   // --- DOCUMENTS (Vault) ---
   getDocuments(ownerId?: string): HealthDocument[] {
     const all = safeGet<HealthDocument[]>(STORAGE_KEYS.DOCUMENTS, INITIAL_HEALTH_DOCUMENTS);
-    if (!ownerId) return all;
-    return all.filter(d => d.ownerId === ownerId);
+    // Sort latest first (uploadDate or documentDate descending)
+    const sorted = [...all].sort((a, b) => {
+      const timeA = new Date(a.uploadDate || a.documentDate || 0).getTime();
+      const timeB = new Date(b.uploadDate || b.documentDate || 0).getTime();
+      return timeB - timeA;
+    });
+    if (!ownerId) return sorted;
+    return sorted.filter(d => d.ownerId === ownerId);
   },
 
   getDocumentById(id: string): HealthDocument | undefined {
     const all = this.getDocuments();
     return all.find(d => d.id === id);
+  },
+
+  getSignedDocumentUrl(docOrId: HealthDocument | string, durationSeconds: number = 3600): string {
+    const doc = typeof docOrId === 'string' ? this.getDocumentById(docOrId) : docOrId;
+    if (!doc) return '/api/vault/document';
+    if (doc.filePreviewUrl && (doc.filePreviewUrl.startsWith('data:') || doc.filePreviewUrl.startsWith('blob:'))) {
+      return doc.filePreviewUrl;
+    }
+    // Generate secure authenticated signed token URL
+    const expires = Date.now() + durationSeconds * 1000;
+    const token = typeof window !== 'undefined'
+      ? btoa(`${doc.id}:${doc.ownerId}:${expires}`)
+      : Buffer.from(`${doc.id}:${doc.ownerId}:${expires}`).toString('base64');
+    return `/api/vault/document?docId=${encodeURIComponent(doc.id)}&expires=${expires}&sig=${encodeURIComponent(token)}`;
   },
 
   addDocument(doc: HealthDocument): void {

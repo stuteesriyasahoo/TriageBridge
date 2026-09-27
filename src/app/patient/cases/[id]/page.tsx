@@ -8,21 +8,21 @@ import { dataStore } from '../../../../lib/store';
 import { TriageCase } from '../../../../lib/types';
 import { UrgencyBadge } from '../../../../components/common/UrgencyBadge';
 import {
+  translateCaseStatus,
+  translateSyncStatus,
+  translateWarningSign,
+  getTranslatedPatientStatement,
+} from '../../../../lib/clinical-safety-translations';
+import {
   ArrowLeft,
-  Clock,
-  CheckCircle2,
   Stethoscope,
-  Activity,
-  FileText,
-  AlertTriangle,
   Info,
-  Calendar,
 } from 'lucide-react';
 
 export default function PatientCaseDetailPage() {
   const { id } = useParams() as { id: string };
   const { currentUser } = useAuth();
-  const { t, locale } = useLanguage();
+  const { t, locale, currentLanguageMeta, formatDateTime, formatDate } = useLanguage();
   const router = useRouter();
 
   const [triageCase, setTriageCase] = useState<TriageCase | null>(null);
@@ -40,12 +40,12 @@ export default function PatientCaseDetailPage() {
     return (
       <div className="flex-1 bg-[#F7FAFC] py-12 px-4 flex items-center justify-center">
         <div className="text-center space-y-3">
-          <p className="text-sm text-slate-500">Loading case details...</p>
+          <p className="text-sm text-slate-500">{t.cases.loadingCase}</p>
           <button
             onClick={() => router.push('/patient/cases')}
             className="text-xs text-[#0F8B8D] font-semibold hover:underline"
           >
-            Back to Cases
+            {t.cases.backToCases}
           </button>
         </div>
       </div>
@@ -62,7 +62,7 @@ export default function PatientCaseDetailPage() {
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-[#0F8B8D] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to My Cases</span>
+          <span>{t.cases.backToCases}</span>
         </button>
 
         {/* Case Header Card */}
@@ -74,16 +74,16 @@ export default function PatientCaseDetailPage() {
                   {triageCase.caseNumber}
                 </span>
                 <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-slate-100 text-slate-700 uppercase">
-                  {triageCase.status.replace(/_/g, ' ')}
+                  {translateCaseStatus(triageCase.status, t)}
                 </span>
               </div>
               <span className="text-xs text-slate-400 mt-1 block">
-                Submitted on {new Date(triageCase.submittedAt).toLocaleString()}
+                {t.cases.submittedOn} {formatDateTime(triageCase.submittedAt)}
               </span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-500">Urgency:</span>
+              <span className="text-xs text-slate-500">{t.cases.urgencyLabel}</span>
               <UrgencyBadge
                 urgency={triageCase.finalUrgency || triageCase.provisionalUrgency}
                 size="md"
@@ -93,7 +93,7 @@ export default function PatientCaseDetailPage() {
 
           <div>
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">
-              Chief Complaint
+              {t.cases.chiefComplaint}
             </span>
             <p className="text-sm font-semibold text-[#102A43]">
               {triageCase.chiefComplaint}
@@ -103,7 +103,7 @@ export default function PatientCaseDetailPage() {
           {triageCase.syncStatus && (
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs">
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-slate-700">Storage &amp; Sync:</span>
+                <span className="font-semibold text-slate-700">{t.cases.storageAndSync}</span>
                 <span
                   className={`px-2.5 py-0.5 rounded-full font-bold text-[11px] ${
                     triageCase.syncStatus === 'SUCCESSFULLY_SYNCHRONIZED'
@@ -111,12 +111,12 @@ export default function PatientCaseDetailPage() {
                       : 'bg-amber-50 text-amber-800 border border-amber-300'
                   }`}
                 >
-                  {triageCase.syncStatus.replace(/_/g, ' ')}
+                  {translateSyncStatus(triageCase.syncStatus, t)}
                 </span>
               </div>
               {triageCase.idempotencyKey && (
                 <div className="font-mono text-[11px] text-slate-500">
-                  Idempotency Key: <span className="font-semibold">{triageCase.idempotencyKey}</span>
+                  {t.cases.idempotencyKey} <span className="font-semibold">{triageCase.idempotencyKey}</span>
                 </div>
               )}
             </div>
@@ -129,22 +129,22 @@ export default function PatientCaseDetailPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-emerald-800 font-bold text-sm">
                 <Stethoscope className="w-5 h-5 text-emerald-600" />
-                <span>Doctor / Clinician Review Verified</span>
+                <span>{t.cases.doctorReviewVerified}</span>
               </div>
               <span className="text-xs text-emerald-700 font-mono">
-                {new Date(triageCase.clinicalReview.reviewedAt).toLocaleDateString()}
+                {formatDate(triageCase.clinicalReview.reviewedAt)}
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
               <div>
-                <span className="text-slate-500">Reviewer:</span>
+                <span className="text-slate-500">{t.cases.reviewer}</span>
                 <div className="font-bold text-slate-800">
                   {triageCase.clinicalReview.reviewerName} ({triageCase.clinicalReview.reviewerRole})
                 </div>
               </div>
               <div>
-                <span className="text-slate-500">Medical Reg No:</span>
+                <span className="text-slate-500">{t.cases.medicalRegNo}</span>
                 <div className="font-mono text-slate-800">
                   {triageCase.clinicalReview.reviewerRegNumber}
                 </div>
@@ -152,7 +152,7 @@ export default function PatientCaseDetailPage() {
             </div>
 
             <div className="p-3 bg-white rounded-xl border border-emerald-200 text-xs text-slate-800 space-y-1">
-              <span className="font-bold text-emerald-900">Clinical Action &amp; Instructions:</span>
+              <span className="font-bold text-emerald-900">{t.cases.clinicalActionInstructions}</span>
               <p className="leading-relaxed">{triageCase.clinicalReview.actionTaken}</p>
             </div>
           </div>
@@ -160,23 +160,48 @@ export default function PatientCaseDetailPage() {
 
         {/* Input Details: Statement, Audio, Vitals */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Statement & Voice */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-3 text-xs">
+          {/* Statement & Voice - Preserves original statement and displays translated display separately */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4 text-xs">
             <span className="font-bold text-[#102A43] text-sm block">
-              Patient Input Evidence
+              {t.cases.patientInputEvidence}
             </span>
 
+            {/* Field 1: Original Statement (Verbatim text/transcript submitted by patient) */}
             <div className="space-y-1">
-              <span className="text-slate-500 font-medium">Original Statement:</span>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500 font-semibold">{t.cases.originalStatement}</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">
+                  {triageCase.originalLanguage ? triageCase.originalLanguage.toUpperCase() : 'RAW'}
+                </span>
+              </div>
               <p className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 text-slate-700 italic">
                 &quot;{triageCase.originalStatement}&quot;
               </p>
             </div>
 
+            {/* Field 2: Translated Display (Separate translated version in active interface language) */}
+            <div className="space-y-1 pt-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[#0F8B8D] font-semibold">
+                  {t.cases.translatedDisplay} ({currentLanguageMeta.nameNative}):
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-50 text-[#0F8B8D] border border-teal-200 font-medium">
+                  {locale.toUpperCase()}
+                </span>
+              </div>
+              <p className="p-2.5 rounded-lg bg-teal-50/50 border border-teal-100 text-slate-800 leading-relaxed">
+                &quot;{getTranslatedPatientStatement(
+                  triageCase.originalStatement,
+                  locale,
+                  triageCase.translatedEnglishStatement
+                )}&quot;
+              </p>
+            </div>
+
             {triageCase.voiceTranscript && (
-              <div className="space-y-1">
-                <span className="text-slate-500 font-medium">Voice Transcription:</span>
-                <p className="p-2.5 rounded-lg bg-teal-50/50 border border-teal-100 text-slate-700 italic">
+              <div className="space-y-1 pt-1">
+                <span className="text-slate-500 font-medium">{t.cases.voiceTranscription}</span>
+                <p className="p-2.5 rounded-lg bg-slate-50/80 border border-slate-200 text-slate-700 italic">
                   &quot;{triageCase.voiceTranscript}&quot;
                 </p>
               </div>
@@ -186,37 +211,39 @@ export default function PatientCaseDetailPage() {
           {/* Vitals & Red Flags */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-3 text-xs">
             <span className="font-bold text-[#102A43] text-sm block">
-              Recorded Vital Signs
+              {t.cases.recordedVitalSigns}
             </span>
 
             {triageCase.vitals ? (
               <div className="grid grid-cols-2 gap-2 text-slate-700">
-                <div className="p-2 bg-slate-50 rounded-lg border">
-                  BP: <strong>{triageCase.vitals.systolicBp}/{triageCase.vitals.diastolicBp} mmHg</strong>
+                <div className="p-2 bg-slate-50 rounded-lg border border-slate-200">
+                  {t.cases.bp}: <strong>{triageCase.vitals.systolicBp}/{triageCase.vitals.diastolicBp} mmHg</strong>
                 </div>
-                <div className="p-2 bg-slate-50 rounded-lg border">
-                  SpO2: <strong className={triageCase.vitals.oxygenSaturation && triageCase.vitals.oxygenSaturation < 90 ? 'text-red-600 font-bold' : ''}>
+                <div className="p-2 bg-slate-50 rounded-lg border border-slate-200">
+                  {t.cases.spo2}: <strong className={triageCase.vitals.oxygenSaturation && triageCase.vitals.oxygenSaturation < 90 ? 'text-red-600 font-bold' : ''}>
                     {triageCase.vitals.oxygenSaturation}%
                   </strong>
                 </div>
-                <div className="p-2 bg-slate-50 rounded-lg border">
-                  HR: <strong>{triageCase.vitals.heartRate} bpm</strong>
+                <div className="p-2 bg-slate-50 rounded-lg border border-slate-200">
+                  {t.cases.hr}: <strong>{triageCase.vitals.heartRate} bpm</strong>
                 </div>
-                <div className="p-2 bg-slate-50 rounded-lg border">
-                  Temp: <strong>{triageCase.vitals.temperatureCelsius}°C</strong>
+                <div className="p-2 bg-slate-50 rounded-lg border border-slate-200">
+                  {t.cases.temp}: <strong>{triageCase.vitals.temperatureCelsius}°C</strong>
                 </div>
               </div>
             ) : (
-              <p className="text-slate-400">No vitals provided at time of triage.</p>
+              <p className="text-slate-400">{t.cases.noVitalsProvided}</p>
             )}
 
             {triageCase.redFlags && triageCase.redFlags.length > 0 && (
               <div className="pt-2">
-                <span className="font-bold text-red-700 block mb-1">Triggered Warning Signs:</span>
+                <span className="font-bold text-red-700 block mb-1">
+                  {t.cases.triggeredWarningSigns}
+                </span>
                 <div className="space-y-1">
                   {triageCase.redFlags.map(rf => (
                     <div key={rf.id} className="p-2 rounded bg-red-50 text-red-800 text-[11px] font-medium border border-red-200">
-                      {rf.name}
+                      {translateWarningSign(rf.name, locale)}
                     </div>
                   ))}
                 </div>

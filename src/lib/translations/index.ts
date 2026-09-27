@@ -51,18 +51,42 @@ export const translations: Record<SupportedLocale, typeof en> = {
 
 function createFallbackProxy<T extends object>(
   target: Record<string, unknown> | undefined,
-  fallback: Record<string, unknown> | undefined
+  fallback: Record<string, unknown> | undefined,
+  locale: string,
+  path = ''
 ): T {
   return new Proxy((target || {}) as object, {
-    get(obj, prop: string) {
+    get(obj, prop: string | symbol) {
+      if (typeof prop !== 'string') {
+        return (obj as Record<string | symbol, unknown>)[prop];
+      }
       const targetObj = obj as Record<string, unknown>;
       const val = targetObj[prop];
       const fallbackVal = fallback ? fallback[prop] : undefined;
+      const currentPath = path ? `${path}.${prop}` : prop;
+
       if (val === undefined || val === null || val === '') {
-        return fallbackVal;
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn(`[i18n Warning] Missing translation key: "${currentPath}" for locale: "${locale}"`);
+        }
+        if (typeof fallbackVal === 'object' && fallbackVal !== null && !Array.isArray(fallbackVal)) {
+          return createFallbackProxy(
+            undefined,
+            fallbackVal as Record<string, unknown>,
+            locale,
+            currentPath
+          );
+        }
+        return fallbackVal !== undefined ? fallbackVal : `[MISSING: ${currentPath}]`;
       }
+
       if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
-        return createFallbackProxy(val as Record<string, unknown>, fallbackVal as Record<string, unknown>);
+        return createFallbackProxy(
+          val as Record<string, unknown>,
+          fallbackVal as Record<string, unknown>,
+          locale,
+          currentPath
+        );
       }
       return val;
     },
@@ -74,5 +98,6 @@ export function getTranslations(locale: SupportedLocale): typeof en {
   if (!selected || locale === 'en') {
     return en;
   }
-  return createFallbackProxy<typeof en>(selected, en);
+  return createFallbackProxy<typeof en>(selected, en, locale);
 }
+

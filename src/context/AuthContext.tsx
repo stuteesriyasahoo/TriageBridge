@@ -62,16 +62,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setCurrentUser(parsed);
         setAuthCookies(parsed.role, parsed.id);
       } else {
-        // Default to demo patient (Ramesh Nayak) so the app is immediately navigable for reviewers
-        const defaultUser = DEMO_PATIENTS[0];
-        setCurrentUser(defaultUser);
-        setAuthCookies(defaultUser.role, defaultUser.id);
-        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(defaultUser));
+        setCurrentUser(null);
+        setAuthCookies(null, null);
       }
     } catch {
-      const fallbackUser = DEMO_PATIENTS[0];
-      setCurrentUser(fallbackUser);
-      setAuthCookies(fallbackUser.role, fallbackUser.id);
+      setCurrentUser(null);
+      setAuthCookies(null, null);
     } finally {
       setIsLoading(false);
     }

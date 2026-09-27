@@ -503,6 +503,11 @@ export const INITIAL_HEALTH_DOCUMENTS: HealthDocument[] = [
     fileName: 'Angul_DHH_Discharge_Summary_Aug2026.pdf',
     fileSizeBytes: 654000,
     mimeType: 'application/pdf',
+    ocrStatus: 'CONFIRMED',
+    verificationStatus: 'VERIFIED',
+    ocrConfidence: 0.95,
+    rawOcrText: 'DISTRICT HEADQUARTERS HOSPITAL, ANGUL\nDISCHARGE SUMMARY\nPatient: Ramesh Nayak | 48/M\nDiagnosis: Acute Bronchitis with Essential Hypertension\nDischarge Meds: Tab Amlodipine 5mg OD, Syp Ambroxol',
+    confirmedText: 'Patient: Ramesh Nayak (48/M) | Diagnosis: Acute Bronchitis with Essential Hypertension | Meds: Tab Amlodipine 5mg OD, Syp Ambroxol',
     ocrExtractedMetadata: {
       'Patient Name': 'Ramesh Nayak',
       'Age/Gender': '48/M',
@@ -510,6 +515,7 @@ export const INITIAL_HEALTH_DOCUMENTS: HealthDocument[] = [
       'Discharge Meds': 'Tab Amlodipine 5mg OD, Syp Ambroxol',
     },
     isVerifiedByPatient: true,
+    syncStatus: 'SUCCESSFULLY_SYNCHRONIZED',
   },
   {
     id: 'doc-002',
@@ -524,6 +530,11 @@ export const INITIAL_HEALTH_DOCUMENTS: HealthDocument[] = [
     fileName: 'Lipid_Panel_RameshNayak.pdf',
     fileSizeBytes: 420000,
     mimeType: 'application/pdf',
+    ocrStatus: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    ocrConfidence: 0.92,
+    rawOcrText: 'CENTRAL PATHOLOGY LABORATORY, ANGUL\nPatient: Ramesh Nayak\nFBS: 112 mg/dL | Total Cholesterol: 218 mg/dL | Triglycerides: 182 mg/dL',
+    confirmedText: 'FBS: 112 mg/dL | Total Cholesterol: 218 mg/dL | Triglycerides: 182 mg/dL | HDL: 42 mg/dL | LDL: 140 mg/dL',
     ocrExtractedMetadata: {
       'Fasting Blood Sugar': '112 mg/dL (Borderline)',
       'Total Cholesterol': '218 mg/dL',
@@ -532,6 +543,7 @@ export const INITIAL_HEALTH_DOCUMENTS: HealthDocument[] = [
       'LDL': '140 mg/dL',
     },
     isVerifiedByPatient: true,
+    syncStatus: 'SUCCESSFULLY_SYNCHRONIZED',
   },
   {
     id: 'doc-003',
@@ -546,11 +558,17 @@ export const INITIAL_HEALTH_DOCUMENTS: HealthDocument[] = [
     fileName: 'SCB_Chest_XRay_SunitaSharma.png',
     fileSizeBytes: 890000,
     mimeType: 'image/png',
+    ocrStatus: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    ocrConfidence: 0.89,
+    rawOcrText: 'SCB MEDICAL COLLEGE - RADIODIAGNOSIS\nPatient: Sunita Sharma\nDigital Chest X-Ray (PA View)\nImpression: Prominent bronchovascular markings, no pleural effusion',
+    confirmedText: 'Digital Chest X-Ray: Prominent bronchovascular markings, no pleural effusion. Cardiac silhouette normal.',
     ocrExtractedMetadata: {
       'Impression': 'Prominent bronchovascular markings, no pleural effusion',
       'Cardiac Silhouette': 'Normal',
     },
     isVerifiedByPatient: true,
+    syncStatus: 'SUCCESSFULLY_SYNCHRONIZED',
   },
 ];
 

@@ -6,6 +6,7 @@ import { useLanguage } from '../../../context/LanguageContext';
 import { dataStore } from '../../../lib/store';
 import { TriageCase, UrgencyCategory } from '../../../lib/types';
 import { UrgencyBadge } from '../../../components/common/UrgencyBadge';
+import { translateCaseStatus } from '../../../lib/clinical-safety-translations';
 import {
   Layers,
   Search,
@@ -175,7 +176,7 @@ export default function PriorityQueuePage() {
 
                       <td className="px-4 py-3">
                         <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                          {item.status.replace(/_/g, ' ')}
+                          {translateCaseStatus(item.status, t)}
                         </span>
                       </td>
 

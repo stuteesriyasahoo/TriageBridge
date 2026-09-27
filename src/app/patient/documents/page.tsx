@@ -294,18 +294,18 @@ ${JSON.stringify(doc.ocrExtractedMetadata, null, 2)}
   };
 
   return (
-    <div className="flex-1 bg-[#F7FAFC] py-8 px-4 sm:px-6 lg:px-8">
+    <div className="flex-1 bg-[#F7FAFC] dark:bg-slate-900 py-8 px-4 sm:px-6 lg:px-8 transition-colors">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <FolderLock className="w-6 h-6 text-[#0F8B8D]" />
-              <h1 className="text-2xl font-bold text-[#102A43]">
+              <FolderLock className="w-6 h-6 text-[#0F8B8D] dark:text-teal-400" />
+              <h1 className="text-2xl font-bold text-[#102A43] dark:text-white">
                 {t.vault.title}
               </h1>
             </div>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
               {t.vault.subtitle}
             </p>
           </div>
@@ -314,9 +314,9 @@ ${JSON.stringify(doc.ocrExtractedMetadata, null, 2)}
             <button
               type="button"
               onClick={() => router.push('/patient/documents/sharing')}
-              className="py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+              className="py-2.5 px-4 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
             >
-              <Share2 className="w-4 h-4 text-[#0F8B8D]" />
+              <Share2 className="w-4 h-4 text-[#0F8B8D] dark:text-teal-400" />
               <span>{t.vault.shareManager}</span>
             </button>
 
@@ -337,13 +337,13 @@ ${JSON.stringify(doc.ocrExtractedMetadata, null, 2)}
 
         {/* AI Disclaimer & Zero-Trust Notice */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="p-3.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-900 text-xs flex items-center gap-2.5">
-            <Sparkles className="w-4 h-4 text-[#0F8B8D] shrink-0" />
+          <div className="p-3.5 rounded-xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-teal-900 dark:text-teal-200 text-xs flex items-center gap-2.5">
+            <Sparkles className="w-4 h-4 text-[#0F8B8D] dark:text-teal-400 shrink-0" />
             <span className="font-medium">{t.vault.aiExtractionDisclaimer}</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 text-xs flex items-center gap-2.5">
-            <Lock className="w-4 h-4 text-slate-500 shrink-0" />
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs flex items-center gap-2.5">
+            <Lock className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" />
             <span>
               Private by default. Healthcare workers only see records explicitly shared.
             </span>
@@ -351,8 +351,8 @@ ${JSON.stringify(doc.ocrExtractedMetadata, null, 2)}
         </div>
 
         {toastMessage && (
-          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2 animate-fade-in shadow-xs">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs flex items-center gap-2 animate-fade-in shadow-xs">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span className="font-semibold">{toastMessage}</span>
           </div>
         )}
@@ -367,11 +367,11 @@ ${JSON.stringify(doc.ocrExtractedMetadata, null, 2)}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder={t.vault.searchPlaceholder}
-                className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs focus:outline-hidden focus:ring-2 focus:ring-[#0F8B8D]/30 bg-white"
+                className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 text-xs focus:outline-hidden focus:ring-2 focus:ring-[#0F8B8D]/30 bg-white dark:bg-slate-800 text-slate-800 dark:text-white"
               />
             </div>
 
-            <div className="text-xs text-slate-500 font-medium">
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">
               Showing {filteredDocs.length} of {documents.length} records
             </div>
           </div>
@@ -383,8 +383,8 @@ ${JSON.stringify(doc.ocrExtractedMetadata, null, 2)}
               onClick={() => setSelectedCategory('ALL')}
               className={`px-3 py-1.5 rounded-xl whitespace-nowrap font-medium transition-all ${
                 selectedCategory === 'ALL'
-                  ? 'bg-[#102A43] text-white shadow-2xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? 'bg-[#102A43] dark:bg-teal-600 text-white shadow-2xs'
+                  : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
               }`}
             >
               {t.vault.allCategories}
@@ -397,8 +397,8 @@ ${JSON.stringify(doc.ocrExtractedMetadata, null, 2)}
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-3 py-1.5 rounded-xl whitespace-nowrap font-medium transition-all ${
                   selectedCategory === cat
-                    ? 'bg-[#102A43] text-white shadow-2xs'
-                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                    ? 'bg-[#102A43] dark:bg-teal-600 text-white shadow-2xs'
+                    : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
                 }`}
               >
                 {getCategoryLabel(cat)}
@@ -415,36 +415,36 @@ ${JSON.stringify(doc.ocrExtractedMetadata, null, 2)}
               return (
                 <div
                   key={doc.id}
-                  className="bg-white rounded-2xl border border-slate-200 hover:border-[#0F8B8D] p-5 shadow-xs flex flex-col justify-between space-y-4 group transition-all"
+                  className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-[#0F8B8D] dark:hover:border-teal-500 p-5 shadow-xs flex flex-col justify-between space-y-4 group transition-all"
                 >
                   <div className="space-y-2.5">
                     <div className="flex items-start justify-between gap-2">
-                      <div className="w-10 h-10 rounded-xl bg-teal-50 text-[#0F8B8D] flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-[#0F8B8D] dark:text-teal-400 flex items-center justify-center shrink-0">
                         <FileText className="w-5 h-5" />
                       </div>
 
                       <div className="flex flex-col items-end gap-1">
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
                           {getCategoryLabel(doc.category)}
                         </span>
                         {isOffline && (
-                          <span className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
-                            <CloudOff className="w-2.5 h-2.5 text-amber-600" />
+                          <span className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-800">
+                            <CloudOff className="w-2.5 h-2.5 text-amber-600 dark:text-amber-400" />
                             <span>Saved Locally</span>
                           </span>
                         )}
                       </div>
                     </div>
 
-                    <h3 className="text-sm font-bold text-[#102A43] group-hover:text-[#0F8B8D] line-clamp-2">
+                    <h3 className="text-sm font-bold text-[#102A43] dark:text-white group-hover:text-[#0F8B8D] dark:group-hover:text-teal-400 line-clamp-2">
                       {doc.title}
                     </h3>
 
-                    <div className="text-[11px] text-slate-500 space-y-0.5">
+                    <div className="text-[11px] text-slate-500 dark:text-slate-400 space-y-0.5">
                       <div>Facility: {doc.hospitalName || 'Health Center'}</div>
                       <div>Doctor: {doc.doctorName || 'Consultant Specialist'}</div>
                       <div>Date: {doc.documentDate || doc.uploadDate}</div>
-                      <div className="font-mono text-[10px] text-slate-400">
+                      <div className="font-mono text-[10px] text-slate-400 dark:text-slate-500">
                         {doc.fileName} ({Math.round((doc.fileSizeBytes || 0) / 1024)} KB)
                       </div>
                     </div>

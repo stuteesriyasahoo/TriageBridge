@@ -296,7 +296,7 @@ export default function PatientProfilePage() {
                   className={`py-2 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
                     theme === 'light'
                       ? 'bg-[#0F8B8D] text-white border-[#0F8B8D] shadow-xs'
-                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-750'
+                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
                   }`}
                 >
                   <Sun className="w-3.5 h-3.5 text-amber-400" />
@@ -308,7 +308,7 @@ export default function PatientProfilePage() {
                   className={`py-2 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
                     theme === 'dark'
                       ? 'bg-[#0F8B8D] text-white border-[#0F8B8D] shadow-xs'
-                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-750'
+                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
                   }`}
                 >
                   <Moon className="w-3.5 h-3.5 text-indigo-300" />
@@ -336,7 +336,7 @@ export default function PatientProfilePage() {
                     className={`py-2 px-3 rounded-xl border text-xs font-semibold transition-all ${
                       locale === item.code
                         ? 'bg-[#0F8B8D] text-white border-[#0F8B8D] shadow-xs'
-                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-750'
+                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
                     }`}
                   >
                     {item.label}

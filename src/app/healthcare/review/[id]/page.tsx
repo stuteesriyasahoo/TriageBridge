@@ -14,6 +14,7 @@ import {
 } from '../../../../lib/types';
 import { UrgencyBadge } from '../../../../components/common/UrgencyBadge';
 import { AmbulanceModal } from '../../../../components/common/AmbulanceModal';
+import { translateCaseStatus } from '../../../../lib/clinical-safety-translations';
 import {
   ArrowLeft,
   Stethoscope,
@@ -247,7 +248,7 @@ export default function CaseReviewWorkspacePage() {
                   {triageCase.caseNumber}
                 </h1>
                 <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 uppercase">
-                  {triageCase.status.replace(/_/g, ' ')}
+                  {translateCaseStatus(triageCase.status, t)}
                 </span>
                 <span className="text-xs text-slate-400">
                   Patient: <strong className="text-slate-800">{triageCase.patientName}</strong> ({triageCase.patientAge}Y / {triageCase.patientGender})
@@ -317,11 +318,11 @@ export default function CaseReviewWorkspacePage() {
 
               {/* Side-by-Side Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Left Column: Original Patient Statement */}
+                {/* Left Column: Original Patient Statement & Voice Transcript */}
                 <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1">
-                      <span>Original Patient Input</span>
+                      <span>Original Patient Input (Native Script)</span>
                       <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-mono uppercase">
                         {getLanguageMeta(triageCase.originalLanguage).nameNative}
                       </span>
@@ -338,6 +339,16 @@ export default function CaseReviewWorkspacePage() {
                   >
                     &quot;{triageCase.originalStatement}&quot;
                   </p>
+                  {triageCase.voiceTranscript && triageCase.voiceTranscript !== triageCase.originalStatement && (
+                    <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800">
+                      <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase block">
+                        Voice Transcript (Native Script)
+                      </span>
+                      <p className="text-slate-800 dark:text-slate-200 text-xs italic font-medium">
+                        &quot;{triageCase.voiceTranscript}&quot;
+                      </p>
+                    </div>
+                  )}
 
                   {/* Audio Listen Button */}
                   <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
@@ -366,12 +377,12 @@ export default function CaseReviewWorkspacePage() {
                   </div>
                 </div>
 
-                {/* Right Column: Standardized Clinical English */}
+                {/* Right Column: English translation */}
                 <div className="p-3.5 rounded-xl bg-teal-50/40 dark:bg-teal-950/20 border border-teal-200 dark:border-teal-800 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-[#0F8B8D] dark:text-teal-300 flex items-center gap-1">
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>Standardized Clinical English</span>
+                      <span>English translation</span>
                     </span>
                     <span className="px-2 py-0.5 rounded-full text-[10px] bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 font-bold">
                       Confidence: {triageCase.translationConfidence || 96}%
@@ -382,7 +393,7 @@ export default function CaseReviewWorkspacePage() {
                   </p>
 
                   <div className="pt-2 border-t border-teal-100 dark:border-teal-900/60 text-[10px] text-teal-700 dark:text-teal-300">
-                    Glossary-validated clinical mapping applied
+                    Clinical English translation for healthcare review (original transcript preserved)
                   </div>
                 </div>
               </div>
