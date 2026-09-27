@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import {
@@ -487,8 +488,14 @@ export function SriyaAssistant() {
           </button>
 
           <div className="flex items-start gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-teal-600 flex items-center justify-center flex-shrink-0 text-white shadow-sm mt-0.5">
-              <Sparkles className="w-4 h-4 animate-pulse" />
+            <div className="w-8 h-8 rounded-full bg-teal-50 dark:bg-teal-950/60 border border-teal-200 dark:border-teal-800 flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5 overflow-hidden">
+              <Image
+                src="/images/srida-bot.png"
+                alt="Srida, your TriageBridge guide"
+                width={32}
+                height={32}
+                className="object-contain"
+              />
             </div>
             <div className="pr-4">
               <h4 className="font-bold text-teal-700 dark:text-teal-300 text-[12.5px] leading-tight mb-1">
@@ -522,7 +529,7 @@ export function SriyaAssistant() {
         </div>
       )}
 
-      {/* 2. FLOATING "ASK SRIYA" BUTTON */}
+      {/* 2. FLOATING "ASK SRIDA" BUTTON */}
       {!isOpen && (
         <div className="fixed bottom-6 right-6 z-40 flex items-center gap-2 group">
           {/* Hover / Focus Tooltip */}
@@ -535,26 +542,32 @@ export function SriyaAssistant() {
           </div>
 
           <button
+            id="sriya-floating-trigger"
             onClick={() => {
               setShowWelcomeBubble(false);
               setIsOpen(true);
               setIsMinimized(false);
             }}
-            aria-label="Ask Sriya — Your TriageBridge Guide. Need help using TriageBridge?"
+            aria-label="Ask Srida — Your TriageBridge Guide. Need help using TriageBridge?"
             aria-describedby="sriya-tooltip"
             aria-expanded={isOpen}
-            className="flex items-center gap-2 px-4 py-3 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-teal-500/40 text-sm font-semibold cursor-pointer border border-teal-500/30"
+            className="relative flex items-center justify-center p-0 transition-transform duration-300 hover:scale-110 active:scale-95 focus:outline-none focus:ring-4 focus:ring-teal-500/40 cursor-pointer drop-shadow-xl hover:drop-shadow-2xl"
           >
-            <div className="relative flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-teal-100 animate-pulse" />
+            <div className="relative">
+              <Image
+                src="/images/srida-bot.png"
+                alt="Srida, your TriageBridge guide"
+                width={72}
+                height={72}
+                priority
+              />
               <span
-                className={`absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full ring-2 ring-white dark:ring-slate-900 ${
+                className={`absolute bottom-1 right-2 w-3.5 h-3.5 rounded-full ring-2 ring-white dark:ring-slate-900 ${
                   isOnline ? 'bg-emerald-400' : 'bg-amber-400'
                 }`}
                 title={isOnline ? 'Online' : 'Offline FAQ Mode'}
               />
             </div>
-            <span>Ask Sriya</span>
           </button>
         </div>
       )}
@@ -581,8 +594,14 @@ export function SriyaAssistant() {
           {/* HEADER */}
           <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-teal-700 via-teal-600 to-teal-800 text-white select-none">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="relative w-8 h-8 rounded-full bg-teal-500/40 border border-teal-300/40 flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-4 h-4 text-white" />
+              <div className="relative w-9 h-9 rounded-full bg-teal-500/30 border border-teal-300/40 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <Image
+                  src="/images/srida-bot.png"
+                  alt="Srida, your TriageBridge guide"
+                  width={36}
+                  height={36}
+                  className="object-contain"
+                />
                 <span
                   className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-teal-800 ${
                     isOnline ? 'bg-emerald-400' : 'bg-amber-400'
