@@ -1,0 +1,451 @@
+{
+  "evaluation_timestamp": "2026-09-27T15:15:51.140800+00:00",
+  "final_classification": "MODEL_REJECTED_FOR_SHORTCUT_LEARNING",
+  "mandatory_disclaimer": "Experimental model trained on synthetic, unvalidated data. Not approved for clinical use, patient-facing inference or autonomous triage.",
+  "feature_flags": {
+    "TRIAGE_ML_SHADOW_ENABLED": false,
+    "SYMPTOM_PATTERN_SHADOW_ENABLED": false
+  },
+  "datasets": {
+    "train": {
+      "path": "data/processed/triage_v3_train.csv",
+      "sha256": "b4af33207a2a6ffa9bd1ab53d4a3f8c100a3f678a124500ae2a7e42347ba788b",
+      "rows": 840
+    },
+    "validation": {
+      "path": "data/processed/triage_v3_validation.csv",
+      "sha256": "fa5740e038514d02cac7a63538a965e2ab36132b1fb854b47a198259bb39e9be",
+      "rows": 180
+    },
+    "test": {
+      "path": "data/processed/triage_v3_test.csv",
+      "sha256": "71d004af6c545ca40cd8d1093bfc8efaeb4d89b04c99c74f97059f966508eaed",
+      "rows": 180
+    },
+    "red_gate": {
+      "path": "data/processed/triage_v3_red_gate_test.csv",
+      "sha256": "8fc4bc6cc95e15bd0ef4e2a0aed254d4b99b6d449e7ab2b8e463578e356159fb",
+      "rows": 120
+    },
+    "grey_gate": {
+      "path": "data/processed/triage_v3_grey_gate_test.csv",
+      "sha256": "c7ba43ce3582b04111a748f730122ca36ada8fd5821d9fb0807538003d5bcce7",
+      "rows": 75
+    }
+  },
+  "feature_allowlist": [
+    "age",
+    "gender",
+    "chief_complaint",
+    "symptoms",
+    "normalized_clinical_concepts",
+    "duration_hours",
+    "pain_score",
+    "medical_history",
+    "allergies",
+    "pregnancy_status",
+    "vitals_heart_rate_bpm",
+    "vitals_systolic_bp",
+    "vitals_diastolic_bp",
+    "vitals_spo2_percent",
+    "vitals_temperature_c",
+    "vitals_respiratory_rate_bpm"
+  ],
+  "model_selection": {
+    "selected_model": "Model A: Class-weighted Logistic Regression (Combined Features)",
+    "validation_results_all_models": {
+      "vitals_only": {
+        "A_LogisticRegression": {
+          "tn": 88,
+          "fp": 2,
+          "fn": 0,
+          "tp": 90,
+          "balanced_accuracy": 0.9888888888888889,
+          "macro_f1": 0.9888875169774046,
+          "yellow_recall": 1.0,
+          "ece": 0.026066629253377348,
+          "brier_score": 0.006858000913897381,
+          "roc_auc": 1.0
+        },
+        "B_RandomForest": {
+          "tn": 88,
+          "fp": 2,
+          "fn": 0,
+          "tp": 90,
+          "balanced_accuracy": 0.9888888888888889,
+          "macro_f1": 0.9888875169774046,
+          "yellow_recall": 1.0,
+          "ece": 0.027943610343379326,
+          "brier_score": 0.00939236556511689,
+          "roc_auc": 1.0
+        },
+        "C_HistGradientBoosting": {
+          "tn": 88,
+          "fp": 2,
+          "fn": 0,
+          "tp": 90,
+          "balanced_accuracy": 0.9888888888888889,
+          "macro_f1": 0.9888875169774046,
+          "yellow_recall": 1.0,
+          "ece": 0.013112454690254733,
+          "brier_score": 0.011058673242240765,
+          "roc_auc": 1.0
+        }
+      },
+      "all_numeric": {
+        "A_LogisticRegression": {
+          "tn": 90,
+          "fp": 0,
+          "fn": 0,
+          "tp": 90,
+          "balanced_accuracy": 1.0,
+          "macro_f1": 1.0,
+          "yellow_recall": 1.0,
+          "ece": 0.016963163820381107,
+          "brier_score": 0.002110349457190006,
+          "roc_auc": 1.0
+        },
+        "B_RandomForest": {
+          "tn": 90,
+          "fp": 0,
+          "fn": 2,
+          "tp": 88,
+          "balanced_accuracy": 0.9888888888888889,
+          "macro_f1": 0.9888875169774046,
+          "yellow_recall": 0.9777777777777777,
+          "ece": 0.052246776087304464,
+          "brier_score": 0.016011528018298846,
+          "roc_auc": 1.0
+        },
+        "C_HistGradientBoosting": {
+          "tn": 90,
+          "fp": 0,
+          "fn": 5,
+          "tp": 85,
+          "balanced_accuracy": 0.9722222222222222,
+          "macro_f1": 0.9722007722007722,
+          "yellow_recall": 0.9444444444444444,
+          "ece": 0.027713624397855307,
+          "brier_score": 0.02765641448607168,
+          "roc_auc": 0.9990123456790124
+        }
+      },
+      "text_only": {
+        "A_LogisticRegression": {
+          "tn": 74,
+          "fp": 16,
+          "fn": 18,
+          "tp": 72,
+          "balanced_accuracy": 0.8111111111111111,
+          "macro_f1": 0.8110877886158785,
+          "yellow_recall": 0.8,
+          "ece": 0.11391478600800642,
+          "brier_score": 0.14881706485933788,
+          "roc_auc": 0.8864197530864197
+        },
+        "B_RandomForest": {
+          "tn": 72,
+          "fp": 18,
+          "fn": 18,
+          "tp": 72,
+          "balanced_accuracy": 0.8,
+          "macro_f1": 0.8,
+          "yellow_recall": 0.8,
+          "ece": 0.2260314808479275,
+          "brier_score": 0.20144513009341758,
+          "roc_auc": 0.8590123456790123
+        },
+        "C_HistGradientBoosting": {
+          "tn": 72,
+          "fp": 18,
+          "fn": 24,
+          "tp": 66,
+          "balanced_accuracy": 0.7666666666666666,
+          "macro_f1": 0.7664071190211346,
+          "yellow_recall": 0.7333333333333333,
+          "ece": 0.08231995910712647,
+          "brier_score": 0.15232918557347305,
+          "roc_auc": 0.8612345679012345
+        }
+      },
+      "combined": {
+        "A_LogisticRegression": {
+          "tn": 90,
+          "fp": 0,
+          "fn": 0,
+          "tp": 90,
+          "balanced_accuracy": 1.0,
+          "macro_f1": 1.0,
+          "yellow_recall": 1.0,
+          "ece": 0.016518764253405843,
+          "brier_score": 0.001926469949565485,
+          "roc_auc": 1.0
+        },
+        "B_RandomForest": {
+          "tn": 90,
+          "fp": 0,
+          "fn": 0,
+          "tp": 90,
+          "balanced_accuracy": 1.0,
+          "macro_f1": 1.0,
+          "yellow_recall": 1.0,
+          "ece": 0.1822723719786622,
+          "brier_score": 0.039982725717542085,
+          "roc_auc": 1.0
+        },
+        "C_HistGradientBoosting": {
+          "tn": 90,
+          "fp": 0,
+          "fn": 6,
+          "tp": 84,
+          "balanced_accuracy": 0.9666666666666667,
+          "macro_f1": 0.9666295884315907,
+          "yellow_recall": 0.9333333333333333,
+          "ece": 0.03132949719563957,
+          "brier_score": 0.029998726759791452,
+          "roc_auc": 0.9985185185185185
+        }
+      },
+      "model_d_heuristic": {
+        "tn": 90,
+        "fp": 0,
+        "fn": 0,
+        "tp": 90,
+        "balanced_accuracy": 1.0,
+        "macro_f1": 1.0,
+        "yellow_recall": 1.0,
+        "fn_under_triage": 0
+      }
+    }
+  },
+  "threshold_policy_calibration": {
+    "tau_green": 0.3,
+    "tau_yellow": 0.65,
+    "abstention_interval": [
+      0.3,
+      0.65
+    ],
+    "validation_coverage": 0.9944444444444445,
+    "validation_selective_risk": 0.0,
+    "validation_under_triage_count": 0
+  },
+  "held_out_test_metrics": {
+    "raw_binary": {
+      "confusion_matrix": {
+        "tn": 90,
+        "fp": 0,
+        "fn": 6,
+        "tp": 84
+      },
+      "balanced_accuracy": 0.9666666666666667,
+      "macro_f1": 0.9666295884315907,
+      "weighted_f1": 0.9666295884315906,
+      "yellow_precision": 1.0,
+      "yellow_recall": 0.9333333333333333,
+      "green_precision": 0.9375,
+      "green_recall": 1.0,
+      "roc_auc": 0.9992592592592593,
+      "pr_auc": 0.999267013699477,
+      "brier_score": 0.025392726790167075,
+      "ece": 0.04749663433349394,
+      "under_triage_count": 6
+    },
+    "bootstrap_95ci": {
+      "balanced_accuracy_95ci": [
+        0.9388734567901235,
+        0.9888949275362319
+      ],
+      "macro_f1_95ci": [
+        0.9385684589370482,
+        0.9888765294771968
+      ],
+      "yellow_recall_95ci": [
+        0.8777469135802469,
+        0.9777898550724637
+      ],
+      "roc_auc_95ci": [
+        0.9974021150317498,
+        1.0
+      ]
+    },
+    "selective_policy": {
+      "coverage": 0.9722222222222222,
+      "abstained_count": 5,
+      "selective_risk": 0.022857142857142857,
+      "selective_balanced_accuracy": 0.9764705882352941,
+      "selective_yellow_recall": 0.9529411764705882,
+      "selective_under_triage_count": 4
+    }
+  },
+  "subgroup_audit": {
+    "language": {
+      "en": {
+        "sample_size": 60,
+        "reliable_support": true,
+        "tn": 30,
+        "fp": 0,
+        "fn": 3,
+        "tp": 27,
+        "yellow_recall": 0.9,
+        "balanced_accuracy": 0.95
+      },
+      "hi": {
+        "sample_size": 60,
+        "reliable_support": true,
+        "tn": 30,
+        "fp": 0,
+        "fn": 3,
+        "tp": 27,
+        "yellow_recall": 0.9,
+        "balanced_accuracy": 0.95
+      },
+      "or": {
+        "sample_size": 60,
+        "reliable_support": true,
+        "tn": 30,
+        "fp": 0,
+        "fn": 0,
+        "tp": 30,
+        "yellow_recall": 1.0,
+        "balanced_accuracy": 1.0
+      }
+    },
+    "gender": {
+      "MALE": {
+        "sample_size": 72,
+        "reliable_support": true,
+        "tn": 32,
+        "fp": 0,
+        "fn": 2,
+        "tp": 38,
+        "yellow_recall": 0.95,
+        "balanced_accuracy": 0.975
+      },
+      "FEMALE": {
+        "sample_size": 71,
+        "reliable_support": true,
+        "tn": 43,
+        "fp": 0,
+        "fn": 4,
+        "tp": 24,
+        "yellow_recall": 0.8571428571428571,
+        "balanced_accuracy": 0.9285714285714286
+      },
+      "OTHER": {
+        "sample_size": 37,
+        "reliable_support": true,
+        "tn": 15,
+        "fp": 0,
+        "fn": 0,
+        "tp": 22,
+        "yellow_recall": 1.0,
+        "balanced_accuracy": 1.0
+      }
+    },
+    "age_bracket": {
+      "Pediatric (<18)": {
+        "sample_size": 12,
+        "reliable_support": false,
+        "tn": 6,
+        "fp": 0,
+        "fn": 0,
+        "tp": 6,
+        "yellow_recall": 1.0,
+        "balanced_accuracy": 1.0
+      },
+      "Adult (18-64)": {
+        "sample_size": 146,
+        "reliable_support": true,
+        "tn": 81,
+        "fp": 0,
+        "fn": 5,
+        "tp": 60,
+        "yellow_recall": 0.9230769230769231,
+        "balanced_accuracy": 0.9615384615384616
+      },
+      "Geriatric (>=65)": {
+        "sample_size": 22,
+        "reliable_support": true,
+        "tn": 3,
+        "fp": 0,
+        "fn": 1,
+        "tp": 18,
+        "yellow_recall": 0.9473684210526315,
+        "balanced_accuracy": 0.9736842105263157
+      }
+    }
+  },
+  "family_disjoint_generalization": {
+    "family_breakdown": {
+      "FAM_GRN_07": {
+        "true_label": "GREEN",
+        "sample_size": 30,
+        "accuracy": 1.0,
+        "under_triage_fn": 0
+      },
+      "FAM_GRN_18": {
+        "true_label": "GREEN",
+        "sample_size": 30,
+        "accuracy": 1.0,
+        "under_triage_fn": 0
+      },
+      "FAM_GRN_20": {
+        "true_label": "GREEN",
+        "sample_size": 30,
+        "accuracy": 1.0,
+        "under_triage_fn": 0
+      },
+      "FAM_YEL_01": {
+        "true_label": "YELLOW",
+        "sample_size": 30,
+        "accuracy": 1.0,
+        "under_triage_fn": 0
+      },
+      "FAM_YEL_04": {
+        "true_label": "YELLOW",
+        "sample_size": 30,
+        "accuracy": 1.0,
+        "under_triage_fn": 0
+      },
+      "FAM_YEL_09": {
+        "true_label": "YELLOW",
+        "sample_size": 30,
+        "accuracy": 0.8,
+        "under_triage_fn": 6
+      }
+    },
+    "lowest_performing_families": [
+      "FAM_YEL_09"
+    ],
+    "highest_performing_families": [
+      "FAM_GRN_07",
+      "FAM_GRN_18",
+      "FAM_GRN_20",
+      "FAM_YEL_01",
+      "FAM_YEL_04"
+    ],
+    "families_with_downgrades": [
+      "FAM_YEL_09"
+    ]
+  },
+  "safety_gate_verification": {
+    "red_cohort": {
+      "total": 120,
+      "intercepted_by_gate": 120,
+      "reached_ml": 0,
+      "downgraded": 0
+    },
+    "grey_cohort": {
+      "total": 75,
+      "intercepted_by_gate": 75,
+      "reached_ml": 0,
+      "unintercepted": 0
+    }
+  },
+  "artifact_details": {
+    "model_path": "ml/models/triage_yellow_green_v3.joblib",
+    "model_sha256": "c167958cb5fc6c3c7869eb3db58cc08fb152d27ed26cb485258d066e801dcfc3",
+    "model_size_bytes": 23082,
+    "metadata_path": "ml/models/triage_yellow_green_v3_metadata.json"
+  }
+}

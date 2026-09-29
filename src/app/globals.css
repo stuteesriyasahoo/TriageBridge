@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --navy: #102A43;
   --teal: #0F8B8D;
@@ -66,70 +68,8 @@ body {
    ===================================================================== */
 
 .dark body {
-  background-color: #0B1220 !important;
-  color: #F8FAFC !important;
-}
-
-.dark .bg-white {
-  background-color: #172033 !important;
+  background-color: #0B1220;
   color: #F8FAFC;
-}
-
-.dark .bg-\[\#F7FAFC\] {
-  background-color: #0B1220 !important;
-}
-
-.dark .bg-slate-50 {
-  background-color: #111827 !important;
-  color: #CBD5E1;
-}
-
-.dark .bg-slate-100 {
-  background-color: #1E293B !important;
-  color: #CBD5E1;
-}
-
-.dark .border-slate-200,
-.dark .border-slate-200\/80,
-.dark .border-slate-200\/90,
-.dark .border-slate-100 {
-  border-color: #2A3548 !important;
-}
-
-.dark .border-slate-300 {
-  border-color: #334155 !important;
-}
-
-.dark .text-\[\#102A43\] {
-  color: #F8FAFC !important;
-}
-
-.dark .text-slate-900,
-.dark .text-slate-800,
-.dark .text-slate-700 {
-  color: #F1F5F9 !important;
-}
-
-.dark .text-slate-600,
-.dark .text-slate-500 {
-  color: #94A3B8 !important;
-}
-
-.dark .text-slate-400 {
-  color: #64748B !important;
-}
-
-.dark input:not([type="checkbox"]):not([type="radio"]),
-.dark textarea,
-.dark select {
-  background-color: #111827 !important;
-  color: #F8FAFC !important;
-  border-color: #2A3548 !important;
-}
-
-.dark input::placeholder,
-.dark textarea::placeholder {
-  color: #64748B !important;
 }
 
 .dark ::-webkit-scrollbar-track {
@@ -141,3 +81,4 @@ body {
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
+

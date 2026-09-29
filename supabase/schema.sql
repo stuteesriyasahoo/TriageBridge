@@ -605,3 +605,52 @@ CREATE POLICY "Deny all client delete" ON ml_shadow_predictions
   AS RESTRICTIVE FOR DELETE TO anon, authenticated USING (false);
 
 -- Only trusted backend code using the Supabase service_role key can insert or update records.
+
+-- =====================================================================
+-- SYMPTOM PATTERN SHADOW PREDICTIONS: BACKEND-ONLY RESEARCH STORAGE
+-- =====================================================================
+CREATE TABLE IF NOT EXISTS symptom_pattern_shadow_predictions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  triage_case_id UUID REFERENCES triage_cases(id) ON DELETE CASCADE,
+  model_version TEXT NOT NULL,
+  dataset_version TEXT NOT NULL,
+  pattern_matches JSONB NOT NULL DEFAULT '[]'::jsonb,
+  confidence_scores JSONB NOT NULL DEFAULT '{}'::jsonb,
+  abstained BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  research_disclaimer TEXT NOT NULL DEFAULT 'UNVERIFIED_RESEARCH_DATA_NOT_FOR_DIAGNOSIS_OR_TREATMENT'
+);
+
+CREATE INDEX IF NOT EXISTS idx_symptom_pattern_case_id ON symptom_pattern_shadow_predictions(triage_case_id);
+CREATE INDEX IF NOT EXISTS idx_symptom_pattern_created_at ON symptom_pattern_shadow_predictions(created_at);
+CREATE INDEX IF NOT EXISTS idx_symptom_pattern_abstained ON symptom_pattern_shadow_predictions(abstained);
+
+ALTER TABLE symptom_pattern_shadow_predictions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE symptom_pattern_shadow_predictions FORCE ROW LEVEL SECURITY;
+
+REVOKE ALL ON TABLE symptom_pattern_shadow_predictions FROM anon, authenticated, public;
+
+DROP POLICY IF EXISTS "service_role_manage_symptom_patterns" ON symptom_pattern_shadow_predictions;
+CREATE POLICY "service_role_manage_symptom_patterns" ON symptom_pattern_shadow_predictions
+  FOR ALL
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "deny_all_client_select" ON symptom_pattern_shadow_predictions;
+CREATE POLICY "deny_all_client_select" ON symptom_pattern_shadow_predictions
+  AS RESTRICTIVE FOR SELECT TO anon, authenticated USING (false);
+
+DROP POLICY IF EXISTS "deny_all_client_insert" ON symptom_pattern_shadow_predictions;
+CREATE POLICY "deny_all_client_insert" ON symptom_pattern_shadow_predictions
+  AS RESTRICTIVE FOR INSERT TO anon, authenticated WITH CHECK (false);
+
+DROP POLICY IF EXISTS "deny_all_client_update" ON symptom_pattern_shadow_predictions;
+CREATE POLICY "deny_all_client_update" ON symptom_pattern_shadow_predictions
+  AS RESTRICTIVE FOR UPDATE TO anon, authenticated USING (false);
+
+DROP POLICY IF EXISTS "deny_all_client_delete" ON symptom_pattern_shadow_predictions;
+CREATE POLICY "deny_all_client_delete" ON symptom_pattern_shadow_predictions
+  AS RESTRICTIVE FOR DELETE TO anon, authenticated USING (false);
+
+

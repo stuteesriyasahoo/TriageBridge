@@ -52,3 +52,16 @@ supabase/.temp/
 .agents/
 skills-lock.json
 .mcp.json
+
+# Unverified external research datasets (license and source unconfirmed; do not push to GitHub)
+data/raw/final_symptoms_to_disease.csv
+data/raw/disease_symptoms_binary.csv
+data/processed/symptom_disease_multilabel.csv
+data/processed/train.csv
+data/processed/validation.csv
+data/processed/test.csv
+data/processed/binary_*.csv
+data/processed/*_binary_*.csv
+ml/models/*.joblib
+
+

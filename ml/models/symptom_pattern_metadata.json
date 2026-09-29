@@ -1,0 +1,416 @@
+{
+  "model_version": "symptom-pattern-ovr-tfidf-v1.1.0-negation-gated",
+  "dataset_version": "final_symptoms_to_disease_canonical_v1",
+  "model_file_size_bytes": 9704887,
+  "model_sha256": "b70f88dfb6543eb6bdb51f6de71984e7dda0f4114f950886525a49de54164a8e",
+  "random_seed": 42,
+  "training_duration_seconds": 1005.36,
+  "evaluation_metrics": {
+    "micro_f1": 0.4654,
+    "macro_f1": 0.4727,
+    "weighted_f1": 0.5062,
+    "precision_at_3": 0.3522,
+    "recall_at_3": 0.9846,
+    "precision_at_5": 0.2162,
+    "recall_at_5": 0.9949,
+    "hamming_loss": 0.009931,
+    "lrap": 0.9632,
+    "calibrated_threshold": 0.35,
+    "calibrated_min_margin": 0.05,
+    "abstention_rate": 0.2111,
+    "coverage_rate": 0.7889
+  },
+  "conflicting_groups_metrics": {
+    "micro_f1": 0.519,
+    "recall_at_3": 0.8282,
+    "lrap": 0.8464
+  },
+  "single_label_groups_metrics": {
+    "micro_f1": 0.4569,
+    "recall_at_3": 0.9961,
+    "lrap": 0.9718
+  },
+  "validation_threshold_calibration": [
+    {
+      "threshold": 0.2,
+      "min_margin": 0.0,
+      "accepted_count": 22338,
+      "coverage": 1.0,
+      "abstention_rate": 0.0,
+      "precision_at_3": 0.3522,
+      "recall_at_3": 0.9859,
+      "selective_risk": 0.0048
+    },
+    {
+      "threshold": 0.2,
+      "min_margin": 0.05,
+      "accepted_count": 17570,
+      "coverage": 0.7866,
+      "abstention_rate": 0.2134,
+      "precision_at_3": 0.3341,
+      "recall_at_3": 0.9987,
+      "selective_risk": 0.0007
+    },
+    {
+      "threshold": 0.2,
+      "min_margin": 0.08,
+      "accepted_count": 16385,
+      "coverage": 0.7335,
+      "abstention_rate": 0.2665,
+      "precision_at_3": 0.3335,
+      "recall_at_3": 0.9993,
+      "selective_risk": 0.0003
+    },
+    {
+      "threshold": 0.25,
+      "min_margin": 0.0,
+      "accepted_count": 22338,
+      "coverage": 1.0,
+      "abstention_rate": 0.0,
+      "precision_at_3": 0.3522,
+      "recall_at_3": 0.9859,
+      "selective_risk": 0.0048
+    },
+    {
+      "threshold": 0.25,
+      "min_margin": 0.05,
+      "accepted_count": 17570,
+      "coverage": 0.7866,
+      "abstention_rate": 0.2134,
+      "precision_at_3": 0.3341,
+      "recall_at_3": 0.9987,
+      "selective_risk": 0.0007
+    },
+    {
+      "threshold": 0.25,
+      "min_margin": 0.08,
+      "accepted_count": 16385,
+      "coverage": 0.7335,
+      "abstention_rate": 0.2665,
+      "precision_at_3": 0.3335,
+      "recall_at_3": 0.9993,
+      "selective_risk": 0.0003
+    },
+    {
+      "threshold": 0.3,
+      "min_margin": 0.0,
+      "accepted_count": 22338,
+      "coverage": 1.0,
+      "abstention_rate": 0.0,
+      "precision_at_3": 0.3522,
+      "recall_at_3": 0.9859,
+      "selective_risk": 0.0048
+    },
+    {
+      "threshold": 0.3,
+      "min_margin": 0.05,
+      "accepted_count": 17570,
+      "coverage": 0.7866,
+      "abstention_rate": 0.2134,
+      "precision_at_3": 0.3341,
+      "recall_at_3": 0.9987,
+      "selective_risk": 0.0007
+    },
+    {
+      "threshold": 0.3,
+      "min_margin": 0.08,
+      "accepted_count": 16385,
+      "coverage": 0.7335,
+      "abstention_rate": 0.2665,
+      "precision_at_3": 0.3335,
+      "recall_at_3": 0.9993,
+      "selective_risk": 0.0003
+    },
+    {
+      "threshold": 0.35,
+      "min_margin": 0.0,
+      "accepted_count": 22338,
+      "coverage": 1.0,
+      "abstention_rate": 0.0,
+      "precision_at_3": 0.3522,
+      "recall_at_3": 0.9859,
+      "selective_risk": 0.0048
+    },
+    {
+      "threshold": 0.35,
+      "min_margin": 0.05,
+      "accepted_count": 17570,
+      "coverage": 0.7866,
+      "abstention_rate": 0.2134,
+      "precision_at_3": 0.3341,
+      "recall_at_3": 0.9987,
+      "selective_risk": 0.0007
+    },
+    {
+      "threshold": 0.35,
+      "min_margin": 0.08,
+      "accepted_count": 16385,
+      "coverage": 0.7335,
+      "abstention_rate": 0.2665,
+      "precision_at_3": 0.3335,
+      "recall_at_3": 0.9993,
+      "selective_risk": 0.0003
+    },
+    {
+      "threshold": 0.4,
+      "min_margin": 0.0,
+      "accepted_count": 22338,
+      "coverage": 1.0,
+      "abstention_rate": 0.0,
+      "precision_at_3": 0.3522,
+      "recall_at_3": 0.9859,
+      "selective_risk": 0.0048
+    },
+    {
+      "threshold": 0.4,
+      "min_margin": 0.05,
+      "accepted_count": 17570,
+      "coverage": 0.7866,
+      "abstention_rate": 0.2134,
+      "precision_at_3": 0.3341,
+      "recall_at_3": 0.9987,
+      "selective_risk": 0.0007
+    },
+    {
+      "threshold": 0.4,
+      "min_margin": 0.08,
+      "accepted_count": 16385,
+      "coverage": 0.7335,
+      "abstention_rate": 0.2665,
+      "precision_at_3": 0.3335,
+      "recall_at_3": 0.9993,
+      "selective_risk": 0.0003
+    },
+    {
+      "threshold": 0.45,
+      "min_margin": 0.0,
+      "accepted_count": 22338,
+      "coverage": 1.0,
+      "abstention_rate": 0.0,
+      "precision_at_3": 0.3522,
+      "recall_at_3": 0.9859,
+      "selective_risk": 0.0048
+    },
+    {
+      "threshold": 0.45,
+      "min_margin": 0.05,
+      "accepted_count": 17570,
+      "coverage": 0.7866,
+      "abstention_rate": 0.2134,
+      "precision_at_3": 0.3341,
+      "recall_at_3": 0.9987,
+      "selective_risk": 0.0007
+    },
+    {
+      "threshold": 0.45,
+      "min_margin": 0.08,
+      "accepted_count": 16385,
+      "coverage": 0.7335,
+      "abstention_rate": 0.2665,
+      "precision_at_3": 0.3335,
+      "recall_at_3": 0.9993,
+      "selective_risk": 0.0003
+    },
+    {
+      "threshold": 0.5,
+      "min_margin": 0.0,
+      "accepted_count": 22338,
+      "coverage": 1.0,
+      "abstention_rate": 0.0,
+      "precision_at_3": 0.3522,
+      "recall_at_3": 0.9859,
+      "selective_risk": 0.0048
+    },
+    {
+      "threshold": 0.5,
+      "min_margin": 0.05,
+      "accepted_count": 17570,
+      "coverage": 0.7866,
+      "abstention_rate": 0.2134,
+      "precision_at_3": 0.3341,
+      "recall_at_3": 0.9987,
+      "selective_risk": 0.0007
+    },
+    {
+      "threshold": 0.5,
+      "min_margin": 0.08,
+      "accepted_count": 16385,
+      "coverage": 0.7335,
+      "abstention_rate": 0.2665,
+      "precision_at_3": 0.3335,
+      "recall_at_3": 0.9993,
+      "selective_risk": 0.0003
+    },
+    {
+      "threshold": 0.55,
+      "min_margin": 0.0,
+      "accepted_count": 22338,
+      "coverage": 1.0,
+      "abstention_rate": 0.0,
+      "precision_at_3": 0.3522,
+      "recall_at_3": 0.9859,
+      "selective_risk": 0.0048
+    },
+    {
+      "threshold": 0.55,
+      "min_margin": 0.05,
+      "accepted_count": 17570,
+      "coverage": 0.7866,
+      "abstention_rate": 0.2134,
+      "precision_at_3": 0.3341,
+      "recall_at_3": 0.9987,
+      "selective_risk": 0.0007
+    },
+    {
+      "threshold": 0.55,
+      "min_margin": 0.08,
+      "accepted_count": 16385,
+      "coverage": 0.7335,
+      "abstention_rate": 0.2665,
+      "precision_at_3": 0.3335,
+      "recall_at_3": 0.9993,
+      "selective_risk": 0.0003
+    },
+    {
+      "threshold": 0.6,
+      "min_margin": 0.0,
+      "accepted_count": 22338,
+      "coverage": 1.0,
+      "abstention_rate": 0.0,
+      "precision_at_3": 0.3522,
+      "recall_at_3": 0.9859,
+      "selective_risk": 0.0048
+    },
+    {
+      "threshold": 0.6,
+      "min_margin": 0.05,
+      "accepted_count": 17570,
+      "coverage": 0.7866,
+      "abstention_rate": 0.2134,
+      "precision_at_3": 0.3341,
+      "recall_at_3": 0.9987,
+      "selective_risk": 0.0007
+    },
+    {
+      "threshold": 0.6,
+      "min_margin": 0.08,
+      "accepted_count": 16385,
+      "coverage": 0.7335,
+      "abstention_rate": 0.2665,
+      "precision_at_3": 0.3335,
+      "recall_at_3": 0.9993,
+      "selective_risk": 0.0003
+    }
+  ],
+  "edge_case_verification": [
+    {
+      "test_case": "Vague Solitary Symptom",
+      "input_text": "fever",
+      "abstained": true,
+      "abstention_reason": "VAGUE_SINGLE_SYMPTOM_ABSTENTION ('fever' is clinically non-specific)",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Vague Solitary Symptom",
+      "input_text": "cough",
+      "abstained": true,
+      "abstention_reason": "VAGUE_SINGLE_SYMPTOM_ABSTENTION ('cough' is clinically non-specific)",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Ambiguous Symptoms",
+      "input_text": "fatigue, headache, loss of appetite",
+      "abstained": true,
+      "abstention_reason": "REQUIRED_CONTEXTUAL_INFORMATION_MISSING (Ambiguous constitutional cluster ('fatigue, headache, loss of appetite') lacks differentiating focal signs; abstaining to prevent unsupported neurological bias)",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Common Respiratory Cluster",
+      "input_text": "cough, fever, runny nose, sore throat",
+      "abstained": true,
+      "abstention_reason": "INSUFFICIENT_CANDIDATE_SEPARATION (Top candidates margin 0.043 < 0.05)",
+      "max_confidence": 0.9699,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Negated Emergency Symptoms",
+      "input_text": "no chest pain, denies fever, without breathlessness",
+      "abstained": true,
+      "abstention_reason": "ALL_SYMPTOMS_NEGATED (No positive symptoms asserted)",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Mixed Positive & Negated",
+      "input_text": "severe headache and vomiting, but denies chest pain and no cough",
+      "abstained": false,
+      "abstention_reason": "",
+      "max_confidence": 0.8394,
+      "top_patterns": [
+        "gastritis",
+        "flu",
+        "hyperemesis gravidarum"
+      ]
+    },
+    {
+      "test_case": "Misspelled Clinical Terms",
+      "input_text": "shortnes of breth, cheast tighness, hart palpitatins",
+      "abstained": true,
+      "abstention_reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Hindi Input (No Translation)",
+      "input_text": "\u091b\u093e\u0924\u0940 \u092e\u0947\u0902 \u0924\u0947\u091c \u0926\u0930\u094d\u0926 \u0914\u0930 \u0938\u093e\u0902\u0938 \u0932\u0947\u0928\u0947 \u092e\u0947\u0902 \u0924\u0915\u0932\u0940\u092b",
+      "abstained": true,
+      "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Odia Input (No Translation)",
+      "input_text": "\u0b1b\u0b3e\u0b24\u0b3f \u0b2f\u0b28\u0b4d\u0b24\u0b4d\u0b30\u0b23\u0b3e \u0b0f\u0b2c\u0b02 \u0b28\u0b3f\u0b36\u0b4d\u0b71\u0b3e\u0b38 \u0b28\u0b47\u0b2c\u0b3e\u0b30\u0b47 \u0b15\u0b37\u0b4d\u0b1f",
+      "abstained": true,
+      "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Out-of-Distribution - Technology",
+      "input_text": "quantum computing algorithms, database indexing, kubernetes cluster",
+      "abstained": true,
+      "abstention_reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Out-of-Distribution - Finance",
+      "input_text": "interest rates inflation macroeconomic bonds stock market",
+      "abstained": true,
+      "abstention_reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Empty Input",
+      "input_text": "",
+      "abstained": true,
+      "abstention_reason": "EMPTY_OR_WHITESPACE_INPUT",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    },
+    {
+      "test_case": "Whitespace Only",
+      "input_text": "   ",
+      "abstained": true,
+      "abstention_reason": "EMPTY_OR_WHITESPACE_INPUT",
+      "max_confidence": 0.0,
+      "top_patterns": []
+    }
+  ],
+  "classification_status": "Experimental offline research model — trained but rejected for application activation pending provenance, calibration, multilingual validation and clinical review."
+}

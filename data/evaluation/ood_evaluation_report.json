@@ -1,0 +1,330 @@
+{
+  "summary": {
+    "total_samples_tested": 510,
+    "total_abstained": 492,
+    "total_false_accepted": 18,
+    "overall_abstention_rate": 0.9647,
+    "overall_false_acceptance_rate": 0.0353,
+    "calibrated_threshold": 0.35,
+    "calibrated_min_margin": 0.05,
+    "abstention_reasons_distribution": {
+      "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED": 462,
+      "ALL_SYMPTOMS_NEGATED": 12,
+      "INSUFFICIENT_CANDIDATE_SEPARATION": 5,
+      "CONFIDENCE_BELOW_THRESHOLD": 10,
+      "EMPTY_OR_WHITESPACE_INPUT": 3
+    }
+  },
+  "per_domain_results": {
+    "Technology": {
+      "samples_tested": 60,
+      "abstained": 56,
+      "false_accepted": 4,
+      "abstention_rate": 0.9333,
+      "false_acceptance_rate": 0.0667,
+      "primary_abstention_reasons": {
+        "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED": 55,
+        "ALL_SYMPTOMS_NEGATED": 1
+      }
+    },
+    "Finance": {
+      "samples_tested": 60,
+      "abstained": 57,
+      "false_accepted": 3,
+      "abstention_rate": 0.95,
+      "false_acceptance_rate": 0.05,
+      "primary_abstention_reasons": {
+        "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED": 56,
+        "INSUFFICIENT_CANDIDATE_SEPARATION": 1
+      }
+    },
+    "Education": {
+      "samples_tested": 60,
+      "abstained": 60,
+      "false_accepted": 0,
+      "abstention_rate": 1.0,
+      "false_acceptance_rate": 0.0,
+      "primary_abstention_reasons": {
+        "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED": 60
+      }
+    },
+    "Travel": {
+      "samples_tested": 60,
+      "abstained": 57,
+      "false_accepted": 3,
+      "abstention_rate": 0.95,
+      "false_acceptance_rate": 0.05,
+      "primary_abstention_reasons": {
+        "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED": 55,
+        "CONFIDENCE_BELOW_THRESHOLD": 1,
+        "INSUFFICIENT_CANDIDATE_SEPARATION": 1
+      }
+    },
+    "Entertainment": {
+      "samples_tested": 60,
+      "abstained": 58,
+      "false_accepted": 2,
+      "abstention_rate": 0.9667,
+      "false_acceptance_rate": 0.0333,
+      "primary_abstention_reasons": {
+        "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED": 54,
+        "INSUFFICIENT_CANDIDATE_SEPARATION": 1,
+        "CONFIDENCE_BELOW_THRESHOLD": 2,
+        "ALL_SYMPTOMS_NEGATED": 1
+      }
+    },
+    "Random Words": {
+      "samples_tested": 60,
+      "abstained": 60,
+      "false_accepted": 0,
+      "abstention_rate": 1.0,
+      "false_acceptance_rate": 0.0,
+      "primary_abstention_reasons": {
+        "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED": 60
+      }
+    },
+    "Names and Addresses": {
+      "samples_tested": 50,
+      "abstained": 50,
+      "false_accepted": 0,
+      "abstention_rate": 1.0,
+      "false_acceptance_rate": 0.0,
+      "primary_abstention_reasons": {
+        "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED": 50
+      }
+    },
+    "Empty or Punctuation-Only": {
+      "samples_tested": 50,
+      "abstained": 50,
+      "false_accepted": 0,
+      "abstention_rate": 1.0,
+      "false_acceptance_rate": 0.0,
+      "primary_abstention_reasons": {
+        "EMPTY_OR_WHITESPACE_INPUT": 3,
+        "ALL_SYMPTOMS_NEGATED": 5,
+        "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED": 42
+      }
+    },
+    "Adversarial Prompt Injections": {
+      "samples_tested": 50,
+      "abstained": 44,
+      "false_accepted": 6,
+      "abstention_rate": 0.88,
+      "false_acceptance_rate": 0.12,
+      "primary_abstention_reasons": {
+        "INSUFFICIENT_CANDIDATE_SEPARATION": 2,
+        "ALL_SYMPTOMS_NEGATED": 5,
+        "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED": 30,
+        "CONFIDENCE_BELOW_THRESHOLD": 7
+      }
+    }
+  },
+  "detailed_sample_cases": [
+    {
+      "domain": "Technology",
+      "input": "Docker container failing to bind to port 8080 due to permission error",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "React useEffect hook missing dependency causing infinite re-render loop",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Kubernetes ingress controller routing traffic to stale backend pods",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "PostgreSQL query execution plan shows sequential scan instead of index scan",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Python asyncio event loop blocked by synchronous network socket call",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "CSS flexbox justify-content center not centering items vertically in safari",
+      "abstained": true,
+      "reason": "ALL_SYMPTOMS_NEGATED (No positive symptoms asserted)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "TypeScript compiler error cannot assign type string to type number",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Git merge conflict in main branch after rebasing upstream pull request",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Kafka consumer group lag increasing due to slow batch deserialization",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "AWS Lambda function timeout exceeded after thirty seconds execution",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Redis cluster node failover triggered by cluster-node-timeout threshold",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Webpack bundle size exceeding budget warning in production build",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Configuring nginx reverse proxy with SSL certificate termination",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Linux kernel panic caused by null pointer dereference in device driver",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Setting up CI/CD pipeline using GitHub Actions and automated unit testing",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Microservices architecture with gRPC remote procedure calls over HTTP/2",
+      "abstained": false,
+      "reason": "",
+      "max_confidence": 0.6957,
+      "pattern_matches": [
+        "diabetic peripheral neuropathy",
+        "eating disorder",
+        "ankylosing spondylitis",
+        "tonsillitis",
+        "drug abuse"
+      ]
+    },
+    {
+      "domain": "Technology",
+      "input": "MongoDB replica set election failing due to network partition split-brain",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Writing a shell script to automate daily database backups to Amazon S3",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Configuring Prometheus metrics exporter for Node.js application monitoring",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Optimizing frontend asset delivery using CDN edge caching and Brotli compression",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Building a REST API with FastAPI and Pydantic request validation",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Terraform state file locked by another concurrent infrastructure deployment",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Next.js Turbopack fast refresh compilation takes three seconds in dev mode",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "GraphQL schema definition language with custom mutation resolvers",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    },
+    {
+      "domain": "Technology",
+      "input": "Apache Spark distributed dataframe join out of memory error on executor",
+      "abstained": true,
+      "reason": "OUT_OF_DISTRIBUTION_NO_CLINICAL_TERMS_MATCHED (Insufficient substantive medical terminology)",
+      "max_confidence": 0.0,
+      "pattern_matches": []
+    }
+  ]
+}

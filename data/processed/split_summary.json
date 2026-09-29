@@ -1,0 +1,37 @@
+{
+  "dataset_name": "final_symptoms_to_disease_canonical_split",
+  "random_seed": 42,
+  "initial_raw_rows": 192715,
+  "exact_duplicates_removed": 28988,
+  "unique_multilabel_records": 149241,
+  "distinct_canonical_symptom_hash_clusters": 131329,
+  "single_label_records": 139062,
+  "conflicting_label_records": 10179,
+  "max_diseases_per_symptom": 17,
+  "split_sizes": {
+    "train": {
+      "rows": 104250,
+      "percentage": 69.85,
+      "distinct_canonical_hashes": 91930
+    },
+    "validation": {
+      "rows": 22338,
+      "percentage": 14.97,
+      "distinct_canonical_hashes": 19699
+    },
+    "test": {
+      "rows": 22653,
+      "percentage": 15.18,
+      "distinct_canonical_hashes": 19700
+    }
+  },
+  "leakage_verification": {
+    "train_val_exact_overlap": 0,
+    "train_test_exact_overlap": 0,
+    "val_test_exact_overlap": 0,
+    "train_val_canonical_set_overlap": 0,
+    "train_test_canonical_set_overlap": 0,
+    "val_test_canonical_set_overlap": 0,
+    "status": "ZERO_LEAKAGE_CONFIRMED"
+  }
+}

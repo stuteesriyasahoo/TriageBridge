@@ -606,7 +606,7 @@ export function LocationCard({
                   value={manualAddress}
                   onChange={e => setManualAddress(e.target.value)}
                   placeholder="e.g. Ward No 4, Hospital Road"
-                  className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] focus:ring-2 focus:ring-[#0F8B8D]"
+                  className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-[#0F8B8D]"
                 />
               </div>
 
@@ -620,7 +620,7 @@ export function LocationCard({
                     value={manualLandmark}
                     onChange={e => setManualLandmark(e.target.value)}
                     placeholder="e.g. Near Athamallik Hospital"
-                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] focus:ring-2 focus:ring-[#0F8B8D]"
+                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-[#0F8B8D]"
                   />
                 </div>
 
@@ -634,7 +634,7 @@ export function LocationCard({
                     value={manualDistrict}
                     onChange={e => setManualDistrict(e.target.value)}
                     placeholder="e.g. Angul / Cuttack / Khordha"
-                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] focus:ring-2 focus:ring-[#0F8B8D]"
+                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-[#0F8B8D]"
                   />
                 </div>
               </div>
@@ -650,7 +650,7 @@ export function LocationCard({
                     value={manualPincode}
                     onChange={e => setManualPincode(e.target.value)}
                     placeholder="e.g. 759125"
-                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] focus:ring-2 focus:ring-[#0F8B8D]"
+                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-[#0F8B8D]"
                   />
                 </div>
 
@@ -664,7 +664,7 @@ export function LocationCard({
                     value={manualContact}
                     onChange={e => setManualContact(e.target.value)}
                     placeholder="+91 94370 12345"
-                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] focus:ring-2 focus:ring-[#0F8B8D]"
+                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-[#0F8B8D]"
                   />
                 </div>
               </div>
@@ -676,7 +676,7 @@ export function LocationCard({
                 <select
                   value={manualType}
                   onChange={e => setManualType(e.target.value as LocationType)}
-                  className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] focus:ring-2 focus:ring-[#0F8B8D]"
+                  className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-[#2A3548] bg-white dark:bg-[#0B1220] text-slate-800 dark:text-white focus:ring-2 focus:ring-[#0F8B8D]"
                 >
                   <option value="HOME">{t.location.atHome}</option>
                   <option value="HOSPITAL">{t.location.atHospital}</option>

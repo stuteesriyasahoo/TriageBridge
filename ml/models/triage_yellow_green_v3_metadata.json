@@ -1,0 +1,74 @@
+{
+  "model_name": "triage_yellow_green_v3",
+  "model_architecture": "LogisticRegression(C=0.5, class_weight='balanced') with StandardScaler and TF-IDF Preprocessor",
+  "training_timestamp_utc": "2026-09-27T15:15:51.138791+00:00",
+  "random_seed": 42,
+  "library_versions": {
+    "scikit_learn": "1.9.1",
+    "joblib": "1.6.0",
+    "pandas": "3.0.6",
+    "numpy": "2.5.3"
+  },
+  "dataset_checksums": {
+    "train": "b4af33207a2a6ffa9bd1ab53d4a3f8c100a3f678a124500ae2a7e42347ba788b",
+    "validation": "fa5740e038514d02cac7a63538a965e2ab36132b1fb854b47a198259bb39e9be",
+    "test": "71d004af6c545ca40cd8d1093bfc8efaeb4d89b04c99c74f97059f966508eaed",
+    "red_gate": "8fc4bc6cc95e15bd0ef4e2a0aed254d4b99b6d449e7ab2b8e463578e356159fb",
+    "grey_gate": "c7ba43ce3582b04111a748f730122ca36ada8fd5821d9fb0807538003d5bcce7"
+  },
+  "feature_allowlist": [
+    "age",
+    "gender",
+    "chief_complaint",
+    "symptoms",
+    "normalized_clinical_concepts",
+    "duration_hours",
+    "pain_score",
+    "medical_history",
+    "allergies",
+    "pregnancy_status",
+    "vitals_heart_rate_bpm",
+    "vitals_systolic_bp",
+    "vitals_diastolic_bp",
+    "vitals_spo2_percent",
+    "vitals_temperature_c",
+    "vitals_respiratory_rate_bpm"
+  ],
+  "forbidden_columns_excluded": [
+    "patient_language",
+    "case_id",
+    "patient_synthetic_id",
+    "provisional_urgency_label",
+    "family_id",
+    "concept_id",
+    "template_id",
+    "canonical_template_hash",
+    "symptom_canonical_hash",
+    "rule_based_red_flags",
+    "missing_information",
+    "requires_healthcare_worker_review",
+    "is_synthetic",
+    "is_validated",
+    "clinical_use",
+    "purpose",
+    "clinical_disclaimer"
+  ],
+  "model_artifact": {
+    "path": "ml/models/triage_yellow_green_v3.joblib",
+    "sha256": "c167958cb5fc6c3c7869eb3db58cc08fb152d27ed26cb485258d066e801dcfc3",
+    "size_bytes": 23082
+  },
+  "selected_policy_thresholds": {
+    "tau_green": 0.3,
+    "tau_yellow": 0.65,
+    "abstention_interval": [
+      0.3,
+      0.65
+    ]
+  },
+  "feature_flags": {
+    "TRIAGE_ML_SHADOW_ENABLED": false,
+    "SYMPTOM_PATTERN_SHADOW_ENABLED": false
+  },
+  "clinical_use_prohibition": "Experimental model trained on synthetic, unvalidated data. Not approved for clinical use, patient-facing inference or autonomous triage."
+}

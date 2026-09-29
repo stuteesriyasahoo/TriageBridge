@@ -1,0 +1,1022 @@
+{
+  "status": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED",
+  "technical_disclosure": {
+    "translation_source": "Static heuristic phrase dictionary and glossary lookup (src/lib/clinical-translator.ts)",
+    "model_architecture": "No neural machine translation (NMT) or Indic LLM translation layer currently deployed",
+    "safety_action": "All direct Indic text queries trigger MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED abstention to prevent spurious lexical matches"
+  },
+  "hindi_audit": {
+    "total_tested": 50,
+    "abstained_count": 50,
+    "abstention_rate": 1.0,
+    "cases": [
+      {
+        "id": "HI-EMERG-01",
+        "category": "Emergency",
+        "original_statement": "सीने में बहुत तेज दर्द हो रहा है और सांस लेने में भारी तकलीफ है",
+        "clinical_meaning_en": "Severe chest pain and heavy difficulty breathing",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-EMERG-02",
+        "category": "Emergency",
+        "original_statement": "छाती में असहनीय दबाव और बाएं हाथ में तेज दर्द फैल रहा है",
+        "clinical_meaning_en": "Unbearable chest pressure radiating to left arm",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-EMERG-03",
+        "category": "Emergency",
+        "original_statement": "मरीज अचानक बेहोश हो गया और सांस नहीं ले पा रहा है",
+        "clinical_meaning_en": "Patient suddenly fell unconscious and cannot breathe",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-EMERG-04",
+        "category": "Emergency",
+        "original_statement": "खांसी में बहुत ज्यादा खून आ रहा है और दम घुट रहा है",
+        "clinical_meaning_en": "Coughing large amounts of blood and choking",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-EMERG-05",
+        "category": "Emergency",
+        "original_statement": "चेहरे का एक तरफ सुन्न हो गया है और आवाज लड़खड़ा रही है",
+        "clinical_meaning_en": "One side of face is numb and speech is slurred (Stroke)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-EMERG-06",
+        "category": "Emergency",
+        "original_statement": "गर्भवती महिला को अत्यधिक रक्तस्राव हो रहा है और पेट में तेज ऐंठन है",
+        "clinical_meaning_en": "Pregnant woman experiencing severe hemorrhage and cramping",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-EMERG-07",
+        "category": "Emergency",
+        "original_statement": "बच्चे को तेज झटके आ रहे हैं और आंखें ऊपर चढ़ गई हैं",
+        "clinical_meaning_en": "Child having severe seizures/convulsions with eyes rolling up",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-EMERG-08",
+        "category": "Emergency",
+        "original_statement": "गले में अत्यधिक सूजन आ गई है और सांस की नली बंद लग रही है",
+        "clinical_meaning_en": "Severe throat swelling and airway blockage (Anaphylaxis)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-EMERG-09",
+        "category": "Emergency",
+        "original_statement": "सड़क दुर्घटना के बाद सिर से गहरा खून बह रहा है",
+        "clinical_meaning_en": "Deep head hemorrhage following road traffic collision",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-EMERG-10",
+        "category": "Emergency",
+        "original_statement": "धड़कन बहुत ज्यादा तेज है और मरीज पसीने से भीग गया है",
+        "clinical_meaning_en": "Severe tachycardia with diaphoresis / profuse sweating",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-VAGUE-01",
+        "category": "Vague",
+        "original_statement": "बुखार",
+        "clinical_meaning_en": "Fever (single word)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-VAGUE-02",
+        "category": "Vague",
+        "original_statement": "हल्का बुखार है",
+        "clinical_meaning_en": "Mild fever",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-VAGUE-03",
+        "category": "Vague",
+        "original_statement": "सिरदर्द",
+        "clinical_meaning_en": "Headache (single word)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-VAGUE-04",
+        "category": "Vague",
+        "original_statement": "खांसी",
+        "clinical_meaning_en": "Cough (single word)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-VAGUE-05",
+        "category": "Vague",
+        "original_statement": "बहुत कमजोरी लग रही है",
+        "clinical_meaning_en": "Feeling extreme weakness",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-VAGUE-06",
+        "category": "Vague",
+        "original_statement": "शरीर में दर्द",
+        "clinical_meaning_en": "Body ache",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-VAGUE-07",
+        "category": "Vague",
+        "original_statement": "चक्कर आ रहे हैं",
+        "clinical_meaning_en": "Dizziness",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-VAGUE-08",
+        "category": "Vague",
+        "original_statement": "जी मिचला रहा है",
+        "clinical_meaning_en": "Nausea",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-VAGUE-09",
+        "category": "Vague",
+        "original_statement": "भूख नहीं लग रही है",
+        "clinical_meaning_en": "Loss of appetite",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-VAGUE-10",
+        "category": "Vague",
+        "original_statement": "तबीयत ठीक नहीं लग रही है",
+        "clinical_meaning_en": "General malaise / not feeling well",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-NEG-01",
+        "category": "Negation",
+        "original_statement": "सीने में दर्द नहीं है, बुखार भी नहीं है",
+        "clinical_meaning_en": "No chest pain, also no fever",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-NEG-02",
+        "category": "Negation",
+        "original_statement": "सिरदर्द है लेकिन उल्टी या बुखार बिल्कुल नहीं है",
+        "clinical_meaning_en": "Has headache but absolutely no vomiting or fever",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-NEG-03",
+        "category": "Negation",
+        "original_statement": "सांस लेने में कोई तकलीफ नहीं है",
+        "clinical_meaning_en": "No difficulty in breathing",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-NEG-04",
+        "category": "Negation",
+        "original_statement": "मरीज को चक्कर या बेहोशी नहीं आई है",
+        "clinical_meaning_en": "Patient did not experience dizziness or loss of consciousness",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-NEG-05",
+        "category": "Negation",
+        "original_statement": "खांसी में कोई खून नहीं आ रहा है",
+        "clinical_meaning_en": "No blood in cough",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-NEG-06",
+        "category": "Negation",
+        "original_statement": "पेट में कोई दर्द नहीं है",
+        "clinical_meaning_en": "No pain in stomach",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-NEG-07",
+        "category": "Negation",
+        "original_statement": "धड़कन तेज नहीं है और पसीना नहीं आ रहा है",
+        "clinical_meaning_en": "No palpitations and no sweating",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-NEG-08",
+        "category": "Negation",
+        "original_statement": "कभी एलर्जी का इतिहास नहीं रहा है",
+        "clinical_meaning_en": "No history of allergies",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-NEG-09",
+        "category": "Negation",
+        "original_statement": "घबराहट नहीं है, केवल हाथ में हल्की खरोंच है",
+        "clinical_meaning_en": "No anxiety, only mild scratch on hand",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-NEG-10",
+        "category": "Negation",
+        "original_statement": "दवा लेने से कोई दुष्प्रभाव नहीं हुआ है",
+        "clinical_meaning_en": "No side effects from medication",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-ASR-01",
+        "category": "Misspelling/ASR",
+        "original_statement": "सेने मे दरद हौर सांस फुल रहा हे",
+        "clinical_meaning_en": "Phonetic typo: सीने में दर्द और सांस फूल रही है",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-ASR-02",
+        "category": "Misspelling/ASR",
+        "original_statement": "तेज बुखर ओर सरदरद हे",
+        "clinical_meaning_en": "Phonetic typo: तेज बुखार और सिरदर्द है",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-ASR-03",
+        "category": "Misspelling/ASR",
+        "original_statement": "पेट मे मरोद ओर उलटी",
+        "clinical_meaning_en": "Phonetic typo: पेट में मरोड़ और उल्टी",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-ASR-04",
+        "category": "Misspelling/ASR",
+        "original_statement": "चकर आरहा हे ओर आखो के आगे अंधेरा",
+        "clinical_meaning_en": "Phonetic typo: चक्कर आ रहा है और आंखों के आगे अंधेरा",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-ASR-05",
+        "category": "Misspelling/ASR",
+        "original_statement": "साश लेने मे भारी तकलीफ",
+        "clinical_meaning_en": "Phonetic typo: सांस लेने में भारी तकलीफ",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-ASR-06",
+        "category": "Misspelling/ASR",
+        "original_statement": "खासि आरहि हे बलगम के साथ",
+        "clinical_meaning_en": "Phonetic typo: खांसी आ रही है बलगम के साथ",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-ASR-07",
+        "category": "Misspelling/ASR",
+        "original_statement": "धडकन बोहोत तेज चल रहि हे",
+        "clinical_meaning_en": "Phonetic typo: धड़कन बहुत तेज चल रही है",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-ASR-08",
+        "category": "Misspelling/ASR",
+        "original_statement": "कमजोरी से चकरा के गीर गया",
+        "clinical_meaning_en": "Phonetic typo: कमजोरी से चकरा के गिर गया",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-ASR-09",
+        "category": "Misspelling/ASR",
+        "original_statement": "गले मे खरास ओर दर्द हे",
+        "clinical_meaning_en": "Phonetic typo: गले में खराश और दर्द है",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-ASR-10",
+        "category": "Misspelling/ASR",
+        "original_statement": "हाथ पेर मे कंपन होरहा हे",
+        "clinical_meaning_en": "Phonetic typo: हाथ पैर में कंपन हो रहा है",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-MULTI-01",
+        "category": "Multi-Symptom",
+        "original_statement": "तीन दिन से तेज बुखार है, बदन दर्द है और सूखी खांसी आ रही है",
+        "clinical_meaning_en": "Three days high fever, body ache, and dry cough",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-MULTI-02",
+        "category": "Multi-Symptom",
+        "original_statement": "दस्त हो रहे हैं, उल्टी आ रही है और पानी की बहुत ज्यादा प्यास लग रही है",
+        "clinical_meaning_en": "Diarrhea, vomiting, and extreme thirst (Dehydration)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-MULTI-03",
+        "category": "Multi-Symptom",
+        "original_statement": "पेशाब में तेज जलन है, बार-बार पेशाब आ रहा है और पेट के निचले हिस्से में दर्द है",
+        "clinical_meaning_en": "Dysuria, urinary frequency, and lower abdominal pain (UTI)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-MULTI-04",
+        "category": "Multi-Symptom",
+        "original_statement": "त्वचा पर लाल चकत्ते निकल आए हैं और तेज खुजली हो रही है",
+        "clinical_meaning_en": "Red skin rash and severe pruritus/itching",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-MULTI-05",
+        "category": "Multi-Symptom",
+        "original_statement": "जोड़ों में असहनीय दर्द है, सूजन आ गई है और सुबह उठने पर अकड़न रहती है",
+        "clinical_meaning_en": "Severe joint pain, swelling, and morning stiffness (Arthritis)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-MULTI-06",
+        "category": "Multi-Symptom",
+        "original_statement": "आंखें पीली पड़ गई हैं, पेशाब का रंग गहरा है और भूख पूरी तरह खत्म हो गई है",
+        "clinical_meaning_en": "Jaundice / yellow eyes, dark urine, and anorexia (Hepatitis)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-MULTI-07",
+        "category": "Multi-Symptom",
+        "original_statement": "कान में तेज दर्द हो रहा है और गाढ़ा मवाद बह रहा है",
+        "clinical_meaning_en": "Severe otalgia / ear pain with purulent discharge",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-MULTI-08",
+        "category": "Multi-Symptom",
+        "original_statement": "वजन तेजी से घट रहा है, रात में पसीना आता है और पुरानी खांसी है",
+        "clinical_meaning_en": "Rapid weight loss, night sweats, and chronic cough (TB suspect)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-MULTI-09",
+        "category": "Multi-Symptom",
+        "original_statement": "गर्दन में अत्यधिक अकड़न है, तेज सिरदर्द है और रोशनी से आंखों में दर्द हो रहा है",
+        "clinical_meaning_en": "Neck stiffness, severe headache, and photophobia (Meningitis suspect)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "HI-MULTI-10",
+        "category": "Multi-Symptom",
+        "original_statement": "भूख बहुत ज्यादा लगती है, बार-बार पेशाब आता है और पैरों में झनझनाहट होती है",
+        "clinical_meaning_en": "Polyphagia, polyuria, and peripheral neuropathy (Diabetes suspect)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      }
+    ]
+  },
+  "odia_audit": {
+    "total_tested": 50,
+    "abstained_count": 50,
+    "abstention_rate": 1.0,
+    "cases": [
+      {
+        "id": "OR-EMERG-01",
+        "category": "Emergency",
+        "original_statement": "ଛାତିରେ ବହୁତ ଯନ୍ତ୍ରଣା ହେଉଛି ଏବଂ ନିଶ୍ୱାସ ନେବାରେ ଘୋର କଷ୍ଟ ହେଉଛି",
+        "clinical_meaning_en": "Severe chest pain and severe difficulty breathing",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-EMERG-02",
+        "category": "Emergency",
+        "original_statement": "ଛାତି ଭାରୀ ଲାଗୁଛି ଏବଂ ବାମ ହାତକୁ ପ୍ରବଳ ବିନ୍ଧା ବ୍ୟାପୁଛି",
+        "clinical_meaning_en": "Chest heaviness radiating to left arm",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-EMERG-03",
+        "category": "Emergency",
+        "original_statement": "ରୋଗୀ ହଠାତ୍ ଅଚେତ ହୋଇ ପଡ଼ିଗଲେ ଏବଂ କିଛି କହିପାରୁ ନାହାନ୍ତି",
+        "clinical_meaning_en": "Patient suddenly collapsed unconscious and cannot speak",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-EMERG-04",
+        "category": "Emergency",
+        "original_statement": "କାଶିଲା ବେଳେ ବହୁତ ରକ୍ତ ପଡ଼ୁଛି ଏବଂ ଦମ୍ ବନ୍ଦ ହୋଇଯାଉଛି",
+        "clinical_meaning_en": "Hemoptysis / heavy blood in cough and choking sensation",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-EMERG-05",
+        "category": "Emergency",
+        "original_statement": "ମୁହଁର ଗୋଟିଏ ପାଖ ବଙ୍କା ହୋଇଗଲା ଏବଂ କଥା ଅସ୍ପଷ୍ଟ ହେଉଛି",
+        "clinical_meaning_en": "Facial droop and slurred speech (Acute Stroke)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-EMERG-06",
+        "category": "Emergency",
+        "original_statement": "ଗର୍ଭବତୀ ମହିଳାଙ୍କର ପ୍ରଚୁର ରକ୍ତସ୍ରାବ ହେଉଛି ଏବଂ ପେଟରେ ଭୟଙ୍କର କଷ୍ଟ ହେଉଛି",
+        "clinical_meaning_en": "Pregnant woman experiencing severe hemorrhage and abdominal pain",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-EMERG-07",
+        "category": "Emergency",
+        "original_statement": "ଛୋଟ ପିଲାଟିର ଝଟକା ଆସୁଛି ଏବଂ ଆଖି ଉପରକୁ ଟେକି ହୋଇଯାଉଛି",
+        "clinical_meaning_en": "Infant having seizures / convulsions with upward eye gaze",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-EMERG-08",
+        "category": "Emergency",
+        "original_statement": "ତଣ୍ଟି ଫୁଲି ଯାଇଛି ଏବଂ ନିଶ୍ୱାସ ନେଇ ହେଉନାହିଁ",
+        "clinical_meaning_en": "Severe throat swelling and severe respiratory compromise (Anaphylaxis)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-EMERG-09",
+        "category": "Emergency",
+        "original_statement": "ଦୁର୍ଘଟଣା ପରେ ମୁଣ୍ଡରୁ ପ୍ରବଳ ରକ୍ତ ବାହାରୁଛି",
+        "clinical_meaning_en": "Severe cranial hemorrhage following trauma / accident",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-EMERG-10",
+        "category": "Emergency",
+        "original_statement": "ଛାତି ଧଡ଼ଧଡ଼ ହେଉଛି ଏବଂ ପ୍ରଚୁର ଝାଳ ବୋହି ମୁଣ୍ଡ ବୁଲାଉଛି",
+        "clinical_meaning_en": "Severe palpitations with profuse sweating and presyncope",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-VAGUE-01",
+        "category": "Vague",
+        "original_statement": "ଜ୍ୱର",
+        "clinical_meaning_en": "Fever (single word)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-VAGUE-02",
+        "category": "Vague",
+        "original_statement": "ଅଳ୍ପ ଜ୍ୱର ଅଛି",
+        "clinical_meaning_en": "Mild fever",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-VAGUE-03",
+        "category": "Vague",
+        "original_statement": "ମୁଣ୍ଡ ବିନ୍ଧା",
+        "clinical_meaning_en": "Headache (single word)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-VAGUE-04",
+        "category": "Vague",
+        "original_statement": "କାଶ",
+        "clinical_meaning_en": "Cough (single word)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-VAGUE-05",
+        "category": "Vague",
+        "original_statement": "ଦେହ ବହୁତ ଦୁର୍ବଳ ଲାଗୁଛି",
+        "clinical_meaning_en": "Body feels very weak",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-VAGUE-06",
+        "category": "Vague",
+        "original_statement": "ଦେହ ହାତ ବିନ୍ଧୁଛି",
+        "clinical_meaning_en": "Body aches",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-VAGUE-07",
+        "category": "Vague",
+        "original_statement": "ମୁଣ୍ଡ ବୁଲାଉଛି",
+        "clinical_meaning_en": "Dizziness / vertigo",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-VAGUE-08",
+        "category": "Vague",
+        "original_statement": "ବାନ୍ତି ଲାଗୁଛି",
+        "clinical_meaning_en": "Nausea",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-VAGUE-09",
+        "category": "Vague",
+        "original_statement": "ଖାଇବାକୁ ଇଚ୍ଛା ହେଉନି",
+        "clinical_meaning_en": "Loss of appetite",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-VAGUE-10",
+        "category": "Vague",
+        "original_statement": "ଦେହ ଭଲ ଲାଗୁନି ଆଜ୍ଞା",
+        "clinical_meaning_en": "Malaise / generally not feeling well",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-NEG-01",
+        "category": "Negation",
+        "original_statement": "ଛାତିରେ କିଛି ଯନ୍ତ୍ରଣା ନାହିଁ, ଜ୍ୱର ମଧ୍ୟ ନାହିଁ",
+        "clinical_meaning_en": "No pain in chest, also no fever",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-NEG-02",
+        "category": "Negation",
+        "original_statement": "ମୁଣ୍ଡ ବିନ୍ଧୁଛି କିନ୍ତୁ ବାନ୍ତି କିମ୍ବା ଜ୍ୱର ଆଦୌ ନାହିଁ",
+        "clinical_meaning_en": "Headache present but absolutely no vomiting or fever",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-NEG-03",
+        "category": "Negation",
+        "original_statement": "ନିଶ୍ୱାସ ନେବାରେ କୌଣସି ଅସୁବିଧା ନାହିଁ",
+        "clinical_meaning_en": "No difficulty in breathing",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-NEG-04",
+        "category": "Negation",
+        "original_statement": "ରୋଗୀର ମୁଣ୍ଡ ବୁଲାଇବା କିମ୍ବା ଚେତା ହରାଇବା ହୋଇନାହିଁ",
+        "clinical_meaning_en": "No dizziness or loss of consciousness",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-NEG-05",
+        "category": "Negation",
+        "original_statement": "କାଶରେ ରକ୍ତ ପଡ଼ିବାର କୌଣସି ଲକ୍ଷଣ ନାହିଁ",
+        "clinical_meaning_en": "No blood in cough",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-NEG-06",
+        "category": "Negation",
+        "original_statement": "ପେଟରେ ଯନ୍ତ୍ରଣା ଆଦୌ ନାହିଁ",
+        "clinical_meaning_en": "No pain in abdomen at all",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-NEG-07",
+        "category": "Negation",
+        "original_statement": "ଛାତି ଧଡ଼ଧଡ଼ ହେଉନାହିଁ କି ଝାଳ ବୋହୁନାହିଁ",
+        "clinical_meaning_en": "No palpitations and no sweating",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-NEG-08",
+        "category": "Negation",
+        "original_statement": "ପୂର୍ବରୁ କୌଣସି ଆଲର୍ଜି ନାହିଁ",
+        "clinical_meaning_en": "No prior allergy history",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-NEG-09",
+        "category": "Negation",
+        "original_statement": "ଭୟ ଲାଗୁନି, କେବଳ ହାତ ଟିକେ ଛିଣ୍ଡି ଯାଇଛି",
+        "clinical_meaning_en": "Not frightened, only minor skin abrasion on hand",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-NEG-10",
+        "category": "Negation",
+        "original_statement": "ଔଷଧ ଖାଇବା ଦ୍ୱାରା କିଛି ଖରାପ ପ୍ରଭାବ ହୋଇନାହିଁ",
+        "clinical_meaning_en": "No adverse side effects from medicine",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-ASR-01",
+        "category": "Misspelling/ASR",
+        "original_statement": "ଛାତିରେ ଦରଦ ଓ ନିସ୍ୱାସ କସ୍ଟ ହଉଚି",
+        "clinical_meaning_en": "Phonetic typo: ଛାତିରେ ଯନ୍ତ୍ରଣା ଓ ନିଶ୍ୱାସ କଷ୍ଟ ହେଉଛି",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-ASR-02",
+        "category": "Misspelling/ASR",
+        "original_statement": "ପ୍ରବଳ ଜର ଓ ମୁଣ୍ଡବିନ୍ଧା",
+        "clinical_meaning_en": "Phonetic typo: ପ୍ରବଳ ଜ୍ୱର ଓ ମୁଣ୍ଡ ବିନ୍ଧା",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-ASR-03",
+        "category": "Misspelling/ASR",
+        "original_statement": "ପେଟ କାଟୁଚି ଓ ବାନ୍ତି ହଉଚି",
+        "clinical_meaning_en": "Colloquial/phonetic: ପେଟରେ ଯନ୍ତ୍ରଣା ଓ ବାନ୍ତି ହେଉଛି",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-ASR-04",
+        "category": "Misspelling/ASR",
+        "original_statement": "ମୁଣ୍ଡ ବୁଲେଇ ହୋଇ ତଳେ ପଡ଼ିଗଲେ",
+        "clinical_meaning_en": "Colloquial typo: ମୁଣ୍ଡ ବୁଲାଇ ତଳେ ପଡ଼ିଗଲେ",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-ASR-05",
+        "category": "Misspelling/ASR",
+        "original_statement": "ନିଶାସ ନେଇ ପାରୁନି",
+        "clinical_meaning_en": "Phonetic typo: ନିଶ୍ୱାସ ନେଇ ପାରୁନାହିଁ",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-ASR-06",
+        "category": "Misspelling/ASR",
+        "original_statement": "କାସ ସାଙ୍ଗକୁ କଫ ବାହାରୁଛି",
+        "clinical_meaning_en": "Phonetic typo: କାଶ ସାଙ୍ଗକୁ କଫ ବାହାରୁଛି",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-ASR-07",
+        "category": "Misspelling/ASR",
+        "original_statement": "ଛାତି ଧଡଫଡ ହଉଚି",
+        "clinical_meaning_en": "Colloquial: ଛାତି ଧଡ଼ଧଡ଼ ହେଉଛି",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-ASR-08",
+        "category": "Misspelling/ASR",
+        "original_statement": "ଦେହରେ ପୁରା ଦୁର୍ବଳତା",
+        "clinical_meaning_en": "Colloquial: ଶରୀରରେ ଅତ୍ୟଧିକ ଦୁର୍ବଳତା",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-ASR-09",
+        "category": "Misspelling/ASR",
+        "original_statement": "ତଣ୍ଟିରେ ଖସଖସ ଓ କଷ୍ଟ",
+        "clinical_meaning_en": "Colloquial: ତଣ୍ଟିରେ ଖରାଶ ଓ ଯନ୍ତ୍ରଣା",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-ASR-10",
+        "category": "Misspelling/ASR",
+        "original_statement": "ହାତ ଗୋଡ଼ ଥରୁଛି ବହୁତ",
+        "clinical_meaning_en": "Colloquial: ହାତ ଗୋଡ଼ କମ୍ପନ ହେଉଛି",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-MULTI-01",
+        "category": "Multi-Symptom",
+        "original_statement": "ଚାରି ଦିନ ହେବ ପ୍ରବଳ ଜ୍ୱର ଅଛି, ଦେହ ହାତ ବିନ୍ଧୁଛି ଏବଂ ଶୁଖିଲା କାଶ ହେଉଛି",
+        "clinical_meaning_en": "Four days high fever, severe body ache, and dry cough",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-MULTI-02",
+        "category": "Multi-Symptom",
+        "original_statement": "ପତଳା ଝାଡ଼ା ହେଉଛି, ବାରମ୍ବାର ବାନ୍ତି ହେଉଛି ଏବଂ ଜିଭ ଶୁଖି ଯାଉଛି",
+        "clinical_meaning_en": "Watery diarrhea, recurrent vomiting, and dry mouth (Severe dehydration)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-MULTI-03",
+        "category": "Multi-Symptom",
+        "original_statement": "ପରିସ୍ରା କଲା ବେଳେ ପ୍ରବଳ ପୋଡ଼ାଜଳା ହେଉଛି ଏବଂ ବାରମ୍ବାର ପରିସ୍ରା ଲାଗୁଛି",
+        "clinical_meaning_en": "Severe dysuria / burning micturition and urinary urgency (UTI)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-MULTI-04",
+        "category": "Multi-Symptom",
+        "original_statement": "ସାରା ଦେହରେ ନାଲି ଦାଗ ବାହାରିଛି ଏବଂ ପ୍ରବଳ କୁଣ୍ଡେଇ ହେଉଛି",
+        "clinical_meaning_en": "Erythematous rash across body with severe pruritus",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-MULTI-05",
+        "category": "Multi-Symptom",
+        "original_statement": "ହାତ ଓ ଗୋଡ଼ ଗଣ୍ଠି ଫୁଲି ଯାଇଛି ଏବଂ ସକାଳେ ଉଠିଲେ ଅଣ୍ଟା ଜମା ସଳଖି ହେଉନି",
+        "clinical_meaning_en": "Swollen peripheral joints and morning stiffness (Polyarthritis)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-MULTI-06",
+        "category": "Multi-Symptom",
+        "original_statement": "ଆଖି ହଳଦିଆ ପଡ଼ିଯାଇଛି, ପରିସ୍ରା ଗାଢ଼ ହଳଦିଆ ହେଉଛି ଏବଂ ବାନ୍ତି ଲାଗୁଛି",
+        "clinical_meaning_en": "Scleral icterus / yellow eyes, dark urine, and nausea (Hepatitis)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-MULTI-07",
+        "category": "Multi-Symptom",
+        "original_statement": "କାନ ଭିତରେ ପ୍ରବଳ ବିନ୍ଧୁଛି ଏବଂ କାନରୁ ପୂଜ ବାହାରୁଛି",
+        "clinical_meaning_en": "Severe otalgia with purulent otorrhoea",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-MULTI-08",
+        "category": "Multi-Symptom",
+        "original_statement": "ଦୁଇ ମାସ ହେବ କାଶ ଲାଗି ରହିଛି, ଓଜନ କମି ଯାଉଛି ଏବଂ ରାତିରେ ଜ୍ୱର ଓ ଝାଳ ବୋହୁଛି",
+        "clinical_meaning_en": "Two months chronic cough, weight loss, night fevers and sweats (TB)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-MULTI-09",
+        "category": "Multi-Symptom",
+        "original_statement": "ବେକ ଜମା ବଙ୍କେଇ ହେଉନି, ଭୀଷଣ ମୁଣ୍ଡ ବିନ୍ଧା ହେଉଛି ଏବଂ ଆଲୁଅ ଦେଖିଲେ ଆଖି କାଟୁଛି",
+        "clinical_meaning_en": "Meningismus / nuchal rigidity, severe headache, photophobia (Meningitis)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      },
+      {
+        "id": "OR-MULTI-10",
+        "category": "Multi-Symptom",
+        "original_statement": "ବାରମ୍ବାର ଭୋକ ଓ ଶୋଷ ଲାଗୁଛି, ରାତିରେ ବାରମ୍ବାର ପରିସ୍ରା ଯିବାକୁ ପଡ଼ୁଛି",
+        "clinical_meaning_en": "Polyphagia, polydipsia, and nocturia (Diabetes mellitus)",
+        "abstained": true,
+        "abstention_reason": "MULTILINGUAL_INFERENCE_NOT_IMPLEMENTED (Raw Indic text requires verified clinical translation)",
+        "max_confidence": 0.0,
+        "top_patterns": []
+      }
+    ]
+  }
+}

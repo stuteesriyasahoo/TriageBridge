@@ -6,12 +6,14 @@ type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
+  mounted: boolean;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
+  mounted: false,
   toggleTheme: () => {},
   setTheme: () => {},
 });
@@ -53,6 +55,26 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setMounted(true);
   }, []);
 
+  // Listen to system theme changes when no explicit choice has been saved
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemChange = (e: MediaQueryListEvent) => {
+      try {
+        const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+        if (!savedTheme) {
+          const sysTheme: Theme = e.matches ? 'dark' : 'light';
+          setThemeState(sysTheme);
+          applyThemeClass(sysTheme);
+        }
+      } catch {
+        // ignore
+      }
+    };
+    mediaQuery.addEventListener('change', handleSystemChange);
+    return () => mediaQuery.removeEventListener('change', handleSystemChange);
+  }, []);
+
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
     applyThemeClass(newTheme);
@@ -69,7 +91,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, mounted, toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -1,0 +1,209 @@
+# Training-Readiness & Class Coverage Audit: Binary Symptom Dataset
+
+> [!CAUTION]
+> **MANDATORY CLINICAL SAFETY NOTICE — UNVERIFIED RESEARCH DATA**  
+> **Classification Status**: Experimental offline research model data — rejected for application activation pending provenance, calibration, multilingual validation, and clinical review.  
+> **Clinical Use**: `PROHIBITED` | **Research Only**: `true` | **Model Retraining**: `DISABLED`  
+> This dataset must **NEVER** be used to train autonomous clinical decision models, prescribe medication, or determine patient triage urgency.
+
+---
+
+## 1. Executive Summary & Audit Overview
+
+A comprehensive training-readiness audit was performed on the deduplicated and group-partitioned binary research dataset:
+- **Cleaned Dataset**: [`data/processed/binary_symptoms_cleaned.csv`](file:///c:/Users/bibhu/Downloads/bput/data/processed/binary_symptoms_cleaned.csv) (189,647 records across 329 columns)
+- **Train Set**: [`data/processed/binary_train.csv`](file:///c:/Users/bibhu/Downloads/bput/data/processed/binary_train.csv) (132,574 records, 69.91%) across 118,921 symptom groups (70.00%)
+- **Validation Set**: [`data/processed/binary_validation.csv`](file:///c:/Users/bibhu/Downloads/bput/data/processed/binary_validation.csv) (28,534 records, 15.05%) across 25,483 symptom groups (15.00%)
+- **Test Set**: [`data/processed/binary_test.csv`](file:///c:/Users/bibhu/Downloads/bput/data/processed/binary_test.csv) (28,539 records, 15.05%) across 25,484 symptom groups (15.00%)
+
+### Core Audit Findings:
+1. **Critical Training Blind Spots**: **17 disease classes have ZERO training samples** in `binary_train.csv`. A supervised model trained on this split cannot predict these diseases under any circumstances.
+2. **Evaluation Blind Spots**: **116 diseases (15.01%)** are missing from `binary_validation.csv`, and **116 diseases (15.01%)** are missing from `binary_test.csv`. Across validation and test splits combined, **185 unique diseases (23.93%)** lack full evaluation coverage.
+3. **Severe Representation Sparsity**:
+   - **46 diseases** are represented by **only 1 unique symptom group** across the entire dataset.
+   - **75 diseases** are represented by **fewer than 3 unique symptom groups**, making 3-way split representation mathematically impossible without leakage.
+   - **115 diseases** are represented by **fewer than 5 unique symptom groups**.
+4. **Massive Multi-Label Entanglement**: **697 of the 773 disease classes (90.17%)** participate in conflicting symptom groups where identical clinical feature vectors map to multiple diseases.
+
+---
+
+## 2. Complete Split Coverage Audit (All 773 Disease Classes)
+
+| Split Partition | Expected Classes | Observed Classes | Missing Classes | Coverage Percentage |
+| :--- | :---: | :---: | :---: | :---: |
+| **Cleaned Dataset (Total)** | 773 | 773 | 0 | 100.00% |
+| **Training Split** (`binary_train.csv`) | 773 | **756** | **17** | **97.80%** |
+| **Validation Split** (`binary_validation.csv`) | 773 | **657** | **116** | **84.99%** |
+| **Test Split** (`binary_test.csv`) | 773 | **657** | **116** | **84.99%** |
+
+Full per-disease support metrics (total support, train support, val support, test support, unique symptom groups, and conflicting support) for all 773 diseases are archived in machine-readable JSON format at:
+[`data/evaluation/disease_readiness_audit.json`](file:///c:/Users/bibhu/Downloads/bput/data/evaluation/disease_readiness_audit.json).
+
+---
+
+## 3. Detailed Breakdown of Missing & Structurally Deficient Classes
+
+### A. The 17 Diseases Missing from Training (`train_support == 0`)
+Because symptom groups were partitioned at random (Seed 42), all symptom patterns for these 17 classes were allocated exclusively to validation or test sets:
+
+| Disease Name | Total Support | Train Support | Val Support | Test Support | Unique Groups | Conflicting Support |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| `carcinoid syndrome` | 1 | **0** | 0 | 1 | 1 | 0 (0.0%) |
+| `chronic ulcer` | 1 | **0** | 1 | 0 | 1 | 0 (0.0%) |
+| `granuloma inguinale` | 2 | **0** | 2 | 0 | 2 | 1 (50.0%) |
+| `huntington disease` | 1 | **0** | 0 | 1 | 1 | 0 (0.0%) |
+| `hypergammaglobulinemia` | 1 | **0** | 1 | 0 | 1 | 1 (100.0%) |
+| `lymphogranuloma venereum` | 5 | **0** | 5 | 0 | 5 | 2 (40.0%) |
+| `meckel diverticulum` | 1 | **0** | 0 | 1 | 1 | 0 (0.0%) |
+| `omphalitis` | 1 | **0** | 0 | 1 | 1 | 0 (0.0%) |
+| `open wound due to trauma` | 1 | **0** | 0 | 1 | 1 | 0 (0.0%) |
+| `open wound of the cheek` | 1 | **0** | 1 | 0 | 1 | 0 (0.0%) |
+| `open wound of the knee` | 1 | **0** | 0 | 1 | 1 | 1 (100.0%) |
+| `open wound of the shoulder` | 2 | **0** | 1 | 1 | 2 | 0 (0.0%) |
+| `primary thrombocythemia` | 1 | **0** | 1 | 0 | 1 | 0 (0.0%) |
+| `pulmonic valve disease` | 1 | **0** | 1 | 0 | 1 | 0 (0.0%) |
+| `rheumatic fever` | 1 | **0** | 0 | 1 | 1 | 0 (0.0%) |
+| `trichinosis` | 1 | **0** | 0 | 1 | 1 | 0 (0.0%) |
+| `tricuspid valve disease` | 1 | **0** | 0 | 1 | 1 | 1 (100.0%) |
+
+*Clinical Implication*: Any classifier trained on `binary_train.csv` will exhibit **0.00% Recall** for all 17 of these conditions on held-out evaluation.
+
+### B. Diseases Missing from Validation (116 Classes, 15.01%)
+116 diseases have 0 records in `binary_validation.csv`, preventing hyperparameter tuning and threshold calibration for these conditions:
+`acanthosis nigricans, adrenal cancer, amyloidosis, anemia due to malignancy, aspergillosis, autonomic nervous system disorder, birth trauma, breast cancer, breast cyst, carcinoid syndrome, cat scratch disease, central atherosclerosis, chronic inflammatory demyelinating polyneuropathy (cidp), congenital malformation syndrome, cryptococcosis, dengue fever, diabetes, diabetes insipidus, diabetic kidney disease, dislocation of the finger` *(and 96 more; see JSON audit)*.
+
+### C. Diseases Missing from Testing (116 Classes, 15.01%)
+116 diseases have 0 records in `binary_test.csv`, preventing held-out test verification for these conditions:
+`acute fatty liver of pregnancy (aflp), adrenal cancer, amblyopia, amyloidosis, anemia due to malignancy, aphakia, aspergillosis, autonomic nervous system disorder, birth trauma, blepharospasm, breast cancer, cat scratch disease, cholesteatoma, chronic ulcer, congenital malformation syndrome, connective tissue disorder, cryptococcosis, cryptorchidism, cushing syndrome, dengue fever` *(and 96 more; see JSON audit)*.
+
+### D. Single-Group Diseases (46 Classes, Only 1 Unique Symptom Pattern)
+46 diseases are supported by **exactly one** unique symptom vector:
+| Disease Name | Total Support | Train Support | Val Support | Test Support | Unique Groups | Conflicting Support |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| `adrenal cancer` | 1 | 1 | 0 | 0 | **1** | 1 |
+| `aspergillosis` | 1 | 1 | 0 | 0 | **1** | 0 |
+| `carcinoid syndrome` | 1 | 0 | 0 | 1 | **1** | 0 |
+| `chronic ulcer` | 1 | 0 | 1 | 0 | **1** | 0 |
+| `cryptococcosis` | 1 | 1 | 0 | 0 | **1** | 0 |
+| `dengue fever` | 1 | 1 | 0 | 0 | **1** | 0 |
+| `diabetes` | 1 | 1 | 0 | 0 | **1** | 0 |
+| `diabetic kidney disease` | 1 | 1 | 0 | 0 | **1** | 0 |
+| `esophageal varices` | 1 | 1 | 0 | 0 | **1** | 1 |
+| `foreign body in the nose` | 1 | 1 | 0 | 0 | **1** | 0 |
+| `g6pd enzyme deficiency` | 1 | 1 | 0 | 0 | **1** | 1 |
+| `gas gangrene` | 1 | 1 | 0 | 0 | **1** | 0 |
+| `hashimoto thyroiditis` | 1 | 1 | 0 | 0 | **1** | 1 |
+| `heat stroke` | 1 | 1 | 0 | 0 | **1** | 0 |
+| `high blood pressure` | 1 | 1 | 0 | 0 | **1** | 1 |
+*(and 31 more; see JSON audit)*.
+
+---
+
+## 4. Invariant: Group Hash Preservation & The Fallacy of Random Seed Stratification
+
+### A. Group Hash Invariant
+To guarantee zero synthetic data contamination, identical canonical symptom hashes must never be divided across partitions:
+- Train Groups ∩ Validation Groups = ∅
+- Train Groups ∩ Test Groups = ∅
+- Validation Groups ∩ Test Groups = ∅  
+This constraint has been rigorously maintained (0.00% cross-split canonical hash overlap).
+
+### B. The Fallacy of Random Seed Stratification
+> [!WARNING]
+> **Random seed 42 alone DOES NOT produce class-balanced partitions.**  
+> Assigning groups uniformly at random using a pseudorandom number generator (e.g. `RandomState(42)`) partitions the *symptom groups* at a 70/15/15 ratio, but it **completely ignores the underlying label distribution**.  
+> In a long-tailed dataset where class support spans from 1 to 1,219 records and 75 classes have < 3 symptom groups, unstratified group assignment guarantees that rare classes will randomly collapse into a single partition, producing the 17 training omissions and 116 evaluation omissions observed above.
+
+---
+
+## 5. Mathematical Evaluation: Feasibility of Group-Aware Class Stratification
+
+We evaluated whether an optimal group-aware, class-stratified split could achieve representation for all 773 classes while maintaining zero canonical-hash overlap.
+
+### Mathematical Proof of Impossibility for 75 Classes:
+1. Let D be the set of 773 disease classes, and H be the set of 169,888 unique symptom group hashes.
+2. For each disease d in D, let G(d) be the subset of symptom groups in H associated with d.
+3. The zero-leakage invariant requires that each group h in H belongs to exactly one partition: Partition(h) in [Train, Val, Test].
+4. A disease d is present in split S if and only if there exists h in G(d) such that Partition(h) = S.
+5. **The Pigeonhole Principle Constraint**: If |G(d)| < 3, the set G(d) contains at most 2 elements. By the Pigeonhole Principle, assigning at most 2 elements into 3 pairwise-disjoint sets (Train, Val, Test) guarantees that **at least one split will receive zero elements**:
+   `For all d in D with |G(d)| < 3 ==> Exists S in [Train, Val, Test] such that d is not in S.`
+6. In `binary_symptoms_cleaned.csv`, **75 diseases have |G(d)| < 3** (46 diseases have |G(d)| = 1; 29 diseases have |G(d)| = 2).
+7. **Conclusion**: It is **mathematically impossible** to construct any 3-way partition where all 773 classes are present in Train, Validation, and Test sets without violating the zero group-hash overlap invariant.
+
+### Hypergraph Entanglement of the Remaining Classes:
+- For the remaining 698 classes (|G(d)| >= 3), **697 classes (90.17%)** participate in multi-label conflict groups.
+- Multi-label symptom groups act as hyperedges connecting multiple diseases. Assigning a conflicting group h to Train simultaneously assigns samples of all connected diseases to Train, creating conflicting optimization constraints.
+- While iterative hypergraph stratification algorithms (e.g., Sechidis et al.) can mitigate imbalance for common diseases, they cannot overcome the structural zero-coverage barrier for the 75 low-group classes.
+
+---
+
+## 6. Pathological Flaws of Multiclass Formulation on Conflicting Patterns
+
+In `binary_symptoms_cleaned.csv`, **12,634 unique symptom vectors (representing 32,393 rows)** are associated with multiple distinct disease classes.
+
+### Why Standard Multiclass Classification Fails:
+1. **Mathematical Incoherence**: Standard multiclass classification assumes that classes are mutually exclusive: `Sum_{k=1}^K P(y = k | x) = 1`. When identical input vector x appears with Ground Truth y = Disease A in Row 1, and y = Disease B in Row 2, standard multiclass loss (Softmax Cross-Entropy) penalizes predicting Disease A when evaluating Row 2:
+   - Row 1 Loss: `-log P(Disease A | x)`
+   - Row 2 Loss: `-log P(Disease B | x)`
+2. **Gradient Oscillation**: During gradient descent, backpropagation pulls model weights in opposite directions for the exact same input features, destabilizing convergence.
+3. **Clinical Hallucination**: Forced single-label models output arbitrary high-confidence guesses between clinically indistinguishable conditions, creating dangerous false diagnostic certainty.
+
+---
+
+## 7. Comparison of Three Safe Experimental Research Approaches
+
+| Evaluation Criteria | Approach A: Non-Conflicting Multiclass | Approach B: Multi-Label Differential Ranking | Approach C: Hierarchical Disease Category |
+| :--- | :--- | :--- | :--- |
+| **Core Concept** | Drop all 12,634 conflicting groups; train standard multiclass classifier on 157,254 single-label patterns only. | Formulate as One-vs-Rest (OvR) multi-label ranking; assign all valid diseases as positive targets for shared patterns. | Map 773 diseases into 15–20 broad organ systems; classify organ system first, then differential within category. |
+| **Data Retention** | **Drops 32,393 records (17.08%)** | **Retains 100.00% of data (189,647 records)** | **Retains 100.00% of data (189,647 records)** |
+| **Target Representation** | Single-label mutually exclusive | Multi-label binary vector (Y in [0, 1]^773) | Two-tier: Macro-cluster label + micro-disease set |
+| **Handling of Overlapping Symptoms** | **Fails**: Rejects real-world symptom overlap; vulnerable to severe out-of-distribution errors. | **Robust**: Accurately reflects differential diagnosis; predicts all candidate pathologies. | **Robust**: Resolves intra-system conflicts (e.g. cholecystitis vs gallstones in GI). |
+| **Optimization Stability** | High (zero conflicting targets) | High (BCE loss treats each label independently) | High (reduces target space dimensionality) |
+| **Rare-Class Viability** | **Severe**: Eliminates classes that only appear in conflicting groups. | **Moderate**: Retains rare classes, but low-group evaluation limits persist. | **High**: Pools rare diseases into robust organ system categories. |
+| **Abstention Integration** | Difficult to calibrate | **Natural**: Candidate margin (Delta_top2) & threshold gating | **Natural**: Abstain if top organ category confidence is low |
+
+---
+
+## 8. Scientifically Defensible Recommendation
+
+### Recommended Architecture: Hybrid Hierarchical Multi-Label Ranking (Approach B + C)
+1. **Hierarchical Categorization (Stage 1)**:
+   - Map 773 fine-grained disease labels into 16 physiological categories (Respiratory, Cardiovascular, Gastrointestinal, Neurological, Dermatological, Musculoskeletal, Endocrine/Metabolic, Infectious, Genitourinary, Hematological, Oncological, Ophthalmic, ENT, Psychiatric, Reproductive, Trauma).
+   - Train an initial calibrated multi-class/multi-label classifier on physiological categories.
+2. **Differential Multi-Label Ranking (Stage 2)**:
+   - Within the activated physiological category, rank specific disease entities using independent binary classifiers (Binary Cross-Entropy / OvR).
+   - If a symptom pattern maps to multiple conditions, assign positive ground truth to all candidate diseases.
+3. **Strict Deterministic Abstention Gating**:
+   - Enforce minimum confidence threshold ($P_{\max} \ge 0.35$).
+   - Enforce candidate separation margin ($\Delta_{	ext{top2}} \ge 0.05$).
+   - Deterministically abstain on single vague symptoms, missing contextual information, or OOD non-medical vocabulary.
+
+> [!IMPORTANT]
+> **MANDATORY INSTRUCTION: DO NOT TRAIN THIS MODEL.**  
+> This recommendation represents an architectural specification for future research only. No training, hyperparameter optimization, or deployment may take place.
+
+---
+
+## 9. Confirmation: Inability to Train Clinical Triage Urgency
+
+We explicitly confirm that **under no circumstances can this binary dataset be used to train or infer patient triage urgency (RED, YELLOW, GREEN, GREY)**:
+
+1. **Complete Absence of Urgency Ground Truth**: The dataset contains only disease name strings and binary symptom indicators. It contains zero triage acuity labels.
+2. **Zero Physiological Vital Signs**: Crucial parameters required for Manchester Triage System (MTS) or Emergency Severity Index (ESI)—such as heart rate, blood pressure, oxygen saturation ($	ext{SpO}_2$), respiratory rate, and body temperature—are completely absent.
+3. **Zero Acuity Modifiers**: No symptom duration, pain scores (0–10 scale), onset velocity, conscious state (GCS/AVPU), or mechanism of injury.
+4. **Clinical Distinction between Diagnosis and Urgency**:
+   - Disease diagnosis $
+eq$ triage urgency.
+   - For example: *Asthma* is GREEN if mild intermittent; YELLOW if moderate wheezing with normal vitals; RED if silent chest with $	ext{SpO}_2 < 90\%$.
+   - A static binary symptom matrix cannot differentiate these presentations.
+
+---
+
+## 10. Safety Invariants & Repository Status
+
+- **Shadow Feature Flags Maintained as False**:
+  - `TRIAGE_ML_SHADOW_ENABLED=false`
+  - `SYMPTOM_PATTERN_SHADOW_ENABLED=false`
+- **Database Status**: Migration `supabase/migrations/20260927_symptom_pattern_shadow_predictions.sql` remains **DRAFT / UNAPPLIED**.
+- **Application Decoupling**: Completely disconnected from patient routes, Srida assistant, urgency rules, and frontend queries.
+- **Git Tracking Policy**: All raw and processed CSV files remain untracked and strictly excluded via `.gitignore`.

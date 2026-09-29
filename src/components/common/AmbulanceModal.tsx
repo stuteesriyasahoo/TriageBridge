@@ -324,7 +324,7 @@ export function AmbulanceModal({
                           value={editableAddress}
                           onChange={e => setEditableAddress(e.target.value)}
                           placeholder="Enter complete pickup address with landmarks..."
-                          className="w-full p-2.5 rounded-xl border border-teal-500 bg-white dark:bg-[#0B1220] text-xs focus:outline-hidden focus:ring-2 focus:ring-teal-500"
+                          className="w-full p-2.5 rounded-xl border border-teal-500 bg-white dark:bg-[#0B1220] text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-xs focus:outline-hidden focus:ring-2 focus:ring-teal-500"
                         />
                         <button
                           type="button"

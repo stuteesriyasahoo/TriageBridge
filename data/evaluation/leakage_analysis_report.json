@@ -1,0 +1,24 @@
+{
+  "audit_timestamp": "2026-09-27T11:00:00Z",
+  "canonical_hash_invariance_passed": true,
+  "splits": {
+    "train_rows": 104250,
+    "validation_rows": 22338,
+    "test_rows": 22653
+  },
+  "canonical_cluster_overlap": {
+    "train_val": 0,
+    "train_test": 0,
+    "val_test": 0,
+    "status": "ZERO_LEAKAGE"
+  },
+  "near_duplicate_jaccard_analysis": {
+    "test_sample_size": 1000,
+    "train_sample_size": 5000,
+    "high_redundancy_count_jaccard_ge_0_85": 198,
+    "high_redundancy_percentage": 19.8,
+    "moderate_redundancy_count_jaccard_0_70_to_0_85": 582,
+    "moderate_redundancy_percentage": 58.2,
+    "finding": "Substantial synthetic lexical repetition present in source dataset (19.8% near-duplicate density). Confirms test metrics are optimistic and model must remain rejected for clinical activation."
+  }
+}

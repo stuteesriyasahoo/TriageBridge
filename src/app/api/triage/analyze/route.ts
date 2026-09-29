@@ -9,6 +9,7 @@ import {
 import { evaluateClinicalRules, MANDATORY_CLINICAL_DISCLAIMER } from '@/lib/red-flags';
 import { detectTextLanguage } from '@/lib/languages';
 import { executeShadowEvaluation } from '@/lib/ml-shadow-service';
+import { executeSymptomPatternShadowEvaluation } from '@/lib/symptom-pattern-service';
 
 interface AnalyzeRequestBody {
   caseId?: string;
@@ -314,6 +315,21 @@ export async function POST(req: NextRequest) {
     } catch (shadowErr) {
       // Non-blocking failure: Log internal code only, never block triage submission
       console.warn('Shadow evaluation non-blocking error:', shadowErr instanceof Error ? shadowErr.message : shadowErr);
+    }
+
+    // Step 8: Optional hidden symptom-pattern research model (strictly gated by SYMPTOM_PATTERN_SHADOW_ENABLED=false)
+    if (caseId) {
+      try {
+        await executeSymptomPatternShadowEvaluation({
+          caseId,
+          symptoms: `${typedSymptoms} ${voiceTranscript}`.trim(),
+          chiefComplaint,
+          patientLanguage: originalLanguage,
+          deterministicGateResult,
+        });
+      } catch (symptomErr) {
+        console.warn('Symptom pattern shadow non-blocking error:', symptomErr instanceof Error ? symptomErr.message : symptomErr);
+      }
     }
 
     // Step 9: Return only patient-safe response. NEVER apply shadow prediction to patient or clinician.

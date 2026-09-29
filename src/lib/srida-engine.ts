@@ -79,21 +79,21 @@ export const SRIDA_GREETINGS = {
 
 export const MEDICAL_REFUSAL_RESPONSES = {
   en: {
-    text: 'I can help you use TriageBridge, but I cannot diagnose symptoms, prescribe medicines or recommend treatments. Please start a triage request or consult a qualified healthcare professional.',
+    text: 'I cannot diagnose medical conditions. Please complete a triage request or consult a qualified healthcare professional.',
     actions: [
       { label: 'Start Triage', route: '/patient/triage', variant: 'primary' as const },
       { label: 'View My Cases', route: '/patient/cases', variant: 'secondary' as const },
     ],
   },
   hi: {
-    text: 'मैं TriageBridge का उपयोग करने में आपकी सहायता कर सकती हूँ, लेकिन मैं लक्षणों का निदान नहीं कर सकती, दवाएं नहीं लिख सकती या उपचार की सिफारिश नहीं कर सकती। कृपया एक ट्राइएज अनुरोध शुरू करें या किसी योग्य स्वास्थ्य देखभाल पेशेवर से परामर्श लें।',
+    text: 'मैं चिकित्सीय स्थितियों का निदान नहीं कर सकती। कृपया एक ट्राइएज अनुरोध पूरा करें या किसी योग्य स्वास्थ्य देखभाल पेशेवर से परामर्श लें।',
     actions: [
       { label: 'ट्राइएज शुरू करें', route: '/patient/triage', variant: 'primary' as const },
       { label: 'मेरे मामले देखें', route: '/patient/cases', variant: 'secondary' as const },
     ],
   },
   or: {
-    text: 'ମୁଁ ଆପଣଙ୍କୁ TriageBridge ବ୍ୟବହାର କରିବାରେ ସାହାଯ୍ୟ କରିପାରିବି, କିନ୍ତୁ ମୁଁ ଲକ୍ଷଣ ନିର୍ଣ୍ଣୟ କରିପାରିବି ନାହିଁ, ଔଷଧ ଲେଖିପାରିବି ନାହିଁ କିମ୍ବା ଚିକିତ୍ସା ସୁପାରିଶ କରିପାରିବି ନାହିଁ। ଦୟାକରି ଏକ ଟ୍ରାଇଏଜ୍ ଅନୁରୋଧ ଆରମ୍ଭ କରନ୍ତୁ କିମ୍ବା ଜଣେ ଯୋଗ୍ୟ ସ୍ୱାସ୍ଥ୍ୟସେବା ବିଶେଷଜ୍ଞଙ୍କ ସହ ପରାମର୍ଶ କରନ୍ତୁ।',
+    text: 'ମୁଁ ଚିକିତ୍ସା ସମ୍ବନ୍ଧୀୟ ସ୍ଥିତି ନିର୍ଣ୍ଣୟ କରିପାରିବି ନାହିଁ। ଦୟାକରି ଏକ ଟ୍ରାଇଏଜ୍ ଅନୁରୋଧ ପୂରଣ କରନ୍ତୁ କିମ୍ବା ଜଣେ ଯୋଗ୍ୟ ସ୍ୱାସ୍ଥ୍ୟସେବା ବିଶେଷଜ୍ଞଙ୍କ ସହ ପରାମର୍ଶ କରନ୍ତୁ।',
     actions: [
       { label: 'ଟ୍ରାଇଏଜ୍ ଆରମ୍ଭ କରନ୍ତୁ', route: '/patient/triage', variant: 'primary' as const },
       { label: 'ମୋର ମାମଲାଗୁଡ଼ିକ ଦେଖନ୍ତୁ', route: '/patient/cases', variant: 'secondary' as const },

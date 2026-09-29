@@ -1,0 +1,171 @@
+{
+  "audit_name": "TriageBridge Urgency Dataset Training-Readiness Audit (Corrected Architecture)",
+  "dataset_file": "data/training/triage_cases_v2.csv",
+  "audit_timestamp_utc": "2026-09-27T14:35:00Z",
+  "file_size_bytes": 312497,
+  "file_sha256": "bc08362530d3eb7e12647df889fe17b44614c6f5bda0bf0e3bd23509c4df033f",
+  "authoritative_gate_version": "2.0.0",
+  "readiness_verdict": "INSUFFICIENT_RESIDUAL_COHORT",
+  "verdict_rationale": "Under the authoritative multi-tier triage safety architecture, Gate 1 deterministically routes 50 encounters (10.0%) with missing critical vitals to GREY, and Gate 2 deterministically intercepts all 150 encounters (30.0%) with emergency clinical red flags to RED. Consequently, the residual cohort reaching the experimental ML layer consists of exactly 300 encounters: 150 YELLOW and 150 GREEN, with exactly ZERO (0) RED encounters remaining. Because the RED class has 0% support in the residual cohort, an experimental 3-tier model (RED/YELLOW/GREEN) cannot be trained or evaluated; RED sensitivity/recall cannot be evaluated, violating mandatory stop conditions. Furthermore, synthetic data analysis reveals that provisional labels were produced by the identical deterministic rules being evaluated (pure rule imitation), and modulo alignment in the data generator caused artificial 1-to-1 binding between patient languages and specific medical complaints in YELLOW encounters.",
+  "secondary_status": "NEEDS_CORRECTION",
+  "correction_requirements": [
+    "Dataset generator must be updated to introduce subtle/borderline RED emergency encounters that lack overt deterministic red-flag triggers, allowing ML to provide additive value on residual RED cases.",
+    "Fix modulo indexing artifact in scripts/generate_training_data.js where 6 templates cycling across 3 languages produced 100% correlation between specific conditions (e.g. appendicitis) and specific languages (en).",
+    "Exclude patient_language from predictive feature matrix; retain strictly as a subgroup fairness audit dimension."
+  ],
+  "forbidden_terminology_compliance": {
+    "contains_clinically_validated": false,
+    "contains_clinically_accurate": false,
+    "contains_safe_for_clinical_deployment": false,
+    "contains_production_ready": false,
+    "status": "COMPLIANT"
+  },
+  "cohort_accounting": {
+    "total_encounters": 500,
+    "tier_1_missing_critical_info_gated_grey": 50,
+    "tier_1_gating_percentage": 10.0,
+    "tier_2_emergency_red_flag_intercepted_red": 150,
+    "tier_2_interception_percentage": 30.0,
+    "tier_3_residual_cohort_reaching_ml": 300,
+    "tier_3_residual_percentage": 60.0,
+    "residual_class_distribution": {
+      "RED": 0,
+      "YELLOW": 150,
+      "GREEN": 150
+    },
+    "residual_class_percentages": {
+      "RED": 0.0,
+      "YELLOW": 50.0,
+      "GREEN": 50.0
+    }
+  },
+  "gate_evaluations": {
+    "gate_1_missing_information": {
+      "function_name": "evaluate_missing_info_gate",
+      "version": "2.0.0",
+      "triggered_encounters": 50,
+      "breakdown_by_provisional_label": {
+        "GREY": 50,
+        "RED": 0,
+        "YELLOW": 0,
+        "GREEN": 0
+      },
+      "rules_applied": [
+        "MISSING_ALL_VITAL_SIGNS",
+        "MISSING_HEMODYNAMIC_BASELINE_HR_AND_SBP",
+        "MISSING_SPO2_IN_RESPIRATORY_PRESENTATION",
+        "MISSING_PAEDIATRIC_VITALS_TEMP_AND_HR",
+        "MISSING_VITAL_MONITORING_IN_ALTERED_MENTAL_STATUS",
+        "MISSING_HEMODYNAMICS_IN_CHEST_PRESENTATION"
+      ]
+    },
+    "gate_2_emergency_red_flags": {
+      "function_name": "evaluate_red_flag_gate",
+      "version": "2.0.0",
+      "triggered_encounters": 150,
+      "breakdown_by_provisional_label": {
+        "RED": 150,
+        "YELLOW": 0,
+        "GREEN": 0,
+        "GREY": 0
+      },
+      "rules_applied": [
+        "VITAL_CRITICAL_HYPOXIA (SpO2 < 90%)",
+        "VITAL_CRITICAL_HYPOTENSION (SBP < 85 or DBP < 45 mmHg)",
+        "VITAL_CRITICAL_HYPERTENSION (SBP >= 200 or DBP >= 120 mmHg)",
+        "VITAL_CRITICAL_TACHYCARDIA (HR > 160 bpm)",
+        "VITAL_CRITICAL_BRADYCARDIA (HR < 40 bpm)",
+        "VITAL_CRITICAL_TACHYPNEA (RR >= 35 bpm)",
+        "VITAL_CRITICAL_HYPERTHERMIA (Temp >= 40.0C)",
+        "RF_CLINICAL_ACUTE_CHEST_PAIN (Acute Coronary Syndrome)",
+        "RF_CLINICAL_STROKE_FAST (Acute Neurological Deficit)",
+        "RF_CLINICAL_RESPIRATORY_DISTRESS (Cyanosis / Impending Failure)",
+        "RF_CLINICAL_ANAPHYLAXIS (Angioedema / Airway Stridor)",
+        "RF_CLINICAL_PAEDIATRIC_SEPSIS (Non-blanching Purpura / Fever)",
+        "RF_CLINICAL_SEVERE_HEMORRHAGE (Hematemesis / Hemodynamic Shock)",
+        "RF_CLINICAL_HYPERTENSIVE_EMERGENCY (Neurological signs with severe HTN)",
+        "RF_CLINICAL_PREGNANCY_EMERGENCY (Severe Preeclampsia / Eclampsia)",
+        "RF_CLINICAL_UNCONSCIOUS (Coma / Altered Sensorium)"
+      ]
+    }
+  },
+  "label_consistency_audit": {
+    "red_labelled_without_deterministic_red_flag": 0,
+    "yellow_cases_triggering_deterministic_red_flag": 0,
+    "green_cases_triggering_deterministic_red_flag": 0,
+    "grey_cases_not_missing_critical_information": 0,
+    "complete_vitals_cases_incorrectly_labelled_grey": 0,
+    "identical_intakes_different_labels": 0,
+    "rule_imitation_finding": "Provisional RED labels were generated directly from the identical deterministic red-flag templates. Evaluating an ML model on these cases measures deterministic rule imitation rather than independent statistical triage generalization."
+  },
+  "residual_split_audit": {
+    "split_seed": 42,
+    "split_strategy": "group_stratified_narrative_template_holdout",
+    "total_residual_encounters": 300,
+    "total_unique_template_groups": 21,
+    "train_split": {
+      "encounters": 210,
+      "groups": 15,
+      "class_distribution": {
+        "GREEN": 110,
+        "YELLOW": 100,
+        "RED": 0
+      }
+    },
+    "val_split": {
+      "encounters": 45,
+      "groups": 3,
+      "class_distribution": {
+        "YELLOW": 25,
+        "GREEN": 20,
+        "RED": 0
+      }
+    },
+    "test_split": {
+      "encounters": 45,
+      "groups": 3,
+      "class_distribution": {
+        "YELLOW": 25,
+        "GREEN": 20,
+        "RED": 0
+      }
+    },
+    "cross_split_leakage": {
+      "patient_cross_split_leakage": 0,
+      "template_cross_split_leakage": 0,
+      "vitals_pattern_cross_split_leakage": 0
+    },
+    "red_evaluation_violation": {
+      "red_train_support": 0,
+      "red_val_support": 0,
+      "red_test_support": 0,
+      "is_red_evaluable": false,
+      "stop_condition_triggered": true
+    }
+  },
+  "subgroup_audit": {
+    "patient_language_distribution_total": {
+      "en": 167,
+      "hi": 167,
+      "or": 166
+    },
+    "patient_language_distribution_residual": {
+      "en": 100,
+      "hi": 100,
+      "or": 100
+    },
+    "generator_modulo_artifact_detected": true,
+    "generator_artifact_description": "In scripts/generate_training_data.js, 6 YELLOW templates cycling with 3 languages caused each template to lock into exactly one language (e.g. Appendicitis is 100% en, Pneumonia is 100% hi, Laceration is 100% or).",
+    "feature_inclusion_recommendation": "EXCLUDE patient_language from predictive feature matrix. Retain strictly for post-prediction subgroup disparity auditing."
+  },
+  "operational_threshold_status": {
+    "confidence_threshold": "UNSET (must be calibrated on validation set only)",
+    "candidate_margin_threshold": "UNSET (must be calibrated on validation set only)",
+    "abstention_threshold": "UNSET (must be calibrated on validation set only)",
+    "test_set_status": "LOCKED_AND_UNTOUCHED"
+  },
+  "feature_flags": {
+    "TRIAGE_ML_SHADOW_ENABLED": false,
+    "SYMPTOM_PATTERN_SHADOW_ENABLED": false
+  }
+}

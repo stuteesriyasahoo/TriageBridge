@@ -1,0 +1,16 @@
+{
+  "total_encounters": 500,
+  "missing_gated_grey": 50,
+  "red_flag_intercepted_red": 150,
+  "encounters_reaching_ml": 300,
+  "ml_class_distribution": {
+    "YELLOW": 150,
+    "GREEN": 150
+  },
+  "red_no_deterministic_rf": 0,
+  "yellow_green_with_rf": 0,
+  "grey_not_missing_critical": 0,
+  "complete_vitals_labelled_grey": 0,
+  "identical_intakes_different_labels": 0,
+  "residual_unique_templates": 21
+}

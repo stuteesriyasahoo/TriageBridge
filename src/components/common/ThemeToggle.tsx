@@ -10,7 +10,23 @@ interface ThemeToggleProps {
 }
 
 export function ThemeToggle({ className = '', showLabel = false }: ThemeToggleProps) {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, mounted, toggleTheme } = useTheme();
+
+  if (!mounted) {
+    return (
+      <button
+        type="button"
+        disabled
+        className={`p-2 rounded-xl text-slate-200 opacity-60 flex items-center gap-1.5 focus:outline-hidden cursor-default ${className}`}
+        aria-label="Toggle Light and Dark Mode"
+      >
+        <span className="w-4 h-4 block" />
+        {showLabel && (
+          <span className="text-xs font-medium">Theme</span>
+        )}
+      </button>
+    );
+  }
 
   return (
     <button

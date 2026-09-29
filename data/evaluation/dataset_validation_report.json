@@ -1,0 +1,113 @@
+{
+  "dataset_name": "final_symptoms_to_disease.csv",
+  "file_size_bytes": 21741830,
+  "sha256": "27069dae02c057a619467361325a46ec29b03bc66d95b6e3fead81b50e0f8f72",
+  "total_rows": 192715,
+  "total_columns": 2,
+  "columns": [
+    "diseases",
+    "symptom_text"
+  ],
+  "integrity_checks": {
+    "required_columns_present": true,
+    "null_disease_count": 0,
+    "null_symptom_count": 0,
+    "blank_disease_count": 0,
+    "blank_symptom_count": 0,
+    "exact_duplicate_rows": 28988
+  },
+  "cardinality_and_conflicts": {
+    "unique_raw_diseases": 254,
+    "unique_normalized_diseases": 254,
+    "unique_raw_symptoms": 149241,
+    "unique_normalized_symptoms": 149241,
+    "symptom_texts_mapping_to_multiple_diseases": 10179,
+    "max_diseases_for_single_symptom": 17,
+    "rows_in_conflicting_label_groups": 27897,
+    "label_conflict_frequency_breakdown": {
+      "1_diseases": 139062,
+      "2_diseases": 7562,
+      "3_diseases": 1688,
+      "4_diseases": 533,
+      "5_diseases": 221,
+      "6_diseases": 87,
+      "7_diseases": 44,
+      "8_diseases": 23,
+      "9_diseases": 9,
+      "10_diseases": 4,
+      "11_diseases": 2,
+      "12_diseases": 1,
+      "13_diseases": 2,
+      "14_diseases": 2,
+      "17_diseases": 1
+    }
+  },
+  "class_distribution": {
+    "min_samples_per_class": 402,
+    "max_samples_per_class": 1219,
+    "median_samples_per_class": 681.0,
+    "mean_samples_per_class": 758.72,
+    "std_samples_per_class": 251.56,
+    "top_5_classes": [
+      {
+        "disease": "cystitis",
+        "count": 1219
+      },
+      {
+        "disease": "vulvodynia",
+        "count": 1218
+      },
+      {
+        "disease": "nose disorder",
+        "count": 1218
+      },
+      {
+        "disease": "complex regional pain syndrome",
+        "count": 1217
+      },
+      {
+        "disease": "spondylosis",
+        "count": 1216
+      }
+    ],
+    "bottom_5_classes": [
+      {
+        "disease": "fracture of the arm",
+        "count": 437
+      },
+      {
+        "disease": "oppositional disorder",
+        "count": 431
+      },
+      {
+        "disease": "hypovolemia",
+        "count": 424
+      },
+      {
+        "disease": "abdominal hernia",
+        "count": 407
+      },
+      {
+        "disease": "inguinal hernia",
+        "count": 402
+      }
+    ]
+  },
+  "content_security_checks": {
+    "html_tags_detected": 0,
+    "script_patterns_detected": 0,
+    "malformed_control_chars_detected": 0
+  },
+  "privacy_and_identifiers_audit": {
+    "emails_detected": 0,
+    "phone_numbers_detected": 0,
+    "ssn_patterns_detected": 0,
+    "medical_record_id_tags_detected": 0,
+    "contains_real_patient_pii": false
+  },
+  "safety_audit_conclusion": {
+    "suitable_for_single_label_diagnosis": false,
+    "suitable_for_experimental_multilabel_pattern_research": true,
+    "mandatory_disclaimer": "UNVERIFIED_RESEARCH_DATA_NOT_FOR_DIAGNOSIS_OR_TREATMENT"
+  }
+}

@@ -127,7 +127,7 @@ export default function PatientDashboard() {
   };
 
   return (
-    <div className="flex-1 bg-[#F7FAFC] dark:bg-slate-900 py-8 px-4 sm:px-6 lg:px-8 transition-colors">
+    <div className="flex-1 bg-[#F7FAFC] dark:bg-[#0B1220] py-8 px-4 sm:px-6 lg:px-8 transition-colors">
       <div className="max-w-6xl mx-auto space-y-6">
 
         {/* Delete Success Toast */}

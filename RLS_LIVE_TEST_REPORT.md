@@ -51,3 +51,19 @@
 3. **Accurate Role Attribution**: Unauthenticated HTTP 401 responses are strictly classified as ANONYMOUS and never misattributed to authenticated DOCTOR or PATIENT roles.
 4. **Cleanup Confirmation**: No synthetic test data created; cleanup not needed.
 5. **Sanitization**: Zero credentials, tokens, passwords, or personal data are logged or included in this report.
+
+## 5. Symptom-Pattern Database Migration Status & RLS Clarification
+
+> [!IMPORTANT]
+> **MIGRATION STATUS: DRAFT / UNAPPLIED — DO NOT APPLY YET**  
+> The migration file [`supabase/migrations/20260927_symptom_pattern_shadow_predictions.sql`](file:///c:/Users/bibhu/Downloads/bput/supabase/migrations/20260927_symptom_pattern_shadow_predictions.sql) must **NOT** be activated, deployed, or applied to any staging or production database until:
+> 1. Model safety gates pass.
+> 2. Dataset provenance is verified.
+> 3. Migration receives explicit clinical and administrative approval.
+
+### Static SQL Inspection vs Live Verification Clarification
+* **Existing Audits**: The security checks for `symptom_pattern_shadow_predictions` (in unit tests and CI) are **STATIC SQL FILE INSPECTIONS ONLY**. They verify the presence of `FORCE ROW LEVEL SECURITY`, `REVOKE ALL`, and restrictive default-deny policies in the script text.
+* **NOT Live Database Verification**: These checks do **NOT** constitute live Supabase database RLS verification. The table does not exist on the live database, and no live HTTP requests have been executed against it.
+* **Feature Flag Isolation**: Both shadow flags remain strictly disabled:
+  - `TRIAGE_ML_SHADOW_ENABLED=false`
+  - `SYMPTOM_PATTERN_SHADOW_ENABLED=false`
